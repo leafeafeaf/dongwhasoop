@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         bazzi: ["Bazzi", "sans-serif"],
+        maplestory: ["Maplestory", "sans-serif"],
       },
       screens: {
         tablet2560: "2560px", // 기준 해상도
