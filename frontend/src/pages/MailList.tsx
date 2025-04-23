@@ -8,7 +8,7 @@ function MailList() {
 
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
-      <BackButton />
+      <BackButton to="/home" />
       <h1>이 곳은 북 리스트 페이지입니다.</h1>
     </div>
   );

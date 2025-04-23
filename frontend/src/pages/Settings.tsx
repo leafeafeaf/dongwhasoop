@@ -8,7 +8,7 @@ function Settings() {
 
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
-      <BackButton></BackButton>
+      <BackButton to="/profile"></BackButton>
       <button>목소리 녹음</button>
       <button>자녀 추가 / 수정</button>
     </div>

@@ -7,7 +7,7 @@ function BookDetail() {
 
   return (
     <div>
-      <BackButton />
+      <BackButton to="/introbook" />
       <h1>책 상세페이지</h1>
       <p>흥부와 놀부입니다.</p>
       <button onClick={() => navigate("/bookend")}>넘어가기</button>

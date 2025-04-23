@@ -11,7 +11,7 @@ function SendWho() {
       className="fixed inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${writeletterbackground})` }}
     >
-      <BackButton></BackButton>
+      <BackButton to="/bookend"></BackButton>
       <h1>누구에게 편지를 쓸까요?</h1>
       <button onClick={() => navigate("/writeletter")}>신데렐라</button>
       <button onClick={() => navigate("/writeletter")}>난쟁이</button>

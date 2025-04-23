@@ -11,7 +11,7 @@ function IntroBook() {
       className="fixed inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${bookintrobackground})` }}
     >
-      <BackButton />
+      <BackButton to="/intro" />
       <h1>누가 읽을까요?</h1>
       <button>엄마</button>
       <button>아빠</button>

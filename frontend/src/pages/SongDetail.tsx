@@ -7,7 +7,7 @@ function SongDetail() {
 
   return (
     <div>
-      <BackButton></BackButton>
+      <BackButton to="/introsong"></BackButton>
       <h1>이 곳은 동요 상세페이지입니다.</h1>
       <button onClick={() => navigate("/songend")}>넘어가기</button>
     </div>
