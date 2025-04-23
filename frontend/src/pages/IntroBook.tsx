@@ -1,16 +1,17 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import bookintrobackground from "../assets/images/bookintro/bookintrobackground.webp";
+import BackButton from "../components/commons/BackButton";
 
-function BookIntroSong() {
-  const navigate = useNavigate();
+function IntroBook() {
+  // const navigate = useNavigate();
 
   return (
     <div
       className="fixed inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${bookintrobackground})` }}
     >
-      <button onClick={() => navigate(-1)}></button>
+      <BackButton />
       <h1>누가 읽을까요?</h1>
       <button>엄마</button>
       <button>아빠</button>
@@ -19,4 +20,4 @@ function BookIntroSong() {
   );
 }
 
-export default BookIntroSong;
+export default IntroBook;

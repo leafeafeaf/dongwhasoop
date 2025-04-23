@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import BookEnd from "./pages/BookEnd";
-import BookIntro from "./pages/BookIntro";
-import BookIntroBook from "./pages/BookIntroBook";
-import BookIntroSong from "./pages/BookIntroSong";
+import Intro from "./pages/Intro";
+import IntroBook from "./pages/IntroBook";
+import IntroSong from "./pages/IntroSong";
 import BookList from "./pages/BookList";
 import Home from "./pages/Home";
 import Loading from "./pages/Loading";
@@ -27,9 +27,9 @@ function App() {
     <Routes>
       <Route path="/" element={<Login></Login>}></Route>
       <Route path="/bookend" element={<BookEnd></BookEnd>}></Route>
-      <Route path="/bookintro" element={<BookIntro></BookIntro>}></Route>
-      <Route path="/bookintrobook" element={<BookIntroBook></BookIntroBook>}></Route>
-      <Route path="/bookintrosong" element={<BookIntroSong></BookIntroSong>}></Route>
+      <Route path="/intro" element={<Intro></Intro>}></Route>
+      <Route path="/introbook" element={<IntroBook></IntroBook>}></Route>
+      <Route path="/introsong" element={<IntroSong></IntroSong>}></Route>
       <Route path="/booklist" element={<BookList></BookList>}></Route>
       <Route path="/home" element={<Home></Home>}></Route>
       <Route path="/loading" element={<Loading></Loading>}></Route>
