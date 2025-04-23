@@ -1,18 +1,38 @@
 import { useNavigate } from "react-router-dom";
 
-import mainpage from "../assets/images/mainpage/mainpage.webp";
+import HomeBackground from "../assets/images/mainpage/homebackground.webp";
 import BackButton from "../components/commons/BackButton";
+import Book from "../assets/images/mainpage/book.webp";
+import MailBox from "../assets/images/mainpage/mailbox.webp";
+// import MusicOff from "../assets/images/mainpage/musicoff.webp";
+// import MusicOn from "../assets/images/mainpage/musicon.webp";
 
 function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
-      <BackButton to="/profile"></BackButton>
-      <h1>이 곳은 홈 화면입니다.</h1>
-      <button onClick={() => navigate("/settings")}>설정</button>
-      <button onClick={() => navigate("/booklist")}>동화</button>
-      <button onClick={() => navigate("/maillist")}>우편함</button>
+    <div
+      className="fixed inset-0 w-screen h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${HomeBackground})` }}
+    >
+      {/* 뒤로가기 */}
+      <BackButton to="/profile" className="top-4 left-4 sm:top-6 sm:left-6" />
+
+      {/* 중앙 이미지 버튼들 */}
+      <div className="flex justify-center items-center h-full gap-[9vw] mt-[15vh]">
+        <div className="mb-[20vh]">
+          <h1 className="text-[17vh] font-bazzi text-red-600 text-outline text-center">동화</h1>
+          <button onClick={() => navigate("/booklist")}>
+            <img src={Book} alt="동화" className="w-[50vw] max-w-[1000px] min-w-[100px]" />
+          </button>
+        </div>
+        <div className="mb-[20vh]">
+          <h1 className="text-[17vh] font-bazzi text-yellow-500 text-outline text-center">우편함</h1>
+          <button onClick={() => navigate("/maillist")}>
+            <img src={MailBox} alt="우편함" className="w-[50vw] max-w-[1000px] min-w-[100px]" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        bazzi: ["Bazzi", "sans-serif"],
+      },
       screens: {
         tablet2560: "2560px", // 기준 해상도
         xs: "375px", // 아이폰 mini

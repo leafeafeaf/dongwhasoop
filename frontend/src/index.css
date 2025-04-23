@@ -60,6 +60,10 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.text-outline {
+  text-shadow: -10px -10px 0 white, 10px -10px 0 white, -10px 10px 0 white, 10px 10px 0 white;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -71,6 +75,13 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@font-face {
+  font-family: "Bazzi";
+  src: url("./assets/fonts/Bazzi\ OTF.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @tailwind base;
