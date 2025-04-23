@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import mainpage from "../assets/images/mainpage/mainpage.webp";
-import LetterBird from "../assets/images/writeletter/letterbird.png";
+import LetterBird from "../assets/images/writeletter/letterbird.webp";
 
 function SendLetter() {
   const navigate = useNavigate();
