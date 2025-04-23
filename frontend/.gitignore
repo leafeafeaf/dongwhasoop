@@ -7,10 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
-*.local
+.vite
+.next
+
+# Environment
+.env
+.env.*.local
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +28,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# CSS related
+*.css.map
+.tailwind-output.css
+
+# Prettier / ESLint
+.prettiercache
+eslintcache
+
+# Test
+coverage/
+test-results/
