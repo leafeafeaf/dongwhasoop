@@ -23,13 +23,13 @@ function Home() {
         <div className="mb-[20vh]">
           <h1 className="text-[17vh] font-bazzi text-red-600 text-outline text-center">동화</h1>
           <button onClick={() => navigate("/booklist")}>
-            <img src={Book} alt="동화" className="w-[50vw] max-w-[1000px] min-w-[100px]" />
+            <img src={Book} alt="동화" className="w-[30vw] max-w-[1200px] min-w-[100px]" />
           </button>
         </div>
         <div className="mb-[20vh]">
           <h1 className="text-[17vh] font-bazzi text-yellow-500 text-outline text-center">우편함</h1>
           <button onClick={() => navigate("/maillist")}>
-            <img src={MailBox} alt="우편함" className="w-[50vw] max-w-[1000px] min-w-[100px]" />
+            <img src={MailBox} alt="우편함" className="w-[30vw] max-w-[1200px] min-w-[100px]" />
           </button>
         </div>
       </div>

@@ -24,8 +24,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -61,7 +59,7 @@ button:focus-visible {
 }
 
 .text-outline {
-  text-shadow: -10px -10px 0 white, 10px -10px 0 white, -10px 10px 0 white, 10px 10px 0 white;
+  text-shadow: -0.6vh -0.6vh 0 white, 0.6vh -0.6vh 0 white, -0.6vh 0.6vh 0 white, 0.6vh 0.6vh 0 white;
 }
 
 @media (prefers-color-scheme: light) {

@@ -16,7 +16,7 @@ function Login() {
         <img
           src={BookText}
           alt="동화숲 로고"
-          className="w-[80vw] max-w-[1000px] h-auto object-contain drop-shadow-2xl animate-triple-bounce"
+          className="w-[40vw] max-w-[1000px] h-auto object-contain drop-shadow-2xl animate-triple-bounce"
         />
       </div>
 
