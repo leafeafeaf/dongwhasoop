@@ -62,6 +62,24 @@ button:focus-visible {
   text-shadow: -0.6vh -0.6vh 0 white, 0.6vh -0.6vh 0 white, -0.6vh 0.6vh 0 white, 0.6vh 0.6vh 0 white;
 }
 
+@layer utilities {
+  .text-outline-sm {
+    text-shadow: -0.3vh -0.3vh 0 white, 0.3vh -0.3vh 0 white, -0.3vh 0.3vh 0 white, 0.3vh 0.3vh 0 white;
+  }
+
+  .text-outline-md {
+    text-shadow: -0.5vh -0.5vh 0 white, 0.5vh -0.5vh 0 white, -0.5vh 0.5vh 0 white, 0.5vh 0.5vh 0 white;
+  }
+
+  .text-outline-lg {
+    text-shadow: -0.6vh -0.6vh 0 white, 0.6vh -0.6vh 0 white, -0.6vh 0.6vh 0 white, 0.6vh 0.6vh 0 white;
+  }
+
+  .text-outline-xl {
+    text-shadow: -0.8vh -0.8vh 0 white, 0.8vh -0.8vh 0 white, -0.8vh 0.8vh 0 white, 0.8vh 0.8vh 0 white;
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
