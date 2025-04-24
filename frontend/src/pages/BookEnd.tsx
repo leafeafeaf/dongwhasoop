@@ -4,7 +4,6 @@ import endpagebackground from "../assets/images/endpage/endpagebackground.webp";
 import Home from "../assets/images/endpage/home.webp";
 import Letter from "../assets/images/endpage/letter.webp";
 import Song from "../assets/images/endpage/song.webp";
-// import SongAgain from "../assets/images/endpage/songagain.webp";
 import Bear from "../assets/images/endpage/bear.webp";
 import Monkey from "../assets/images/endpage/monkey.webp";
 
@@ -27,25 +26,25 @@ function BookEnd() {
       <div className="relative z-[10] flex justify-center items-center h-full gap-[0vw]">
         <div className="mb-[45vh]">
           <button onClick={() => navigate("/home")}>
-            <img src={Home} alt="홈버튼" className="w-[30vw] max-w-[700px] min-w-[100px]" />
+            <img src={Home} alt="홈버튼" className="w-[25vw] max-w-[700px] min-w-[100px]" />
           </button>
         </div>
         <div className="mb-[45vh]">
           <button onClick={() => navigate("/sendwho")}>
-            <img src={Letter} alt="편지쓰기" className="w-[30vw] max-w-[700px] min-w-[100px]" />
+            <img src={Letter} alt="편지쓰기" className="w-[25vw] max-w-[700px] min-w-[100px]" />
           </button>
         </div>
         <div className="mb-[45vh]">
           <button>
-            <img src={Song} alt="동요듣기" className="w-[30vw] max-w-[700px] min-w-[100px]" />
+            <img src={Song} alt="동요듣기" className="w-[25vw] max-w-[700px] min-w-[100px]" />
           </button>
         </div>
       </div>
 
       {/* 원숭이, 곰 이미지 */}
       <div className="absolute bottom-[2vh] w-full flex justify-center gap-[60vw]">
-        <img src={Monkey} alt="원숭이" className="w-[20vw] max-w-[500px]" />
-        <img src={Bear} alt="곰" className="w-[20vw] max-w-[500px]" />
+        <img src={Monkey} alt="원숭이" className="w-[20vw] max-w-[400px]" />
+        <img src={Bear} alt="곰" className="w-[20vw] max-w-[400px]" />
       </div>
     </div>
   );

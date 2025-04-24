@@ -37,7 +37,7 @@ function Home() {
           <h1 className="text-[17vh] font-bazzi text-yellow-500 text-outline text-center">우편함</h1>
 
           {/* 우편함 이미지 */}
-          <button onClick={() => navigate("/maillist")}>
+          <button onClick={() => navigate("/letterlist")}>
             <img src={MailBox} alt="우편함" className="w-[30vw] max-w-[1200px] min-w-[100px]" />
           </button>
         </div>

@@ -7,8 +7,8 @@ import IntroSong from "./pages/IntroSong";
 import BookList from "./pages/BookList";
 import Home from "./pages/Home";
 import Loading from "./pages/Loading";
-import MailDetail from "./pages/MailDetail";
-import MailList from "./pages/MailList";
+import LetterDetail from "./pages/LetterDetail";
+import LetterList from "./pages/LetterList";
 import Profile from "./pages/Profile";
 import RecInfo from "./pages/RecInfo";
 import Settings from "./pages/Settings";
@@ -33,8 +33,8 @@ function App() {
       <Route path="/booklist" element={<BookList></BookList>}></Route>
       <Route path="/home" element={<Home></Home>}></Route>
       <Route path="/loading" element={<Loading></Loading>}></Route>
-      <Route path="/maildetail" element={<MailDetail></MailDetail>}></Route>
-      <Route path="/maillist" element={<MailList></MailList>}></Route>
+      <Route path="/letterdetail" element={<LetterDetail></LetterDetail>}></Route>
+      <Route path="/letterlist" element={<LetterList></LetterList>}></Route>
       <Route path="/profile" element={<Profile></Profile>}></Route>
       <Route path="/recinfo" element={<RecInfo></RecInfo>}></Route>
       <Route path="/settings" element={<Settings></Settings>}></Route>
