@@ -20,14 +20,23 @@ function Home() {
 
       {/* 중앙 이미지 버튼들 */}
       <div className="flex justify-center items-center h-full gap-[9vw] mt-[15vh]">
+        {/* 동화 문구, 이미지 */}
         <div className="mb-[20vh]">
+          {/* 동화 */}
           <h1 className="text-[17vh] font-bazzi text-red-600 text-outline text-center">동화</h1>
+
+          {/* 동화 이미지 */}
           <button onClick={() => navigate("/booklist")}>
             <img src={Book} alt="동화" className="w-[30vw] max-w-[1200px] min-w-[100px]" />
           </button>
         </div>
+
+        {/* 우편함 문구, 이미지 */}
         <div className="mb-[20vh]">
+          {/* 우편함 문구 */}
           <h1 className="text-[17vh] font-bazzi text-yellow-500 text-outline text-center">우편함</h1>
+
+          {/* 우편함 이미지 */}
           <button onClick={() => navigate("/maillist")}>
             <img src={MailBox} alt="우편함" className="w-[30vw] max-w-[1200px] min-w-[100px]" />
           </button>
