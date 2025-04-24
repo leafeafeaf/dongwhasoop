@@ -21,6 +21,7 @@ import BookDetail from "./pages/BookDetail";
 import SendWho from "./pages/SendWho";
 import SendLetter from "./pages/SendLetter";
 import RecSuccess from "./pages/RecSuccess";
+import KidSettings from "./pages/KidSettings";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
       <Route path="/sendwho" element={<SendWho></SendWho>}></Route>
       <Route path="/sendletter" element={<SendLetter></SendLetter>}></Route>
       <Route path="/recsuccess" element={<RecSuccess></RecSuccess>}></Route>
+      <Route path="/kidsettings" element={<KidSettings></KidSettings>}></Route>
     </Routes>
   );
 }
