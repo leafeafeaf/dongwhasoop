@@ -34,27 +34,29 @@ function LetterDetail() {
       <BackButton onClick={handleBackButton} />
       
       {/* 상단 탭 버튼 */}
-      <div className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 flex gap-24">
+      <div className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 flex gap-[10vh]">
         <div 
           className={`cursor-pointer transition-transform ${activeTab === 'sent' ? 'scale-110 drop-shadow-lg' : 'opacity-80 hover:opacity-100'}`}
           onClick={() => handleTabChange('sent')}
         >
-          <img src={receive} alt="Sent" className="w-90" />
+          <img src={receive} alt="Sent" className="w-[40vh]" />
         </div>
         <div 
           className={`cursor-pointer transition-transform ${activeTab === 'received' ? 'scale-110 drop-shadow-lg' : 'opacity-80 hover:opacity-100'}`}
           onClick={() => handleTabChange('received')}
         >
-          <img src={send} alt="Received" className="w-90" />
+          <img src={send} alt="Received" className="w-[40vh]" />
         </div>
       </div>
 
-      <div className="flex justify-between items-center tablet2560:px-60 xl:px-40 h-full xl:mt-24 tablet2560:mt-40">
+      <div className="flex justify-between items-center h-full px-10 pt-10
+      xl:mt-20 
+      tablet2560:px-60 xl:px-40 tablet2560:mt-40">
         {/* 편지 내용 */}
-        <div className="relative w-[60vw] xl:w-[50vw]">
+        <div className="relative w-[50vw] xl:w-[47vw] tablet2560:w-[90vh]">
           <img src={letterpaper} alt="Letter Paper" className="w-full" />
           
-          <div className="tablet2560:text-6xl xl:text-3xl xl:mt-5 font-maplestory tablet2560:mt-10 absolute top-[10%] left-[8%] right-[8%] bottom-[10%] flex flex-col">
+          <div className="tablet2560:text-6xl xl:text-2xl xl:mt-5 font-maplestory tablet2560:mt-10 absolute top-[10%] left-[8%] right-[8%] bottom-[10%] flex flex-col">
             {/* 받는 사람 */}
             <div className="tablet2560:mb-16 xl:mb-12">
               {letterData.to}
@@ -66,11 +68,11 @@ function LetterDetail() {
             </div>
             
             {/* 날짜와 보낸 사람 */}
-            <div className="flex tablet2560:text-6xl xl:text-3xl font-maplestory justify-end items-center gap-8">
+            <div className="flex tablet2560:text-6xl xl:text-2xl font-maplestory justify-end items-center gap-8">
               <div>{letterData.date}</div>
               <div className="flex items-center gap-3">
                 <span>{letterData.from}</span>
-                <img src={princess} alt="Character" className="w-28 h-28" />
+                <img src={princess} alt="Character" className="w-[10vh] h-[10vh]" />
               </div>
             </div>
           </div>
@@ -78,7 +80,9 @@ function LetterDetail() {
 
         {/* 다시 듣기 버튼 */}
         <div className="cursor-pointer transition-transform hover:scale-105">
-          <img src={replay} alt="Replay" className="tablet2560:w-[500px] tablet2560:h-[500px] xl:w-[300px] xl:h-[300px]" />
+          <img src={replay} alt="Replay" 
+          className="w-[30vh] h-[30vh]
+   " />
         </div>
       </div>
     </div>
