@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import writeletterbackground from "../assets/images/writeletter/writeletterbackground.webp";
+import writeletterbackground from "../assets/images/writeletter/writeletterback.webp";
+import record from "../assets/images/writeletter/record.webp";
+import send from "../assets/images/writeletter/send.webp";
 import BackButton from "../components/commons/BackButton";
 
 function WriteLetter() {
@@ -12,9 +14,16 @@ function WriteLetter() {
       style={{ backgroundImage: `url(${writeletterbackground})` }}
     >
       <BackButton to="/sendwho"></BackButton>
-      <h1>이 곳은 편지쓰는 곳입니다.</h1>
-      <button>녹음하기</button>
-      <button onClick={() => navigate("/home")}>보내기</button>
+      
+      <div className="fixed right-12 top-1/2 -translate-y-1/2 flex flex-col gap-4 px-16">
+        <button>
+          <img src={record} alt="record" className="w-[20vw] max-w-[1200px] min-w-[100px]"/>
+        </button>
+        <button onClick={() => navigate("/sendletter")}>
+          <img src={send} alt="send" className="w-[20vw] max-w-[1200px] min-w-[100px]"/>
+        </button>
+      </div>
+
     </div>
   );
 }
