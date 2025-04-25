@@ -1,5 +1,7 @@
 package com.fairytale.FairyTale.domain.credential.service;
 
+import com.fairytale.FairyTale.domain.child.domain.Child;
+import com.fairytale.FairyTale.domain.child.domain.Repository.ChildRepository;
 import com.fairytale.FairyTale.domain.credential.domain.RefreshTokenRedisEntity;
 import com.fairytale.FairyTale.domain.credential.domain.repository.RefreshTokenRedisEntityRepository;
 import com.fairytale.FairyTale.domain.credential.exception.NotNullTokenException;
@@ -13,6 +15,7 @@ import com.fairytale.FairyTale.domain.credential.presentation.dto.response.Check
 import com.fairytale.FairyTale.domain.credential.presentation.dto.response.OauthTokenInfoDto;
 import com.fairytale.FairyTale.domain.user.domain.User;
 import com.fairytale.FairyTale.domain.user.domain.repository.UserRepository;
+import com.fairytale.FairyTale.domain.uservoice.domain.UserVoice;
 import com.fairytale.FairyTale.global.api.dto.response.UserInfoToOauthDto;
 import com.fairytale.FairyTale.global.exception.AlreadyRegisterException;
 import com.fairytale.FairyTale.global.exception.InvalidTokenException;
@@ -24,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +40,7 @@ public class CredentialService {
     private final UserUtils userUtils;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final ChildRepository childRepository;
     private final OauthFactory oauthFactory;
     private final RefreshTokenRedisEntityRepository refreshTokenRedisEntityRepository;
 
@@ -91,6 +96,7 @@ public class CredentialService {
             throw AlreadyRegisterException.EXCEPTION;
         }
 
+        // 사용자 생성 및 저장
         User user =
                 User.builder()
                         .oauthProvider(oauthProvider.getValue())
@@ -98,6 +104,18 @@ public class CredentialService {
                         .isNew(true)
                         .build();
         userRepository.save(user);
+
+        /**
+         * TODO 김의중: 음성데이터 S3에 저장하고 UserVoice 테이블에 저장하기.
+         */
+
+        // 자녀 정보 저장
+        Child child = Child.builder()
+                .name(registerRequest.getChildren().getName())
+                .mascotId(registerRequest.getChildren().getMascotId())
+                .user(user)
+                .build();
+        childRepository.save(child);
 
         String accessToken = jwtTokenProvider.generateAccessToken(user.getId(), user.getAccountRole());
         String refreshToken = generateRefreshToken(user.getId());
