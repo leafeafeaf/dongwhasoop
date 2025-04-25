@@ -27,43 +27,41 @@ function BookDetail() {
       <BackButton to={`/introbook/${id}`} />
 
       {/* 텍스트 영역 */}
-      <div className="absolute inset-0 flex flex-col items-center justify-end pb-[15vh] px-[5vw]">
-        <p className="text-[3vh] font-bazzi text-center bg-black/50 p-4 rounded-xl shadow-md max-w-[90vw]">
+      <div className="absolute inset-0 flex flex-col items-center justify-end pb-[8vh] px-[5vw]">
+        <p className="text-[5vh] font-bazzi text-center bg-black/50 p-4 rounded-xl shadow-md max-w-[90vw]">
           {currentContent.text}
         </p>
       </div>
 
       {/* 페이지 넘김 버튼 */}
-      <div className="absolute bottom-[5vh] w-full flex justify-center gap-[80vw] z-[10]">
+      <div className="absolute bottom-[35vh] w-full flex justify-center gap-[70vw] z-[10]">
         {/* 이전 버튼 */}
         {currentPage > 0 ? (
           <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}>
-            <img src={PrevPage} alt="이전" className="w-[10vw] max-w-[120px]" />
+            <img src={PrevPage} alt="이전" className="w-[10vw] max-w-[200px]" />
           </button>
         ) : (
-          <div className="w-[10vw] max-w-[120px]" />
+          <div className="w-[10vw] max-w-[200px]" />
         )}
 
         {/* 다음 버튼 */}
         {currentPage < book.pages.length - 1 ? (
           <button onClick={() => setCurrentPage((prev) => prev + 1)}>
-            <img src={NextPage} alt="다음" className="w-[10vw] max-w-[120px]" />
+            <img src={NextPage} alt="다음" className="w-[10vw] max-w-[200px]" />
           </button>
         ) : (
           <button onClick={() => navigate("/bookend")}>
-            <img src={GoFront} alt="넘어가기" className="w-[10vw] max-w-[120px]" />
+            <img src={GoFront} alt="넘어가기" className="w-[10vw] max-w-[200px]" />
           </button>
         )}
       </div>
 
       {/* 다시보기 버튼 */}
-      {currentPage === book.pages.length - 1 && (
-        <div className="absolute right-[5vw] bottom-[17vh] z-[10]">
-          <button onClick={() => setCurrentPage(0)}>
-            <img src={RestartBook} alt="다시 보기" className="w-[12vw] max-w-[150px]" />
-          </button>
-        </div>
-      )}
+      <div className="absolute z-[10] mt-[5vh] right-[5vh]">
+        <button onClick={() => console.log("다시 듣기 기능은 추후 연결 예정입니당~~")}>
+          <img src={RestartBook} alt="다시 듣기" className="w-[13vw] h-[18vh]" />
+        </button>
+      </div>
     </div>
   );
 }

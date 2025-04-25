@@ -18,8 +18,8 @@ function BackButton({ to, className = "" }: BackButtonProps) {
   };
 
   return (
-    <button onClick={handleClick} className={`absolute z-[10] ${className}`}>
-      <img src={BackIcon} alt="뒤로가기" className="w-[15vh] h-[15vh] mt-[5vh] ml-[5vh]" />
+    <button onClick={handleClick} className={`absolute z-[10] mt-[5vh] left-[3vw] ${className}`}>
+      <img src={BackIcon} alt="뒤로가기" className="w-[17vh] h-[20vh]" />
     </button>
   );
 }
