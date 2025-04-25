@@ -22,6 +22,7 @@ import SendWho from "./pages/SendWho";
 import SendLetter from "./pages/SendLetter";
 import RecSuccess from "./pages/RecSuccess";
 import KidSettings from "./pages/KidSettings";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
       <Route path="/sendletter" element={<SendLetter></SendLetter>}></Route>
       <Route path="/recsuccess" element={<RecSuccess></RecSuccess>}></Route>
       <Route path="/kidsettings" element={<KidSettings></KidSettings>}></Route>
+      <Route path="/editprofile" element={<EditProfile></EditProfile>}></Route>
     </Routes>
   );
 }
