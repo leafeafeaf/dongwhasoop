@@ -15,6 +15,7 @@ import Settings from "./pages/Settings";
 import SongDetail from "./pages/SongDetail";
 import SongEnd from "./pages/SongEnd";
 import StartSettings from "./pages/StartSettings";
+import VoiceSelect from "./pages/VoiceSelect";
 import VoiceRec from "./pages/VoiceRec";
 import WriteLetter from "./pages/WriteLetter";
 import BookDetail from "./pages/BookDetail";
@@ -44,6 +45,7 @@ function App() {
       <Route path="/songdetail/:id" element={<SongDetail></SongDetail>}></Route>
       <Route path="/songend" element={<SongEnd></SongEnd>}></Route>
       <Route path="/startsettings" element={<StartSettings></StartSettings>}></Route>
+      <Route path="/voiceselect" element={<VoiceSelect></VoiceSelect>}></Route>
       <Route path="/voicerec" element={<VoiceRec></VoiceRec>}></Route>
       <Route path="/writeletter" element={<WriteLetter></WriteLetter>}></Route>
       <Route path="/bookdetail/:id" element={<BookDetail></BookDetail>}></Route>

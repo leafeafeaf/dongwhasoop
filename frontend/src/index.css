@@ -63,6 +63,10 @@ button:focus-visible {
 }
 
 @layer utilities {
+  .text-outline-xs {
+    text-shadow: -0.15vh -0.15vh 0 white, 0.15vh -0.15vh 0 white, -0.15vh 0.15vh 0 white, 0.15vh 0.15vh 0 white;
+  }
+
   .text-outline-sm {
     text-shadow: -0.3vh -0.3vh 0 white, 0.3vh -0.3vh 0 white, -0.3vh 0.3vh 0 white, 0.3vh 0.3vh 0 white;
   }

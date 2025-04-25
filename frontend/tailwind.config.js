@@ -52,12 +52,10 @@ export default {
         },
         "fly": {
           "0%": { transform: "translateX(0) translateY(0) scaleX(1)" },
-          "25%": { transform: "translateX(200px) translateY(-30px) scaleX(1)" },
-          "45%": { transform: "translateX(400px) translateY(0) scaleX(1)" },
-          "50%": { transform: "translateX(400px) translateY(-15px) scaleX(-1)" },
-          "75%": { transform: "translateX(200px) translateY(-30px) scaleX(-1)" },
-          "95%": { transform: "translateX(0) translateY(0) scaleX(-1)" },
-          "100%": { transform: "translateX(0) translateY(-15px) scaleX(1)" }
+          "25%": { transform: "translateX(0) translateY(0) scaleX(-1)" },
+          "50%": { transform: "translateX(0) translateY(0) scaleX(1)" },
+          "75%": { transform: "translateX(0) translateY(0) scaleX(-1)" },
+          "100%": { transform: "translateX(0) translateY(0) scaleX(1)" }
         },
       },
       animation: {
@@ -68,7 +66,7 @@ export default {
         "bounce-infinite1": "bounce-infinite1 1.5s ease-in-out infinite", // 무한 반복!
         "bounce-infinite2": "bounce-infinite2 2.0s ease-in-out infinite", // 무한 반복!
         "bounce-infinite3": "bounce-infinite3 2.5s ease-in-out infinite", // 무한 반복!
-        "fly": "fly 4s ease-in-out infinite",
+        "fly": "fly 6s ease-in-out infinite",
       },
     },
   },

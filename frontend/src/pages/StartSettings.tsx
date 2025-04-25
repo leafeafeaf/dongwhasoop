@@ -3,7 +3,7 @@ import mainpage from "../assets/images/mainpage/mainpage.webp";
 
 import AddChild from "../assets/images/settingpage/addchild.webp";
 import VoiceRecIcon from "../assets/images/settingpage/voicerec.webp";
-import NextTime from "../assets/images/settingpage/nexttime.webp";
+import Next from "../assets/images/settingpage/next.webp";
 
 function StartSettings() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ function StartSettings() {
 
       {/* 목소리 녹음, 자녀추가 */}
       <div className="flex justify-center items-center gap-20 mt-20">
-        <button onClick={() => navigate("/recinfo")} className="hover:scale-110 transition-transform">
+        <button onClick={() => navigate("/voiceselect")} className="hover:scale-110 transition-transform">
           <img src={VoiceRecIcon} alt="목소리 녹음" className="w-[25vw] tablet2560:w-[30vw]" />
         </button>
         <button onClick={() => navigate("/kidsettings")} className="hover:scale-110 transition-transform">
@@ -24,10 +24,10 @@ function StartSettings() {
         </button>
       </div>
 
-      {/* 나중에하기 */}
+      {/* 등록하기 */}
       <div className="fixed bottom-0 right-0 mb-4 mx-8">
         <button onClick={() => navigate("/home")}>
-          <img src={NextTime} alt="나중에하기" className="xl:w-[15vw]" />
+          <img src={Next} alt="등록하기" className="xl:w-[15vw]" />
         </button>
       </div>
     </div>

@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import BackButton from "../components/commons/BackButton";
 import RightButton from "../assets/buttons/rightbutton.webp";
-import RecAlert from "../assets/images/settingpage/recalert.png";
+import RecAlert from "../assets/images/settingpage/recalert.webp";
 
 function RecInfo() {
   const navigate = useNavigate();
 
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
-      <BackButton to="/startsettings" />
+      <BackButton to="/voiceselect" />
 
       {/* 경고 안내문 */}
       <div className="absolute left-1/2 -translate-x-1/2 flex items-center w-[95vw] max-w-[1800px] lg:w-[60vw] md:mt-[5vw]">
