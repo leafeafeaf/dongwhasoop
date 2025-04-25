@@ -11,7 +11,7 @@ function BackButton({ to, className = "" }: BackButtonProps) {
 
   return (
     <button onClick={() => navigate(to ?? -1)} className={`absolute ${className}`}>
-      <img src={BackIcon} alt="뒤로가기" className="w-[20vh] h-[20vh]" />
+      <img src={BackIcon} alt="뒤로가기" className="w-[15vh] h-[15vh] mt-[5vh] ml-[5vh]" />
     </button>
   );
 }
