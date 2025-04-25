@@ -95,7 +95,7 @@ button:focus-visible {
 
 @font-face {
   font-family: "Bazzi";
-  src: url("./assets/fonts/Bazzi\ OTF.otf") format("truetype");
+  src: url("./assets/fonts/Bazzi_OTF.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
