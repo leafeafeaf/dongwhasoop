@@ -36,6 +36,7 @@ function App() {
       <Route path="/home" element={<Home></Home>}></Route>
       <Route path="/loading" element={<Loading></Loading>}></Route>
       <Route path="/letterdetail" element={<LetterDetail></LetterDetail>}></Route>
+      <Route path="/letterdetail/:id" element={<LetterDetail></LetterDetail>}></Route>
       <Route path="/letterlist" element={<LetterList></LetterList>}></Route>
       <Route path="/profile" element={<Profile></Profile>}></Route>
       <Route path="/recinfo" element={<RecInfo></RecInfo>}></Route>
