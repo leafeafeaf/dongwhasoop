@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import booklistbackground from "../assets/images/booklist/booklistbackground.webp";
 import BackButton from "../components/commons/BackButton";
 import GoBack from "../assets/images/BookList/goback.webp";
 import GoFront from "../assets/images/BookList/gofront.webp";
+
+import useBookStore from "../hooks/useBooks";
 import bookDummy from "../data/bookDummy";
 
 function BookList() {
@@ -12,6 +14,11 @@ function BookList() {
   const [page, setPage] = useState(0);
   const totalPages = Math.ceil(bookDummy.length / booksPerPage);
   const navigate = useNavigate();
+  const setBooks = useBookStore((state) => state.setBooks);
+
+  useEffect(() => {
+    setBooks(bookDummy);
+  }, [setBooks]);
 
   const handlePrev = () => {
     if (page > 0) setPage(page - 1);
@@ -34,7 +41,11 @@ function BookList() {
       <div className="flex flex-col justify-center items-center min-h-[70vh]">
         <div className="grid grid-cols-3 gap-y-[2vh] gap-x-[5vw] lg:gap-x-[8vw] px-[25vw] mt-[25vh] sm:mt-[15vh] md:mt-[15vh] lg:mt-[15vh] xl:mt-[4vh] 2xl:mt-[15vh]">
           {visibleBooks.map((book, index) => (
-            <div key={index} className="flex flex-col items-center" onClick={() => navigate("/intro", { state: book })}>
+            <div
+              key={index}
+              className="flex flex-col items-center cursor-pointer"
+              onClick={() => navigate(`/intro/${book.id}`)}
+            >
               <img
                 src={book.cover}
                 alt={book.title}

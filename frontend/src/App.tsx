@@ -29,9 +29,9 @@ function App() {
     <Routes>
       <Route path="/" element={<Login></Login>}></Route>
       <Route path="/bookend" element={<BookEnd></BookEnd>}></Route>
-      <Route path="/intro" element={<Intro></Intro>}></Route>
-      <Route path="/introbook" element={<IntroBook></IntroBook>}></Route>
-      <Route path="/introsong" element={<IntroSong></IntroSong>}></Route>
+      <Route path="/intro/:id" element={<Intro></Intro>}></Route>
+      <Route path="/introbook/:id" element={<IntroBook></IntroBook>}></Route>
+      <Route path="/introsong/:id" element={<IntroSong></IntroSong>}></Route>
       <Route path="/booklist" element={<BookList></BookList>}></Route>
       <Route path="/home" element={<Home></Home>}></Route>
       <Route path="/loading" element={<Loading></Loading>}></Route>
@@ -40,12 +40,12 @@ function App() {
       <Route path="/profile" element={<Profile></Profile>}></Route>
       <Route path="/recinfo" element={<RecInfo></RecInfo>}></Route>
       <Route path="/settings" element={<Settings></Settings>}></Route>
-      <Route path="/songdetail" element={<SongDetail></SongDetail>}></Route>
+      <Route path="/songdetail/:id" element={<SongDetail></SongDetail>}></Route>
       <Route path="/songend" element={<SongEnd></SongEnd>}></Route>
       <Route path="/startsettings" element={<StartSettings></StartSettings>}></Route>
       <Route path="/voicerec" element={<VoiceRec></VoiceRec>}></Route>
       <Route path="/writeletter" element={<WriteLetter></WriteLetter>}></Route>
-      <Route path="/bookdetail" element={<BookDetail></BookDetail>}></Route>
+      <Route path="/bookdetail/:id" element={<BookDetail></BookDetail>}></Route>
       <Route path="/sendwho" element={<SendWho></SendWho>}></Route>
       <Route path="/sendletter" element={<SendLetter></SendLetter>}></Route>
       <Route path="/recsuccess" element={<RecSuccess></RecSuccess>}></Route>
