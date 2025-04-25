@@ -33,8 +33,9 @@ function App() {
       <Route path="/booklist" element={<BookList></BookList>}></Route>
       <Route path="/home" element={<Home></Home>}></Route>
       <Route path="/loading" element={<Loading></Loading>}></Route>
-      <Route path="/maildetail" element={<MailDetail></MailDetail>}></Route>
       <Route path="/maillist" element={<MailList></MailList>}></Route>
+      <Route path="/maildetail" element={<MailDetail></MailDetail>}></Route>
+      <Route path="/maildetail/:id" element={<MailDetail></MailDetail>}></Route>
       <Route path="/profile" element={<Profile></Profile>}></Route>
       <Route path="/recinfo" element={<RecInfo></RecInfo>}></Route>
       <Route path="/settings" element={<Settings></Settings>}></Route>
