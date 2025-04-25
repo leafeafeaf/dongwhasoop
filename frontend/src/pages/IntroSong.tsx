@@ -4,7 +4,7 @@ import bookintrobackground from "../assets/images/bookintro/bookintrobackground.
 import BackButton from "../components/commons/BackButton";
 import Mother from "../assets/images/bookintro/mother.webp";
 import Father from "../assets/images/bookintro/father.webp";
-import Bear2 from "../assets/images/bookintro/bear.webp";
+import BearVoice from "../assets/images/bookintro/bearvoice.webp";
 
 function IntroSong() {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function IntroSong() {
 
       <h1 className="text-[13vh] font-bazzi text-black-500 text-outline text-center mt-[9vh]">어떻게 읽을까요?</h1>
 
-      <div className="flex justify-center items-center h-full gap-[3vw] mt-[15vh]">
+      <div className="flex justify-center items-center h-full gap-x-[0vw] mt-[-15vh]">
         <button onClick={() => navigate(`/songdetail/${id}`)}>
           <img src={Mother} alt="엄마목소리" />
         </button>
@@ -27,7 +27,7 @@ function IntroSong() {
           <img src={Father} alt="아빠목소리" />
         </button>
         <button onClick={() => navigate(`/songdetail/${id}`)}>
-          <img src={Bear2} alt="곰돌이목소리" />
+          <img src={BearVoice} alt="곰돌이목소리" />
         </button>
       </div>
     </div>
