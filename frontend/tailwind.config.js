@@ -29,10 +29,45 @@ export default {
           "80%": { transform: "translateY(0)" },
           "90%": { transform: "translateY(-10px)" },
         },
+        "bounce-shake1": {
+          '0%, 100%': { transform: 'rotate(-5deg)' },
+          '50%': { transform: 'rotate(5deg)' },
+        },
+        "bounce-shake2": {
+          '0%, 100%': { transform: 'rotate(5deg)' },
+          '50%': { transform: 'rotate(-5deg)' },
+        },
+        "bounce-infinite1": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-40px)" }
+        },
+        "bounce-infinite2": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-60px)" }
+        },
+        "bounce-infinite3": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-80px)" }
+        },
+        "fly": {
+          "0%": { transform: "translateX(0) translateY(0) scaleX(1)" },
+          "25%": { transform: "translateX(200px) translateY(-30px) scaleX(1)" },
+          "45%": { transform: "translateX(400px) translateY(0) scaleX(1)" },
+          "50%": { transform: "translateX(400px) translateY(-15px) scaleX(-1)" },
+          "75%": { transform: "translateX(200px) translateY(-30px) scaleX(-1)" },
+          "95%": { transform: "translateX(0) translateY(0) scaleX(-1)" },
+          "100%": { transform: "translateX(0) translateY(-15px) scaleX(1)" }
+        },
       },
       animation: {
         "pop-in": "pop-in 0.6s ease-out",
         "triple-bounce": "triple-bounce 1.2s ease-in-out 1", // 1번만 재생!
+        "shake1": "bounce-shake1 1.5s ease-in-out infinite", // 무한 반복!
+        "shake2": "bounce-shake2 1.5s ease-in-out infinite", // 무한 반복!
+        "bounce-infinite1": "bounce-infinite1 1.5s ease-in-out infinite", // 무한 반복!
+        "bounce-infinite2": "bounce-infinite2 2.0s ease-in-out infinite", // 무한 반복!
+        "bounce-infinite3": "bounce-infinite3 2.5s ease-in-out infinite", // 무한 반복!
+        "fly": "fly 4s ease-in-out infinite",
       },
     },
   },
