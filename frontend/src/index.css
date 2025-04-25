@@ -100,6 +100,20 @@ button:focus-visible {
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Maplestory";
+  src: url("./assets/fonts/Maplestory\ Light.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Maplestory";
+  src: url("./assets/fonts/Maplestory\ Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
