@@ -1,10 +1,10 @@
 // import { useNavigate } from "react-router-dom";
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import BackButton from "../components/commons/BackButton";
-import ReadChild from "../assets/images/settingpage/readchild.png";
-import SittingChild from "../assets/images/settingpage/sittingchild.png";
-import SubmitRec from "../assets/images/settingpage/submitrec.png";
-import RecStory from "../assets/images/settingpage/recstory.png";
+import ReadChild from "../assets/images/settingpage/readchild.webp";
+import SittingChild from "../assets/images/settingpage/sittingchild.webp";
+import SubmitRec from "../assets/images/settingpage/submitrec.webp";
+import RecStory from "../assets/images/settingpage/recstory.webp";
 
 function VoiceRec() {
   // const navigate = useNavigate();

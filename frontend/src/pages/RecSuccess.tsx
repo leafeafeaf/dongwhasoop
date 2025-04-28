@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import RightButton from "../assets/buttons/rightbutton.webp";
-import RecAlert from "../assets/images/settingpage/recalert.png";
+import RecAlert from "../assets/images/settingpage/recalert.webp";
 
 function RecSuccess() {
   const navigate = useNavigate();
