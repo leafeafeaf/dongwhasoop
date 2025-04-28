@@ -1,4 +1,6 @@
-import { Route, Routes } from "react-router-dom";
+// import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+// import { useAuth } from "./hooks/useAuth";
 import Login from "./pages/Login";
 import BookEnd from "./pages/BookEnd";
 import Intro from "./pages/Intro";
@@ -24,9 +26,22 @@ import SendLetter from "./pages/SendLetter";
 import RecSuccess from "./pages/RecSuccess";
 import KidSettings from "./pages/KidSettings";
 import EditProfile from "./pages/EditProfile";
-import KakaoCallback from "./pages/KakaoCallBack";
+import KakaoCallback from "./pages/KakaoCallback";
 
 function App() {
+  // const navigate = useNavigate();
+  // const { refreshAccessToken } = useAuth();
+
+  // useEffect(() => {
+  //   const accessToken = localStorage.getItem("accessToken");
+
+  //   if (accessToken) {
+  //     navigate("/profile");
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
+
   return (
     <Routes>
       <Route path="/" element={<Login></Login>}></Route>

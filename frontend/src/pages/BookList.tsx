@@ -57,24 +57,19 @@ function BookList() {
         </div>
       </div>
 
-      {/* 뒤로, 앞으로 버튼 */}
-      <div className="absolute bottom-[2vh] w-full flex justify-center gap-[80vw] mb-[40vh] z-0">
-        {page > 0 ? (
-          <button onClick={handlePrev}>
-            <img src={GoBack} alt="이전" className="w-[10vw] max-w-[300px]" />
-          </button>
-        ) : (
-          <div className="w-[10vw] max-w-[300px]" />
-        )}
+      {/* 이전 버튼 */}
+      {page > 0 && (
+        <button onClick={handlePrev} className="absolute top-1/2 left-[5vw] -translate-y-1/2 z-20">
+          <img src={GoBack} alt="이전" className="w-[10vw] max-w-[300px]" />
+        </button>
+      )}
 
-        {page < totalPages - 1 ? (
-          <button onClick={handleNext}>
-            <img src={GoFront} alt="다음" className="w-[10vw] max-w-[300px]" />
-          </button>
-        ) : (
-          <div className="w-[10vw] max-w-[300px]" />
-        )}
-      </div>
+      {/* 다음 버튼 */}
+      {page < totalPages - 1 && (
+        <button onClick={handleNext} className="absolute top-1/2 right-[5vw] -translate-y-1/2 z-20">
+          <img src={GoFront} alt="다음" className="w-[10vw] max-w-[300px]" />
+        </button>
+      )}
     </div>
   );
 }
