@@ -4,7 +4,7 @@ import { useState } from "react";
 import BackButton from "../components/commons/BackButton";
 import NextPage from "../assets/images/detailpage/nextpage.webp";
 import PrevPage from "../assets/images/detailpage/prevpage.webp";
-import GoFront from "../assets/images/BookList/gofront.webp";
+// import GoFront from "../assets/images/BookList/gofront.webp";
 import RestartBook from "../assets/images/detailpage/restart.webp";
 
 // 더미데이터
@@ -50,8 +50,8 @@ function BookDetail() {
             <img src={NextPage} alt="다음" className="w-[10vw] max-w-[200px]" />
           </button>
         ) : (
-          <button onClick={() => navigate("/bookend")}>
-            <img src={GoFront} alt="넘어가기" className="w-[10vw] max-w-[200px]" />
+          <button onClick={() => navigate("/bookend", { state: { id } })}>
+            <img src={NextPage} alt="넘어가기" className="w-[10vw] max-w-[200px]" />
           </button>
         )}
       </div>
