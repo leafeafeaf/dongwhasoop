@@ -7,6 +7,7 @@ import letterlist from "../assets/images/letterbox/letterlist.webp";
 import readletter from "../assets/images/letterbox/readletter.webp";
 import unreadletter from "../assets/images/letterbox/unreadletter.webp";
 import picture from "../assets/images/letterbox/picture.webp";
+import letterpicture from "../assets/images/letterbox/letterpicture.webp";
 import BackButton from "../components/commons/BackButton";
 import cat from "../assets/images/loading/cat2.webp"
 import monkey from "../assets/images/loading/monkey.webp"
@@ -71,7 +72,7 @@ function LetterList() {
             className="relative cursor-pointer hover:scale-105 transition-transform"
             onClick={() => handleLetterClick(letter.id)}
           >
-            <img src={picture} alt="Polaroid" className="w-[20vw] tablet2560:w-[30rem]" />
+            <img src={letterpicture} alt="Polaroid" className="w-[20vw] tablet2560:w-[30rem]" />
             <div className="
             text-maplestory font-bold absolute
             top-10 text-sm
