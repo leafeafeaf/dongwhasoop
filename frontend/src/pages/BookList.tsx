@@ -39,7 +39,7 @@ function BookList() {
 
       {/* 책 리스트 */}
       <div className="relative flex flex-col justify-center items-center min-h-[70vh] z-10">
-        <div className="grid grid-cols-3 gap-y-[2vh] gap-x-[5vw] lg:gap-x-[8vw] mt-[5vh] tablet2560:mt-[15vh]">
+        <div className="grid grid-cols-3 gap-y-[2vh] gap-x-[5vw] talblet2560:gap-x-[5vw] mt-[4vh] tablet2560:mt-[11vh]">
           {visibleBooks.map((book, index) => (
             <div
               key={index}
@@ -49,9 +49,9 @@ function BookList() {
               <img
                 src={book.cover}
                 alt={book.title}
-                className="w-[15vw] md:w[25vw] max-w-[343px] rounded-xl border-4 border-white shadow-md"
+                className="w-[14vw] talblet2560:w[25vw] max-w-[343px] rounded-xl border-4 border-white shadow-md"
               />
-              <h3 className="mt-2 text-[2.8vh] font-bazzi text-blue text-outline-xs text-center">{book.title}</h3>
+              <h3 className="mt-2 text-[4.5vh] font-bazzi text-[#384EA6] text-outline-xs text-center">{book.title}</h3>
             </div>
           ))}
         </div>
