@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import KaKaoIcon from "../../assets/icons/kakao.webp";
+import KaKaoLogin from "../../assets/images/loginpage/kakologin.webp";
 
 function KakaoLoginButton() {
   const handleKakaoLogin = useCallback(() => {
@@ -12,14 +12,8 @@ function KakaoLoginButton() {
 
   return (
     <div className="absolute bottom-[20vh] w-full flex justify-center">
-      <img src={KaKaoIcon} alt="카카오로고" className="absolute h-[8vh]" />
-      <button
-        className="bg-yellow-300 hover:bg-yellow-400 text-black rounded-[20px] 
-                 text-xl sm:text-2xl font-bold
-                 w-[60vw] max-w-[1200px] h-[8vh] min-h-[56px]"
-        onClick={handleKakaoLogin}
-      >
-        카카오 로그인
+      <button onClick={handleKakaoLogin}>
+        <img src={KaKaoLogin} alt="카카오로그인" className="tablet2560:w-[40vw]" />
       </button>
     </div>
   );
