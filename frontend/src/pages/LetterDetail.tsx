@@ -6,6 +6,7 @@ import send from "../assets/images/letterbox/sendletter.webp";
 import receive from "../assets/images/letterbox/receiveletter.webp";
 import princess from "../assets/images/letterbox/princess.webp";
 import replay from "../assets/images/letterbox/replay.webp";
+import home from "../assets/images/letterbox/home.webp";
 import BackButton from "../components/commons/BackButton";
 
 function LetterDetail() {
@@ -32,16 +33,16 @@ function LetterDetail() {
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
       <BackButton onClick={handleBackButton} />
-      
+
       {/* 상단 탭 버튼 */}
       <div className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 flex gap-[10vh]">
-        <div 
+        <div
           className={`cursor-pointer transition-transform ${activeTab === 'sent' ? 'scale-110 drop-shadow-lg' : 'opacity-80 hover:opacity-100'}`}
           onClick={() => handleTabChange('sent')}
         >
           <img src={receive} alt="Sent" className="w-[40vh]" />
         </div>
-        <div 
+        <div
           className={`cursor-pointer transition-transform ${activeTab === 'received' ? 'scale-110 drop-shadow-lg' : 'opacity-80 hover:opacity-100'}`}
           onClick={() => handleTabChange('received')}
         >
@@ -55,18 +56,18 @@ function LetterDetail() {
         {/* 편지 내용 */}
         <div className="relative w-[50vw] xl:w-[47vw] tablet2560:w-[90vh]">
           <img src={letterpaper} alt="Letter Paper" className="w-full" />
-          
+
           <div className="tablet2560:text-6xl xl:text-2xl xl:mt-5 font-maplestory tablet2560:mt-10 absolute top-[10%] left-[8%] right-[8%] bottom-[10%] flex flex-col">
             {/* 받는 사람 */}
             <div className="tablet2560:mb-16 xl:mb-12">
               {letterData.to}
             </div>
-            
+
             {/* 편지 내용 */}
             <div className="leading-relaxed flex-grow whitespace-pre-line">
               {letterData.content}
             </div>
-            
+
             {/* 날짜와 보낸 사람 */}
             <div className="flex tablet2560:text-6xl xl:text-2xl font-maplestory justify-end items-center gap-8">
               <div>{letterData.date}</div>
@@ -79,10 +80,16 @@ function LetterDetail() {
         </div>
 
         {/* 다시 듣기 버튼 */}
-        <div className="cursor-pointer transition-transform hover:scale-105">
-          <img src={replay} alt="Replay" 
-          className="w-[30vh] h-[30vh]
-   " />
+        <div className="flex flex-col gap-6">
+          <div className="cursor-pointer transition-transform hover:scale-105">
+            <img src={replay} alt="Replay" className="w-[30vh] h-[30vh]" />
+          </div>
+          <div 
+            className="cursor-pointer transition-transform hover:scale-105"
+            onClick={() => navigate('/home')}
+          >
+            <img src={home} alt="Home" className="w-[30vh] h-[30vh]" />
+          </div>
         </div>
       </div>
     </div>
