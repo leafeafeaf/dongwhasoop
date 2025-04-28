@@ -69,4 +69,12 @@ public class Child extends BaseEntity {
         this.name = name;
         this.mascotId = mascotId;
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateMascotId(Integer mascotId) {
+        this.mascotId = mascotId;
+    }
 }

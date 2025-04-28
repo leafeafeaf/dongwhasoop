@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class RegisterNewChildRequest {
+public class UpdateOrRegisterChildRequest {
 
     private String name;
     private Integer mascotId;

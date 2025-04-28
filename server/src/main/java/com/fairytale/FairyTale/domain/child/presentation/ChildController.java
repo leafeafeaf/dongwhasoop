@@ -1,6 +1,6 @@
 package com.fairytale.FairyTale.domain.child.presentation;
 
-import com.fairytale.FairyTale.domain.child.presentation.dto.request.RegisterNewChildRequest;
+import com.fairytale.FairyTale.domain.child.presentation.dto.request.UpdateOrRegisterChildRequest;
 import com.fairytale.FairyTale.domain.child.presentation.dto.response.ChildrenResponse;
 import com.fairytale.FairyTale.domain.child.service.ChildService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,15 @@ public class ChildController {
     }
 
     @PostMapping
-    public void registerNewChild(@RequestBody RegisterNewChildRequest request) {
+    public void registerNewChild(@RequestBody UpdateOrRegisterChildRequest request) {
         childService.registerNewChild(request);
+    }
+
+    @PutMapping("/{childId}")
+    public ChildrenResponse.ChildDto updateChildProfile(
+            @PathVariable Long childId,
+            @RequestBody UpdateOrRegisterChildRequest request
+    ) {
+        return childService.updateChildProfile(childId, request);
     }
 }

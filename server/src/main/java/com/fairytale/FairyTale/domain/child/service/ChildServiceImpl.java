@@ -2,7 +2,9 @@ package com.fairytale.FairyTale.domain.child.service;
 
 import com.fairytale.FairyTale.domain.child.domain.Child;
 import com.fairytale.FairyTale.domain.child.domain.Repository.ChildRepository;
-import com.fairytale.FairyTale.domain.child.presentation.dto.request.RegisterNewChildRequest;
+import com.fairytale.FairyTale.domain.child.exception.ChildEditPermissionException;
+import com.fairytale.FairyTale.domain.child.exception.ChildNotFoundException;
+import com.fairytale.FairyTale.domain.child.presentation.dto.request.UpdateOrRegisterChildRequest;
 import com.fairytale.FairyTale.domain.child.presentation.dto.response.ChildrenResponse;
 import com.fairytale.FairyTale.domain.user.domain.User;
 import com.fairytale.FairyTale.domain.user.domain.repository.UserRepository;
@@ -39,7 +41,7 @@ public class ChildServiceImpl implements ChildService{
 
     @Override
     @Transactional
-    public void registerNewChild(RegisterNewChildRequest request) {
+    public void registerNewChild(UpdateOrRegisterChildRequest request) {
 
         // 1. 사용자 검증
         User currentUser = validateUser();
@@ -51,6 +53,32 @@ public class ChildServiceImpl implements ChildService{
                 .mascotId(request.getMascotId())
                 .build();
         childRepository.save(child);
+
+    }
+
+    @Override
+    @Transactional
+    public ChildrenResponse.ChildDto updateChildProfile(Long childId, UpdateOrRegisterChildRequest request) {
+
+        // 1. 사용자 검증
+        User currentUser = validateUser();
+
+        // 2. 자녀 정보 검증
+        Child child = childRepository.findById(childId).orElseThrow(() -> ChildNotFoundException.EXCEPTION);
+        if (!child.getUser().getId().equals(currentUser.getId())) {
+            throw ChildEditPermissionException.EXCEPTION;
+        }
+
+        // 3. 자녀 정보 수정
+        if (request.getMascotId() != null && !request.getMascotId().equals(child.getMascotId())) {
+            child.updateMascotId(request.getMascotId());
+        }
+
+        if (request.getName() != null && !request.getName().equals(child.getName())) {
+            child.updateName(request.getName());
+        }
+
+        return ChildrenResponse.ChildDto.from(child);
 
     }
 
