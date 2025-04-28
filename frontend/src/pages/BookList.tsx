@@ -38,8 +38,8 @@ function BookList() {
       <BackButton to="/home" />
 
       {/* 책 리스트 */}
-      <div className="flex flex-col justify-center items-center min-h-[70vh]">
-        <div className="grid grid-cols-3 gap-y-[2vh] gap-x-[5vw] lg:gap-x-[8vw] px-[25vw] mt-[25vh] sm:mt-[15vh] md:mt-[15vh] lg:mt-[15vh] xl:mt-[4vh] 2xl:mt-[15vh]">
+      <div className="relative flex flex-col justify-center items-center min-h-[70vh] z-10">
+        <div className="grid grid-cols-3 gap-y-[2vh] gap-x-[5vw] lg:gap-x-[8vw] mt-[5vh] tablet2560:mt-[15vh]">
           {visibleBooks.map((book, index) => (
             <div
               key={index}
@@ -51,14 +51,14 @@ function BookList() {
                 alt={book.title}
                 className="w-[15vw] md:w[25vw] max-w-[343px] rounded-xl border-4 border-white shadow-md"
               />
-              <h3 className="mt-2 text-[2.8vh] font-bazzi text-blue text-outline-sm text-center">{book.title}</h3>
+              <h3 className="mt-2 text-[2.8vh] font-bazzi text-blue text-outline-xs text-center">{book.title}</h3>
             </div>
           ))}
         </div>
       </div>
 
       {/* 뒤로, 앞으로 버튼 */}
-      <div className="absolute bottom-[2vh] w-full flex justify-center gap-[80vw] mb-[40vh]">
+      <div className="absolute bottom-[2vh] w-full flex justify-center gap-[80vw] mb-[40vh] z-0">
         {page > 0 ? (
           <button onClick={handlePrev}>
             <img src={GoBack} alt="이전" className="w-[10vw] max-w-[300px]" />
