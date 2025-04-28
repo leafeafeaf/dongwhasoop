@@ -43,41 +43,46 @@ function KidSettings() {
     >
       <BackButton to="/startsettings" />
 
-      {/* 나무 안내판 */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
-        <img
-          src={TreeBox}
-          alt="나무안내판"
-          className="
+      <div className="">
+        {/* 나무 안내판 */}
+        <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
+          <img
+            src={TreeBox}
+            alt="나무안내판"
+            className="
+            w-[35vw]
         xl:w-[30vw] xl:max-w-[900px] h-auto
         tablet2560:w-[35vw] tablet2560:max-w-[900px]
         "
-        />
+          />
 
-        <div className="absolute flex flex-col items-center mt-[10vh]">
-          <button onClick={() => setShowCharacters(true)}>
-            <img
-              src={getCurrentCharacter()}
-              alt="캐릭터 선택"
-              className="
+          <div className="absolute flex flex-col items-center mt-[10vh]">
+            <button onClick={() => setShowCharacters(true)}>
+              <img
+                src={getCurrentCharacter()}
+                alt="캐릭터 선택"
+                className="
+                w-[20vw] max-w-[600px]  h-auto 
               xl:w-[22vw] xl:max-w-[900px]
               tablet2560:w-[26vw] tablet2560:max-w-[900px]
               "
-            />
-          </button>
-        </div>
+              />
+            </button>
+          </div>
 
-        <div className="absolute xl:mt-[60vh] tablet2560:mt-[35vw]">
-          <input
-            type="text"
-            placeholder="이름을 입력해주세요"
-            className="
+          <div className="absolute xl:mt-[60vh] tablet2560:mt-[35vw] mt-[35vw]">
+            <input
+              type="text"
+              placeholder="이름을 입력해주세요"
+              className="
+              w-[23vw] max-w-[600px] h-[6vw]  
             rounded-full px-8 py-6
             text-center bg-[#fff4d3b8] font-bazzi
             xl:w-[90vw] xl:max-w-[320px] xl:h-[5vw] xl:text-4xl
             tablet2560:w-[90vw] tablet2560:max-w-[550px] tablet2560:text-6xl
             "
-          />
+            />
+          </div>
         </div>
 
         {/* 저장 버튼 */}
@@ -177,8 +182,9 @@ function KidSettings() {
           src={Child}
           alt="아이이미지"
           className="
-        xl:w-[25vw] xl:max-w-[800px]
-        tablet2560:w-[28vw] tablet2560:max-w-[800px]
+          w-[25vw]
+          xl:w-[25vw] xl:max-w-[800px]
+          tablet2560:w-[28vw] tablet2560:max-w-[800px]
         "
         />
       </div>
