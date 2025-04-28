@@ -1,13 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import BackButton from "../components/commons/BackButton";
 import ChildAddEdit from "../assets/images/settingpage/childaddedit.webp";
 import OnQuestion from "../assets/images/settingpage/onquestion.webp";
+import OffQuestion from "../assets/images/settingpage/offquestion.webp";
 import VoiceRec from "../assets/images/settingpage/voicerec.webp";
 
 function Settings() {
   const navigate = useNavigate();
+  const [isQuestionOn, setIsQuestionOn] = useState(true);
+
+  const handleQuestionToggle = () => {
+    setIsQuestionOn(!isQuestionOn);
+  };
 
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
@@ -31,8 +38,12 @@ function Settings() {
 
         {/* 질문켜기 */}
         <div className="mb-[5vh]">
-          <button>
-            <img src={OnQuestion} alt="질문켜기" className="w-[25vw] max-w-[700px] min-w-[100px]" />
+          <button onClick={handleQuestionToggle}>
+            <img 
+              src={isQuestionOn ? OffQuestion : OnQuestion} 
+              alt={isQuestionOn ? "질문끄기" : "질문켜기"} 
+              className="w-[25vw] max-w-[700px] min-w-[100px]" 
+            />
           </button>
         </div>
       </div>

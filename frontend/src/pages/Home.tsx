@@ -4,6 +4,7 @@ import HomeBackground from "../assets/images/mainpage/homebackground.webp";
 import BackButton from "../components/commons/BackButton";
 import Book from "../assets/images/mainpage/book.webp";
 import MailBox from "../assets/images/mainpage/mailbox.webp";
+import Selectprofile from "../assets/images/mainpage/selectprofile.webp";
 // import MusicOff from "../assets/images/mainpage/musicoff.webp";
 // import MusicOn from "../assets/images/mainpage/musicon.webp";
 
@@ -15,8 +16,13 @@ function Home() {
       className="fixed inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${HomeBackground})` }}
     >
-      {/* 뒤로가기 */}
-      <BackButton to="/profile" className="top-4 left-4 sm:top-6 sm:left-6" />
+      {/* 프로필 선택 */}
+      <button 
+        onClick={() => navigate("/profile")} 
+        className="absolute top-7 left-7"
+      >
+        <img src={Selectprofile} alt="프로필 선택" className="w-[15vw] max-w-[2000px] min-w-[80px]" />
+      </button>
 
       {/* 중앙 이미지 버튼들 */}
       <div className="flex justify-center items-center h-full gap-[9vw] mt-[15vh]">
