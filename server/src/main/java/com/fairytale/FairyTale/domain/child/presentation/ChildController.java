@@ -30,4 +30,9 @@ public class ChildController {
     ) {
         return childService.updateChildProfile(childId, request);
     }
+
+    @DeleteMapping("/{childId}")
+    public void deleteChild(@PathVariable Long childId) {
+        childService.deleteChild(childId);
+    }
 }

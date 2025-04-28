@@ -10,4 +10,6 @@ public interface ChildService {
     void registerNewChild(UpdateOrRegisterChildRequest request);
 
     ChildrenResponse.ChildDto updateChildProfile(Long childId, UpdateOrRegisterChildRequest request);
+
+    void deleteChild(Long childId);
 }

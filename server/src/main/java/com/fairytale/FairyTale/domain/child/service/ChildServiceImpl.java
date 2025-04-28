@@ -82,6 +82,24 @@ public class ChildServiceImpl implements ChildService{
 
     }
 
+    @Override
+    @Transactional
+    public void deleteChild(Long childId) {
+
+        // 1. 사용자 검증
+        User currentUser = validateUser();
+
+        // 2. 자녀 정보  검증
+        Child child = childRepository.findById(childId).orElseThrow(() -> ChildNotFoundException.EXCEPTION);
+        if (!child.getUser().getId().equals(currentUser.getId())) {
+            throw ChildEditPermissionException.EXCEPTION;
+        }
+
+        // 3. 자녀 삭제
+        childRepository.delete(child);
+
+    }
+
     private User validateUser() {
         User currentUser = userUtils.getUserFromSecurityContext();
         Long userId = currentUser.getId();
