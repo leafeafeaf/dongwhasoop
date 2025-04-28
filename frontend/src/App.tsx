@@ -24,6 +24,7 @@ import SendLetter from "./pages/SendLetter";
 import RecSuccess from "./pages/RecSuccess";
 import KidSettings from "./pages/KidSettings";
 import EditProfile from "./pages/EditProfile";
+import KakaoCallback from "./pages/KakaoCallBack";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
       <Route path="/recsuccess" element={<RecSuccess></RecSuccess>}></Route>
       <Route path="/kidsettings" element={<KidSettings></KidSettings>}></Route>
       <Route path="/editprofile" element={<EditProfile></EditProfile>}></Route>
+      <Route path="/auth" element={<KakaoCallback></KakaoCallback>}></Route>
     </Routes>
   );
 }
