@@ -61,7 +61,7 @@ function Profile() {
         <h1 className="pt-[14vh] text-[9vh] sm:text-[11vh] xl:text-[10vh] text-outline-sm text-center">
           어떤 친구가 오늘의 주인공이 될까요?
         </h1>
-        <div className="flex justify-center items-center gap-10 sm:gap-20 xl:gap-40 mt-6 sm:mt-12 xl:mt-40">
+        <div className="flex justify-center items-center gap-10 sm:gap-20 xl:gap-40 mt-6 sm:mt-12 xl:mt-20 tablet2560:mt-40">
           <button onClick={() => navigate("/home")} className="hover:scale-110 transition-transform">
             <img src={cat} alt="정해인" className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#90EE90]" />
             <p className="mt-4 text-[5vh] sm:text-[7vh] xl:text-[8vh] text-outline-sm">정해인</p>
@@ -102,13 +102,13 @@ function Profile() {
                 <p className="bg-[#FBE4B9] rounded-3xl p-[2vh] text-[5vh] font-maplestory">{num1} × {num2}</p>
                 <div className="flex items-center">
                   <div className="flex gap-[2vh]">
-                    <div className="relative w-[7vh]">
+                    <div className="relative w-[6vh]">
                       <div className="font-maplestory text-[3vh] text-center absolute bottom-0 w-full">
                         {answer[0] || '\u00A0'}
                       </div>
                       <div className="border-b-4 border-[#FBE4B9] h-[2vh]" />
                     </div>
-                    <div className="relative w-[7vh]">
+                    <div className="relative w-[6vh]">
                       <div className="font-maplestory text-[3vh] text-center absolute bottom-0 w-full">
                         {answer[1] || '\u00A0'}
                       </div>
