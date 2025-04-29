@@ -4,8 +4,8 @@ import { useState } from "react";
 import BackButton from "../components/commons/BackButton";
 import NextPage from "../assets/images/detailpage/nextpage.webp";
 import PrevPage from "../assets/images/detailpage/prevpage.webp";
-// import GoFront from "../assets/images/BookList/gofront.webp";
 import RestartBook from "../assets/images/detailpage/restart.webp";
+import ExitBookDetailModal from "../modal/ExitBookDetailModal";
 
 // 더미데이터
 import shimcheongDetail from "../data/bookDetailDummy";
@@ -17,6 +17,19 @@ function BookDetail() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const currentContent = book.pages[currentPage];
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  const handleBackClick = () => {
+    setShowExitModal(true);
+  };
+
+  const handleExitConfirm = () => {
+    navigate(`/intro/${id}`, { replace: true });
+  };
+
+  const handleExitCancel = () => {
+    setShowExitModal(false);
+  };
 
   return (
     <div
@@ -24,7 +37,16 @@ function BookDetail() {
       style={{ backgroundImage: `url(${currentContent.image})` }}
     >
       {/* 뒤로가기 버튼 */}
-      <BackButton to={`/intro/${id}`} />
+      <div>
+        <button onClick={handleBackClick}>
+          <BackButton to="" />
+        </button>
+      </div>
+
+      {/* 나가기 모달 */}
+      {showExitModal && (
+        <ExitBookDetailModal onCancel={handleExitCancel} onConfirm={handleExitConfirm}></ExitBookDetailModal>
+      )}
 
       {/* 텍스트 영역 */}
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-[8vh] px-[5vw]">
