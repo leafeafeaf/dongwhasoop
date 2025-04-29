@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+// 백엔드 연결 코드
+// import { createChildProfile } from "../api/children";
+
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import BackButton from "../components/commons/BackButton";
 import Child from "../assets/images/settingpage/child.webp";
@@ -17,6 +20,7 @@ function KidSettings() {
   const navigate = useNavigate();
   const [showCharacters, setShowCharacters] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState("");
+  const [childName, setChildName] = useState("");
 
   // 현재 선택된 캐릭터의 이미지를 반환하는 함수
   const getCurrentCharacter = () => {
@@ -35,6 +39,53 @@ function KidSettings() {
         return choiceCharacter;
     }
   };
+
+  // 저장 버튼 누르면?
+  const handleSave = () => {
+    if (!childName || !selectedCharacter) {
+      alert("이름과 캐릭터를 골라주세요.");
+      return;
+    }
+
+    const childProfile = {
+      name: childName,
+      mascot: selectedCharacter,
+    };
+
+    localStorage.setItem("childProfile", JSON.stringify(childProfile));
+    localStorage.setItem("childRegistered", "true");
+
+    navigate("/startsettings");
+  };
+
+  // 백엔드 연결용
+  // const mascotIdMap: Record<string, number> = {
+  //   cat: 1,
+  //   dog: 2,
+  //   bear: 3,
+  //   chik: 4,
+  //   panda: 5,
+  // };
+  // const handleSave = async () => {
+  //   if (!childName || !selectedCharacter) {
+  //     alert("이름과 캐릭터를 골라주세요.");
+  //     return;
+  //   }
+
+  //   try {
+  //     await createChildProfile({
+  //       name: childName,
+  //       mascotId: mascotIdMap[selectedCharacter],
+  //     });
+
+  //
+  //     localStorage.setItem("childRegistered", "true");
+  //     navigate("/startsettings");
+  //   } catch (error) {
+  //     console.error("자녀 등록 실패:", error);
+  //     alert("자녀 등록에 실패했습니다. 다시 시도해주세요.");
+  //   }
+  // };
 
   return (
     <div
@@ -56,6 +107,7 @@ function KidSettings() {
         "
           />
 
+          {/* 캐릭터 선택 */}
           <div className="absolute flex flex-col items-center mt-[10vh]">
             <button onClick={() => setShowCharacters(true)}>
               <img
@@ -70,10 +122,13 @@ function KidSettings() {
             </button>
           </div>
 
+          {/* 이름 입력 */}
           <div className="absolute xl:mt-[60vh] tablet2560:mt-[35vw] mt-[35vw]">
             <input
               type="text"
               placeholder="이름을 입력해주세요"
+              value={childName}
+              onChange={(e) => setChildName(e.target.value)}
               className="
               w-[23vw] max-w-[600px] h-[6vw]  
             rounded-full px-8 py-6
@@ -87,90 +142,36 @@ function KidSettings() {
 
         {/* 저장 버튼 */}
         <div className="absolute ml-[70vw] mt-[30vh]">
-          <button onClick={() => navigate("/startsettings")}>
-            <img
-              src={CheckBox}
-              alt="저장하기"
-              className="w-[20vw] max-w-[600px]"
-            />
+          <button onClick={handleSave}>
+            <img src={CheckBox} alt="저장하기" className="w-[20vw] max-w-[600px]" />
           </button>
         </div>
       </div>
-      {/* Character Selection Modal */}
+
+      {/* 캐릭터 선택 모달 */}
       {showCharacters && (
         <div className="fixed inset-0 bg-gray-800/50 flex items-center justify-center z-[999]">
           <div className="w-[80vw] h-[80vh] p-8 flex flex-col items-center justify-center rounded-3xl">
-            <div className="text-center mb-8">
-              <h2 className="text-[10vh] text-outline-sm font-bazzi pb-8">
-                캐릭터를 선택해주세요
-              </h2>
-            </div>
+            <h2 className="text-[10vh] text-outline-sm font-bazzi pb-8">캐릭터를 선택해주세요</h2>
             <div className="grid grid-cols-3 gap-20 place-items-center">
-              <button
-                onClick={() => {
-                  setSelectedCharacter("cat");
-                  setShowCharacters(false);
-                }}
-                className="hover:scale-110 transition-transform"
-              >
-                <img
-                  src={cat}
-                  alt="cat"
-                  className="w-[20vh] h-[20vh] rounded-full bg-[#90EE90]"
-                />
-              </button>
-              <button
-                onClick={() => {
-                  setSelectedCharacter("dog");
-                  setShowCharacters(false);
-                }}
-                className="hover:scale-110 transition-transform"
-              >
-                <img
-                  src={dog}
-                  alt="dog"
-                  className="w-[20vh] h-[20vh] rounded-full bg-[#87CEEB]"
-                />
-              </button>
-              <button
-                onClick={() => {
-                  setSelectedCharacter("bear");
-                  setShowCharacters(false);
-                }}
-                className="hover:scale-110 transition-transform"
-              >
-                <img
-                  src={bear}
-                  alt="bear"
-                  className="w-[20vh] h-[20vh] rounded-full bg-[#FFFF00]"
-                />
-              </button>
-              <button
-                onClick={() => {
-                  setSelectedCharacter("chik");
-                  setShowCharacters(false);
-                }}
-                className="hover:scale-110 transition-transform"
-              >
-                <img
-                  src={chik}
-                  alt="chik"
-                  className="w-[20vh] h-[20vh] rounded-full bg-[#FFB6C1]"
-                />
-              </button>
-              <button
-                onClick={() => {
-                  setSelectedCharacter("panda");
-                  setShowCharacters(false);
-                }}
-                className="hover:scale-110 transition-transform"
-              >
-                <img
-                  src={panda}
-                  alt="panda"
-                  className="w-[20vh] h-[20vh] rounded-full bg-[#FFC0CB]"
-                />
-              </button>
+              {[
+                { id: "cat", img: cat },
+                { id: "dog", img: dog },
+                { id: "bear", img: bear },
+                { id: "chik", img: chik },
+                { id: "panda", img: panda },
+              ].map(({ id, img }) => (
+                <button
+                  key={id}
+                  onClick={() => {
+                    setSelectedCharacter(id);
+                    setShowCharacters(false);
+                  }}
+                  className="hover:scale-110 transition-transform"
+                >
+                  <img src={img} alt={id} className="w-[20vh] h-[20vh] rounded-full" />
+                </button>
+              ))}
             </div>
           </div>
         </div>
