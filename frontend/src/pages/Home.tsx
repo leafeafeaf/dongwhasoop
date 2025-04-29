@@ -1,31 +1,45 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";  // useState import 추가
 
 import HomeBackground from "../assets/images/mainpage/homebackground.webp";
-import BackButton from "../components/commons/BackButton";
 import Book from "../assets/images/mainpage/book.webp";
 import MailBox from "../assets/images/mainpage/mailbox.webp";
 import Selectprofile from "../assets/images/mainpage/selectprofile.webp";
-// import MusicOff from "../assets/images/mainpage/musicoff.webp";
-// import MusicOn from "../assets/images/mainpage/musicon.webp";
+import MusicOff from "../assets/images/mainpage/musicoff.webp";
+import MusicOn from "../assets/images/mainpage/musicon.webp";
+import Bear from "../assets/images/settingpage/bear.webp";
 
 function Home() {
   const navigate = useNavigate();
+  const [isMusicOn, setIsMusicOn] = useState(false);  // 음악 상태 관리
 
   return (
     <div
       className="fixed inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${HomeBackground})` }}
     >
+
+      {/* 프로필 */}
       {/* 프로필 선택 */}
-      <button 
-        onClick={() => navigate("/profile")} 
+      {/* <button
+        onClick={() => navigate("/profile")}
         className="absolute top-7 left-7"
       >
         <img src={Selectprofile} alt="프로필 선택" className="w-[15vw] max-w-[2000px] min-w-[80px]" />
-      </button>
+      </button> */}
+
+
+      <div className="absolute top-[5vh] left-[5vh] flex flex-col items-center">
+        <button onClick={() => navigate("/profile")}>
+          <img src={Bear} alt="프로필" className="w-[12vw] max-w-[2000px] min-w-[60px]" />
+        </button>
+        <p className="text-[7vh] font-bazzi text-outline-sm">정효원</p>
+      </div>
+
+
 
       {/* 중앙 이미지 버튼들 */}
-      <div className="flex justify-center items-center h-full gap-[9vw] mt-[15vh]">
+      <div className="flex justify-center items-center h-full gap-[7vw] mt-[15vh]">
         {/* 동화 문구, 이미지 */}
         <div className="mb-[20vh]">
           {/* 동화 */}
@@ -44,9 +58,22 @@ function Home() {
 
           {/* 우편함 이미지 */}
           <button onClick={() => navigate("/letterlist")}>
-            <img src={MailBox} alt="우편함" className="w-[30vw] max-w-[1200px] min-w-[100px]" />
+            <img src={MailBox} alt="우편함" className="w-[28vw] max-w-[1200px] min-w-[100px]" />
           </button>
         </div>
+
+        {/* 음악 토글 버튼 */}
+        <button
+          onClick={() => setIsMusicOn(!isMusicOn)}
+          className="fixed bottom-[5vh] right-[5vh]"
+        >
+          <img
+            src={isMusicOn ? MusicOn : MusicOff}
+            alt="음악 설정"
+            className="w-[16vw] max-w-[1000px] min-w-[70px]"
+          />
+        </button>
+
       </div>
     </div>
   );
