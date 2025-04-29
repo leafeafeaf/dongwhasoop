@@ -25,6 +25,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "사용자를 찾을 수 없습니다."),
     AlREADY_REGISTER(404, "이미 등록된 회원입니다."),
     CHILD_NOT_FOUND(404, "존재하지 않는 자녀입니다."),
+    BOOK_NOT_FOUND(404, "존재하지 않는 책입니다"),
 
 
     /* 500 */
