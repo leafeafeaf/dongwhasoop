@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ScaleLoader } from "react-spinners";
 
 import booklistbackground from "../assets/images/booklist/booklistbackground.webp";
 import BackButton from "../components/commons/BackButton";
@@ -28,7 +29,10 @@ function BookList() {
     if (page < totalPages - 1) setPage(page + 1);
   };
 
-  const visibleBooks = bookDummy.slice(page * booksPerPage, (page + 1) * booksPerPage);
+  const visibleBooks = bookDummy.slice(
+    page * booksPerPage,
+    (page + 1) * booksPerPage
+  );
 
   return (
     <div
@@ -51,7 +55,21 @@ function BookList() {
                 alt={book.title}
                 className="w-[14vw] talblet2560:w[25vw] max-w-[343px] rounded-xl border-4 border-white shadow-md"
               />
-              <h3 className="mt-2 text-[4.5vh] font-bazzi text-[#384EA6] text-outline-xs text-center">{book.title}</h3>
+
+              {/* <div className="relative">
+                <img
+                  src={book.cover}
+                  alt={book.title}
+                  className="w-[14vw] talblet2560:w[25vw] max-w-[343px] rounded-xl border-4 border-white shadow-md filter blur"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <ScaleLoader color="#FFFFFF" radius={5} width={10} height={80} margin={5}/>
+                </div>
+              </div> */}
+
+              <h3 className="mt-2 text-[4.5vh] font-bazzi text-[#384EA6] text-outline-xs text-center">
+                {book.title}
+              </h3>
             </div>
           ))}
         </div>
@@ -59,14 +77,20 @@ function BookList() {
 
       {/* 이전 버튼 */}
       {page > 0 && (
-        <button onClick={handlePrev} className="absolute top-1/2 left-[5vw] -translate-y-1/2 z-20">
+        <button
+          onClick={handlePrev}
+          className="absolute top-1/2 left-[5vw] -translate-y-1/2 z-20"
+        >
           <img src={GoBack} alt="이전" className="w-[10vw] max-w-[300px]" />
         </button>
       )}
 
       {/* 다음 버튼 */}
       {page < totalPages - 1 && (
-        <button onClick={handleNext} className="absolute top-1/2 right-[5vw] -translate-y-1/2 z-20">
+        <button
+          onClick={handleNext}
+          className="absolute top-1/2 right-[5vw] -translate-y-1/2 z-20"
+        >
           <img src={GoFront} alt="다음" className="w-[10vw] max-w-[300px]" />
         </button>
       )}

@@ -2,23 +2,28 @@ import { useNavigate } from "react-router-dom";
 import BackIcon from "../../assets/buttons/backicon.webp";
 
 interface BackButtonProps {
-  to?: string | number; // 혹은 NavigateOptions 타입도 OK
-  className?: string;
+  to?: string;
+  onClick?: () => void;
 }
 
-function BackButton({ to, className = "" }: BackButtonProps) {
+function BackButton({ to, onClick }: BackButtonProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (typeof to === "string" || typeof to === "number") {
+    if (onClick) {
+      onClick();
+    } else if (to) {
       navigate(to);
     } else {
-      navigate(-1); // 기본 뒤로가기
+      navigate(-1);
     }
   };
 
   return (
-    <button onClick={handleClick} className={`absolute z-[10] mt-[5vh] left-[3vw] ${className}`}>
+    <button 
+      className="absolute z-10 top-[5vh] left-[5vh]" 
+      onClick={handleClick}
+    >
       <img src={BackIcon} alt="뒤로가기" className="w-[17vh] h-[20vh]" />
     </button>
   );

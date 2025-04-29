@@ -7,6 +7,7 @@ import Intro from "./pages/Intro";
 import IntroBook from "./pages/IntroBook";
 import IntroSong from "./pages/IntroSong";
 import BookList from "./pages/BookList";
+import BookLoading from "./pages/BookLoading";
 import Home from "./pages/Home";
 import Loading from "./pages/Loading";
 import LetterDetail from "./pages/LetterDetail";
@@ -50,6 +51,7 @@ function App() {
       <Route path="/introbook/:id" element={<IntroBook></IntroBook>}></Route>
       <Route path="/introsong/:id" element={<IntroSong></IntroSong>}></Route>
       <Route path="/booklist" element={<BookList></BookList>}></Route>
+      <Route path="/bookloading" element={<BookLoading></BookLoading>}></Route>
       <Route path="/home" element={<Home></Home>}></Route>
       <Route path="/loading" element={<Loading></Loading>}></Route>
       <Route path="/letterdetail" element={<LetterDetail></LetterDetail>}></Route>
