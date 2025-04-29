@@ -8,6 +8,7 @@ import RecAlert from "../assets/images/settingpage/recalert.webp";
 // 1. 녹음 완료 -> 녹음 완료 피드백, startsettings 으로 네비
 // 2. 아이 등록 완료 -> 피드백, startsettings 으로 네비
 // 3. 모든 정보 등록 완료 -> 피드백, home으로 네비비
+// 4. 중요!!! startsettings가 끝나면 더 이상 사용 안함, 그러니 false로 바꾸고 이제 settings페이지로 가게 수정!!!
 
 function RecSuccess() {
   const navigate = useNavigate();

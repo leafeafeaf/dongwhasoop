@@ -16,7 +16,7 @@ function VoiceRec() {
       className="fixed inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${mainpage})` }}
     >
-      <BackButton to="/voiceselect" />
+      <BackButton/>
 
       <div className="xl:pt-[1vw] tablet2560:pt-[4vw]">
         {/* Title */}

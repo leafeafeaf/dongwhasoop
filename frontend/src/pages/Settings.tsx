@@ -24,14 +24,14 @@ function Settings() {
       <div className="relative z-[10] flex justify-center items-center gap-[0vw] mt-[25vh]">
         {/* 녹음 버튼 */}
         <div className="mb-[5vh]">
-          <button onClick={() => navigate("/voicerec")}>
+          <button onClick={() => navigate("/recinfo")}>
             <img src={VoiceRec} alt="녹음하기" className="w-[25vw] max-w-[700px] min-w-[100px]" />
           </button>
         </div>
 
         {/* 자녀관리 버튼 */}
         <div className="mb-[5vh]">
-          <button onClick={() => navigate("/editprofile")}>
+          <button onClick={() => navigate("/kidsettings")}>
             <img src={ChildAddEdit} alt="자녀추가등록" className="w-[25vw] max-w-[700px] min-w-[100px]" />
           </button>
         </div>
