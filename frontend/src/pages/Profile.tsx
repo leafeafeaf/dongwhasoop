@@ -54,7 +54,7 @@ function Profile() {
         onClick={() => setShowSettings(true)}
         className="absolute top-7 right-7 z-10"
       >
-        <img src={settingsbtn} alt="설정" className="w-[9vw] max-w-[500px] min-w-[50px]" />
+        <img src={settingsbtn} alt="설정" className="w-[9vw] max-w-[500px] min-w-[50px] m-[3vh]" />
       </button>
 
       <div className="flex flex-col pt-16">
