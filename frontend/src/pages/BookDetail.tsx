@@ -24,7 +24,7 @@ function BookDetail() {
       style={{ backgroundImage: `url(${currentContent.image})` }}
     >
       {/* 뒤로가기 버튼 */}
-      <BackButton to={`/introbook/${id}`} />
+      <BackButton to={`/intro/${id}`} />
 
       {/* 텍스트 영역 */}
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-[8vh] px-[5vw]">
