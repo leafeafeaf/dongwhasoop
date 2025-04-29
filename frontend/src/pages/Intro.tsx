@@ -44,11 +44,11 @@ function Intro() {
         {/* 동요, 동화 버튼 */}
         <div className="flex flex-col gap-[4vh] mt-[4vh] lg:mb-[15vh]">
           <button onClick={() => navigate(`/introsong/${id}`)}>
-            <img src={Song} alt="동요" className="w-[45vw] sm:w-[35vw] lg:w-[18vw] max-w-[400px]" />
+            <img src={Song} alt="동요" className="w-[25vw] " />
           </button>
 
           <button onClick={() => navigate(`/introbook/${id}`)}>
-            <img src={Fairytale} alt="동화" className="w-[45vw] sm:w-[35vw] lg:w-[18vw] max-w-[400px]" />
+            <img src={Fairytale} alt="동화" className="w-[25vw]" />
           </button>
         </div>
       </div>

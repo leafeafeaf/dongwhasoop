@@ -41,7 +41,7 @@ function KidSettings() {
       className="relative inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${mainpage})` }}
     >
-      <BackButton to="/startsettings" />
+      <BackButton />
 
       <div className="">
         {/* 나무 안내판 */}
