@@ -21,19 +21,19 @@ function BookDetail() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const currentContent = book.pages[currentPage];
-  const [showExitModal, setShowExitModal] = useState(false);
+  // const [showExitModal, setShowExitModal] = useState(false);
 
-  const handleBackClick = () => {
-    setShowExitModal(true);
-  };
+  // const handleBackClick = () => {
+  //   setShowExitModal(true);
+  // };
 
-  const handleExitConfirm = () => {
-    navigate(`/intro/${id}`, { replace: true });
-  };
+  // const handleExitConfirm = () => {
+  //   navigate(`/intro/${id}`, { replace: true });
+  // };
 
-  const handleExitCancel = () => {
-    setShowExitModal(false);
-  };
+  // const handleExitCancel = () => {
+  //   setShowExitModal(false);
+  // };
 
   return (
     <div
