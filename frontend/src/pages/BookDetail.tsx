@@ -21,26 +21,9 @@ function BookDetail() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const currentContent = book.pages[currentPage];
-  const [showExitModal, setShowExitModal] = useState(false);
-
-  const handleBackClick = () => {
-    setShowExitModal(true);
-  };
-
-  const handleExitConfirm = () => {
-    navigate(`/intro/${id}`, { replace: true });
-  };
-
-  const handleExitCancel = () => {
-    setShowExitModal(false);
-  };
 
   return (
-    <div
-      className="fixed inset-0 w-screen h-screen bg-cover bg-center text-white"
-      style={{ backgroundImage: `url(${currentContent.image})` }}
-    >
-      {/* 뒤로가기 버튼 */}
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden">
       <BackButton onClick={handleBackClick} />
 
       <Modal
@@ -50,9 +33,23 @@ function BookDetail() {
         type="back"
       />
 
-      {/* 텍스트 영역 */}
+      {/* Background Images Container */}
+      <div 
+        className="absolute inset-0 flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentPage * 100}%)` }}
+      >
+        {book.pages.map((page, index) => (
+          <div
+            key={index}
+            className="min-w-full h-full bg-cover bg-center flex-shrink-0"
+            style={{ backgroundImage: `url(${page.image})` }}
+          />
+        ))}
+      </div>
+
+      {/* Current Page Text */}
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-[8vh] px-[5vw]">
-        <p className="text-[5vh] font-bazzi text-center bg-black/50 p-4 rounded-xl shadow-md max-w-[90vw]">
+        <p className="text-[5vh] font-bazzi text-center bg-black/50 p-4 rounded-xl shadow-md max-w-[90vw] text-white">
           {currentContent.text}
         </p>
       </div>
