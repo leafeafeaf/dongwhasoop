@@ -27,10 +27,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public SongResponse getSong(Long bookId) {
-
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> NotFoundBookException.EXCEPTION);
-
-        return SongResponse.from(book);
+        return SongResponse.from(bookRepository.findById(bookId)
+                .orElseThrow(() -> NotFoundBookException.EXCEPTION));
     }
 }
