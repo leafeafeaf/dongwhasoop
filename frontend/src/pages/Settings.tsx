@@ -31,7 +31,7 @@ function Settings() {
 
         {/* 자녀관리 버튼 */}
         <div className="mb-[5vh]">
-          <button onClick={() => navigate("/kidsettings")}>
+          <button onClick={() => navigate("/editprofile")}>
             <img src={ChildAddEdit} alt="자녀추가등록" className="w-[25vw] max-w-[700px] min-w-[100px]" />
           </button>
         </div>
@@ -39,10 +39,10 @@ function Settings() {
         {/* 질문켜기 */}
         <div className="mb-[5vh]">
           <button onClick={handleQuestionToggle}>
-            <img 
-              src={isQuestionOn ? OffQuestion : OnQuestion} 
-              alt={isQuestionOn ? "질문끄기" : "질문켜기"} 
-              className="w-[25vw] max-w-[700px] min-w-[100px]" 
+            <img
+              src={isQuestionOn ? OffQuestion : OnQuestion}
+              alt={isQuestionOn ? "질문끄기" : "질문켜기"}
+              className="w-[25vw] max-w-[700px] min-w-[100px]"
             />
           </button>
         </div>
