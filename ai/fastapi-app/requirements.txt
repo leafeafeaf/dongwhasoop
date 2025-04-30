@@ -8,3 +8,5 @@ greenlet==3.2.1
 sqlalchemy==2.0.40
 cryptography==44.0.2
 openai==1.76.2
+boto3==1.38.5
+python-multipart==0.0.20

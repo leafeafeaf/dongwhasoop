@@ -1,7 +1,10 @@
 # 가상 환경 생성 python -m venv .venv
 # 가상 환경 활성화 .venv\Scripts\activate.bat
 # 서버 실행 uvicorn main:app --reload
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import StreamingResponse
+import io
+
 from contextlib import asynccontextmanager
 import asyncio
 
@@ -11,6 +14,7 @@ from kafka.producer import start_producer, stop_producer, send_message, producer
 from kafka.consumer import consume_messages
 from config import KAFKA_TOPIC
 from services.letters_service import generate_letter
+from services.s3_utils import upload_file_to_s3, load_file_from_s3
 
 consumer_task: asyncio.Task # 백그라운드 태스크 (지속적으로 카프카로부터 메시지를 읽어옴)
 
@@ -67,3 +71,20 @@ async def generate_letter_api(letter_id: int):
         return {"status": "success", "content": result}
     except ValueError as e:
         return {"status": "error", "message": str(e)}
+
+#S3 테스트
+@app.post("/upload")
+async def upload(file: UploadFile = File(...)):
+    file_url = upload_file_to_s3(
+        file_obj=file.file,
+        filename=file.filename,
+        content_type=file.content_type
+    )
+    return {"file_url": file_url}
+
+
+@app.get("/play-audio/{filename}")
+def play_audio(filename: str):
+    audio_bytes = load_file_from_s3(filename)
+    audio_stream = io.BytesIO(audio_bytes)
+    return StreamingResponse(audio_stream, media_type="audio/wav")
