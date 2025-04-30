@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+
+    environment {
+        CONTAINER_NAME = 'backend'
+        DOCKER_IMAGE = 'backend-image:latest'
+    }
+
+    stages {
+
+
+        stage('Secrets Setup') {
+            steps {
+                withCredentials([
+                     file(credentialsId: 'env-file', variable: 'EnvFile'),
+                ]) {
+                    sh '''
+                        cp "$EnvFile" .env
+                        chmod 644 .env
+                    '''
+                }
+            }
+        }
+
+        stage('Build Backend') {
+            steps {
+                //백엔드 빌드
+                sh '''
+                    cd ./server
+
+                    chmod +x ./gradlew
+
+                    # gradle 빌드 시 테스트 스킵 (-x test)
+                    # 데몬 비활성화 (--no-daemon)
+                    ./gradlew clean build -x test --no-daemon
+                '''
+            }
+        }
+
+            stage('Docker Build & Deploy') {
+                steps {
+                sh '''
+                    # Docker 이미지 빌드
+                    docker build -t backend-image:latest ./server
+
+                    # 기존 컨테이너 중지 및 삭제
+                    docker stop backend || true
+                    docker rm backend || true
+
+                    # 새 컨테이너 실행
+                    docker run -d \
+                        --name backend \
+                        --env-file .env \
+                        -p 8080:8080 \
+                        backend-image:latest
+                '''
+            }
+        }
+    }
+}
