@@ -7,8 +7,7 @@ import RecAlert from "../assets/images/settingpage/recalert.webp";
 
 function RecInfo() {
   const navigate = useNavigate();
-  const stext = "text-[6vh] font-bazzi text-center text-outline-xs"  // removed absolute
-
+  const stext = "text-[6vh] font-bazzi text-center text-outline-xs";
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
       <BackButton to="/startsettings" />
@@ -20,7 +19,10 @@ function RecInfo() {
           <h1 className="text-[8vh] font-bazzi text-center text-outline-ss mb-4">녹음 주의사항</h1>
           <h1 className={stext}>1. 녹음은 약 5분의 시간이 필요합니다.</h1>
           <h1 className={stext}>2. 조용한 장소에서 녹음해주세요.</h1>
-          <h1 className={stext}>3. 풍부한 감정과 표현으로 녹음하면<br/>더 생생한 동화 읽기가 가능합니다.</h1>
+          <h1 className={stext}>
+            3. 풍부한 감정과 표현으로 녹음하면
+            <br />더 생생한 동화 읽기가 가능합니다.
+          </h1>
         </div>
       </div>
 

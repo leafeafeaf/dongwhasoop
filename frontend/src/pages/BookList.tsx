@@ -39,7 +39,7 @@ function BookList() {
       className="fixed inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${booklistbackground})` }}
     >
-      <BackButton to="/home" />
+      <BackButton to="/home" className="absolute z-[20]" />
 
       {/* 책 리스트 */}
       <div className="relative flex flex-col justify-center items-center min-h-[70vh] z-10">

@@ -4,7 +4,6 @@ import { useState } from "react";
 import BackButton from "../components/commons/BackButton";
 import NextPage from "../assets/images/detailpage/nextpage.webp";
 import PrevPage from "../assets/images/detailpage/prevpage.webp";
-// import GoFront from "../assets/images/BookList/gofront.webp";
 import RestartBook from "../assets/images/detailpage/restart.webp";
 import Modal from "../components/commons/Modal";
 
@@ -22,6 +21,19 @@ function BookDetail() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const currentContent = book.pages[currentPage];
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  const handleBackClick = () => {
+    setShowExitModal(true);
+  };
+
+  const handleExitConfirm = () => {
+    navigate(`/intro/${id}`, { replace: true });
+  };
+
+  const handleExitCancel = () => {
+    setShowExitModal(false);
+  };
 
   return (
     <div

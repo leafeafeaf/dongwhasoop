@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { CheckIsRegistered, login } from "../api/authApi";
+import { LoginApiResponse } from "../types/auth";
 
 function KakaoCallback() {
   const navigate = useNavigate();
@@ -14,24 +15,28 @@ function KakaoCallback() {
 
   const handleKakaoLogin = async (code: string) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/credentials/oauth/kakao`, {
-        code,
-      });
+      // 회원인지 아닌지 확인
+      const { isRegistered, idToken } = await CheckIsRegistered(code);
 
-      const { accessToken } = response.data.data;
-      if (accessToken) {
-        localStorage.setItem("accessToken", accessToken);
+      if (isRegistered) {
+        // 기존 회원이면 프로필 페이지로
+        const loginData: LoginApiResponse["data"] = await login(idToken);
+        localStorage.setItem("accessToken", loginData.accessToken);
+        localStorage.setItem("refreshToken", loginData.refreshToken);
         navigate("/profile");
       } else {
-        console.error("accessToken 없음");
-        navigate("/");
+        // 신규회원이면 초기 세팅으로
+        navigate("/startsettings", {
+          state: {
+            idToken,
+          },
+        });
       }
     } catch (error) {
-      console.error("로그인 실패:", error);
+      console.error("소셜 로그인 실패:", error);
       navigate("/");
     }
   };
-
   return <div>로그인 중입니다...</div>;
 }
 
