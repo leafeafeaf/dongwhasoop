@@ -10,15 +10,15 @@ import { useState } from "react";
 function Profile() {
   const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
-  const [answer, setAnswer] = useState('');
+  const [answer, setAnswer] = useState("");
   const [num1] = useState(Math.floor(Math.random() * 10) + 1);
   const [num2] = useState(Math.floor(Math.random() * 10) + 1);
 
   const handleSubmit = () => {
     if (parseInt(answer) === num1 * num2) {
-      navigate('/settings');
+      navigate("/settings");
     } else {
-      setAnswer('');
+      setAnswer("");
     }
   };
 
@@ -30,30 +30,29 @@ function Profile() {
       // 입력 즉시 정답 확인
       if (parseInt(newAnswer) === num1 * num2) {
         setTimeout(() => {
-          navigate('/settings');
+          navigate("/settings");
         }, 300);
       } else if (newAnswer.length === 2) {
         // 2자리 입력했는데 오답이면 초기화
         setTimeout(() => {
-          setAnswer('');
+          setAnswer("");
         }, 300);
-
       }
     }
   };
 
   // handleDelete 함수 추가
   const handleDelete = () => {
-    setAnswer(prev => prev.slice(0, -1));
+    setAnswer((prev) => prev.slice(0, -1));
   };
 
   return (
-    <div className="font-bazzi fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
+    <div
+      className="font-bazzi fixed inset-0 w-screen h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${mainpage})` }}
+    >
       {/* 프로필 선택 */}
-      <button
-        onClick={() => setShowSettings(true)}
-        className="absolute top-7 right-7 z-10"
-      >
+      <button onClick={() => setShowSettings(true)} className="absolute top-7 right-7 z-10">
         <img src={settingsbtn} alt="설정" className="w-[9vw] max-w-[500px] min-w-[50px] m-[3vh]" />
       </button>
 
@@ -63,20 +62,31 @@ function Profile() {
         </h1>
         <div className="flex justify-center items-center gap-10 sm:gap-20 xl:gap-40 mt-6 sm:mt-12 xl:mt-20 tablet2560:mt-40">
           <button onClick={() => navigate("/home")} className="hover:scale-110 transition-transform">
-            <img src={cat} alt="정해인" className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#90EE90]" />
+            <img
+              src={cat}
+              alt="정해인"
+              className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#90EE90]"
+            />
             <p className="mt-4 text-[5vh] sm:text-[7vh] xl:text-[8vh] text-outline-sm">정해인</p>
           </button>
           <button onClick={() => navigate("/home")} className="hover:scale-110 transition-transform">
-            <img src={dog} alt="최우식" className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#87CEEB]" />
+            <img
+              src={dog}
+              alt="최우식"
+              className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#87CEEB]"
+            />
             <p className="mt-4 text-[5vh] sm:text-[7vh] xl:text-[8vh] text-outline-sm">최우식</p>
           </button>
           <button onClick={() => navigate("/home")} className="hover:scale-110 transition-transform">
-            <img src={chik} alt="편민준" className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#FFB6C1]" />
+            <img
+              src={chik}
+              alt="편민준"
+              className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#FFB6C1]"
+            />
             <p className="mt-4 text-[5vh] sm:text-[7vh] xl:text-[8vh] text-outline-sm">편민준</p>
           </button>
         </div>
       </div>
-
 
       {/* Settings Modal */}
       {showSettings && (
@@ -84,10 +94,7 @@ function Profile() {
           className="fixed inset-0 bg-gray-950/50 flex items-center justify-center z-[999]"
           onClick={() => setShowSettings(false)}
         >
-          <div
-            className="relative flex flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="relative flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
             <img src={treebox} alt="나무안내판" className="w-[54vh]" />
 
             {/* 모달 내용 */}
@@ -97,20 +104,21 @@ function Profile() {
                 <p className="text-[3vh] text-black font-bazzi hidden sm:block">정답을 입력해주세요</p>
               </div>
 
-
               <div className="flex flex-col items-center gap-[3.8vh]">
-                <p className="bg-[#FBE4B9] rounded-3xl p-[2vh] text-[5vh] font-maplestory">{num1} × {num2}</p>
+                <p className="bg-[#FBE4B9] rounded-3xl p-[2vh] text-[5vh] font-maplestory">
+                  {num1} × {num2}
+                </p>
                 <div className="flex items-center">
                   <div className="flex gap-[2vh]">
                     <div className="relative w-[6vh]">
                       <div className="font-maplestory text-[3vh] text-center absolute bottom-0 w-full">
-                        {answer[0] || '\u00A0'}
+                        {answer[0] || "\u00A0"}
                       </div>
                       <div className="border-b-4 border-[#FBE4B9] h-[2vh]" />
                     </div>
                     <div className="relative w-[6vh]">
                       <div className="font-maplestory text-[3vh] text-center absolute bottom-0 w-full">
-                        {answer[1] || '\u00A0'}
+                        {answer[1] || "\u00A0"}
                       </div>
                       <div className="border-b-4 border-[#FBE4B9] h-[2vh]" />
                     </div>
