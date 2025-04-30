@@ -11,8 +11,8 @@ function Profile() {
   const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
   const [answer, setAnswer] = useState("");
-  const [num1] = useState(Math.floor(Math.random() * 10) + 1);
-  const [num2] = useState(Math.floor(Math.random() * 10) + 1);
+  const [num1] = useState(Math.floor(Math.random() * 9) + 1);
+  const [num2] = useState(Math.floor(Math.random() * 9) + 1);
 
   const handleSubmit = () => {
     if (parseInt(answer) === num1 * num2) {
