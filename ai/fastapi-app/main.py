@@ -13,8 +13,10 @@ from db.models import letters,page_audios,story_pages,user_voices
 from kafka.producer import start_producer, stop_producer, send_message, producer
 from kafka.consumer import consume_messages
 from config import KAFKA_TOPIC
+
 from services.letters_service import generate_letter
 from services.s3_utils import upload_file_to_s3, load_file_from_s3
+from services.tts_service import generate_tts_and_upload
 
 consumer_task: asyncio.Task # 백그라운드 태스크 (지속적으로 카프카로부터 메시지를 읽어옴)
 
@@ -88,3 +90,20 @@ def play_audio(filename: str):
     audio_bytes = load_file_from_s3(filename)
     audio_stream = io.BytesIO(audio_bytes)
     return StreamingResponse(audio_stream, media_type="audio/wav")
+
+# TTS 테스트
+@app.post("/generate-tts")
+async def generate_tts():
+    """
+    테스트용: XTTS-v2로 고정된 입력값으로 음성을 생성하고 S3 URL을 반환합니다.
+    """
+    text = "안녕, 나는 너의 친구야!"
+    speaker_wav_key = "신난목소리.wav"
+    language = "ko"
+
+    tts_url = generate_tts_and_upload(
+        text=text,
+        speaker_wav_key=speaker_wav_key,
+        language=language
+    )
+    return {"tts_url": tts_url}
