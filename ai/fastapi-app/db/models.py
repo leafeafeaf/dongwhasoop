@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, Integer, BigInteger, String, DateTime, MetaData, ForeignKey
+from sqlalchemy import Table, Column, Integer, BigInteger, String, DateTime,Boolean, MetaData, ForeignKey, ForeignKeyConstraint
 
 metadata = MetaData()
 
@@ -44,12 +44,42 @@ letters = Table(
     "letters",
     metadata,
     Column("letter_id", BigInteger, primary_key=True),
-    Column("is_read", Integer),  # BIT(1) → Integer로 처리
     Column("book_id", BigInteger),
-    Column("character_id", BigInteger),
     Column("child_id", BigInteger),
+    Column("letter_content", String(255)),
+    Column("is_read", Boolean),
+    Column("message_type", Boolean),
+    Column("character_id", BigInteger, ForeignKey("fairytale.characters.character_id")),
     Column("created_at", DateTime),
     Column("updated_at", DateTime),
-    Column("letter_content", String(255)),
+    ForeignKeyConstraint(
+        ["book_id", "child_id"],
+        ["fairytale.letter_boxes.book_id", "fairytale.letter_boxes.child_id"]
+    ),
+    schema="fairytale"
+)
+
+characters = Table(
+    "characters",
+    metadata,
+    Column("character_id", BigInteger, primary_key=True),
+    Column("book_id", BigInteger, ForeignKey("fairytale.books.book_id")),
+    Column("created_at", DateTime),
+    Column("updated_at", DateTime),
+    Column("ai_prompt", String(255)),
+    Column("image_url", String(255)),
+    Column("name", String(255)),
+    schema="fairytale"
+)
+
+children = Table(
+    "children",
+    metadata,
+    Column("child_id", BigInteger, primary_key=True),
+    Column("user_id", BigInteger, ForeignKey("fairytale.users.user_id")),
+    Column("mascot_id", Integer),
+    Column("created_at", DateTime),
+    Column("updated_at", DateTime),
+    Column("name", String(255)),
     schema="fairytale"
 )

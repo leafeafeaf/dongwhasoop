@@ -10,6 +10,7 @@ from db.models import letters,page_audios,story_pages,user_voices
 from kafka.producer import start_producer, stop_producer, send_message, producer
 from kafka.consumer import consume_messages
 from config import KAFKA_TOPIC
+from services.letters_service import generate_letter
 
 consumer_task: asyncio.Task # 백그라운드 태스크 (지속적으로 카프카로부터 메시지를 읽어옴)
 
@@ -57,3 +58,12 @@ async def get_page_by_number(page_number: int):
     query = story_pages.select().where(story_pages.c.page_number == page_number)
     result = await database.fetch_all(query)
     return result
+
+#OpenAI 테스트 TODO (추후 kafka로 뺄거임)
+@app.post("/letters/generate/{letter_id}")
+async def generate_letter_api(letter_id: int):
+    try:
+        result = await generate_letter(letter_id)
+        return {"status": "success", "content": result}
+    except ValueError as e:
+        return {"status": "error", "message": str(e)}
