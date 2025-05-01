@@ -1,4 +1,4 @@
-import LoginBackground from "../assets/images/loginpage/loginBackground.webp";
+import LoginBackground from "../assets/images/loginpage/loginbackground.webp";
 import BookText from "../assets/images/loginpage/booktext.webp";
 import KaKaoLogin from "../components/commons/KaKaoLoginButton.tsx";
 
