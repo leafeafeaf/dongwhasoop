@@ -32,19 +32,20 @@ pipeline {
         }
 
         stage('Docker Build & Deploy') {
-            steps {
-                sh '''
-                    docker build -t frontend-image:latest ./frontend
+        agent { label 'master' }  // 본래 Jenkins 환경에서 실행
+        steps {
+            sh '''
+                docker build -t frontend-image:latest ./frontend
 
-                    docker stop frontend || true
-                    docker rm frontend || true
+                docker stop frontend || true
+                docker rm frontend || true
 
-                    docker run -d \
-                        --name frontend \
-                        -p 3000:80 \
-                        frontend-image:latest
-                '''
-            }
+                docker run -d \
+                    --name frontend \
+                    -p 3000:80 \
+                    frontend-image:latest
+            '''
         }
+      }
     }
 }
