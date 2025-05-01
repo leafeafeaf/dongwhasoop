@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { ScaleLoader } from "react-spinners";
 
-import booklistbackground from "../assets/images/booklist/booklistbackground.webp";
+import booklistbackground from "../assets/images/BookList/booklistbackground.webp";
 import BackButton from "../components/commons/BackButton";
 import GoBack from "../assets/images/BookList/goback.webp";
 import GoFront from "../assets/images/BookList/gofront.webp";
