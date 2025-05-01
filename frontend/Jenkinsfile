@@ -5,7 +5,7 @@ pipeline {
         stage('Secrets Setup') {
             steps {
                 withCredentials([
-                    file(credentialsId: 'env-file-fe', variable: 'EnvFile'),
+                    file(credentialsId: 'env-file', variable: 'EnvFile'),
                 ]) {
                     sh '''
                         cp "$EnvFile" ./frontend/.env
