@@ -1,0 +1,46 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Secrets Setup') {
+      steps {
+        withCredentials([
+          file(credentialsId: 'env-file', variable: 'EnvFile'),
+        ]) {
+          sh '''
+            cp "$EnvFile" ./frontend/.env
+            chmod 644 ./frontend/.env
+          '''
+        }
+      }
+    }
+
+    stage('Build Frontend') {
+      steps {
+        sh '''
+          cd frontend
+          docker run --rm -v $PWD:/app -w /app node:20-alpine sh -c "
+            npm install &&
+            npm run build || true
+          "
+        '''
+      }
+    }
+
+    stage('Docker Build & Deploy') {
+      steps {
+        sh '''
+          docker build -t frontend-image:latest ./frontend
+
+          docker stop frontend || true
+          docker rm frontend || true
+
+          docker run -d \
+            --name frontend \
+            -p 3000:80 \
+            frontend-image:latest
+        '''
+      }
+    }
+  }
+}

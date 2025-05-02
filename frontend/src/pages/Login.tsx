@@ -1,6 +1,6 @@
-import LoginBackground from "../assets/images/loginpage/LoginBackground.webp";
+import LoginBackground from "../assets/images/loginpage/loginbackground.webp";
 import BookText from "../assets/images/loginpage/booktext.webp";
-import KaKaoLogin from "../components/commons/KaKaoLoginButton";
+import KaKaoLogin from "../components/commons/KaKaoLoginButton.tsx";
 
 function Login() {
   return (

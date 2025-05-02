@@ -20,10 +20,7 @@ function BackButton({ to, onClick }: BackButtonProps) {
   };
 
   return (
-    <button 
-      className="absolute z-10 top-[5vh] left-[5vh]" 
-      onClick={handleClick}
-    >
+    <button className="absolute z-[20] top-[5vh] left-[5vh]" onClick={handleClick}>
       <img src={BackIcon} alt="뒤로가기" className="w-[17vh] h-[20vh]" />
     </button>
   );
