@@ -28,6 +28,7 @@ import RecSuccess from "./pages/RecSuccess";
 import KidSettings from "./pages/KidSettings";
 import EditProfile from "./pages/EditProfile";
 import KakaoCallback from "./pages/KakaoCallback";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   // const navigate = useNavigate();
