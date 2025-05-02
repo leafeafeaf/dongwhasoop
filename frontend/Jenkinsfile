@@ -19,26 +19,18 @@ pipeline {
       steps {
         sh '''
           cd frontend
-          docker run --rm -v $PWD:/app -w /app node:20-alpine sh -c "
-            npm install &&
-            npm run build || true
-          "
+          npm install
+          npm run build || true
         '''
       }
     }
 
-    stage('Docker Build & Deploy') {
+    stage('Deploy to Nginx') {
       steps {
         sh '''
-          docker build -t frontend-image:latest ./frontend
-
-          docker stop frontend || true
-          docker rm frontend || true
-
-          docker run -d \
-            --name frontend \
-            -p 3000:80 \
-            frontend-image:latest
+          mkdir -p /home/ubuntu/nginx
+          rm -rf /home/ubuntu/nginx/*
+          cp -r ./frontend/dist/* /home/ubuntu/nginx/
         '''
       }
     }
