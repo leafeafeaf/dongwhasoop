@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteChildProfile } from "../api/children";
 
+// 자녀 프로필 삭제
 export const useDeleteChildProfile = () => {
   const queryClient = useQueryClient();
 

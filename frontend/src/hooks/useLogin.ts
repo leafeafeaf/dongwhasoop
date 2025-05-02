@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "../api/authApi";
 import { LoginApiResponse } from "../types/auth";
 
+// 로그인
 export const useLogin = () => {
   return useMutation({
     mutationFn: (idToken: string) => login(idToken),
