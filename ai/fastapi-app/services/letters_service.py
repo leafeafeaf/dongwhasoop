@@ -1,3 +1,4 @@
+#services/letters_service.py
 from db.db import database
 from db.models import characters, letters, children
 from services.openai_client import ask_chatgpt

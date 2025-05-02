@@ -1,3 +1,4 @@
+#db/models.py
 from sqlalchemy import Table, Column, Integer, BigInteger, String, DateTime,Boolean, MetaData, ForeignKey, ForeignKeyConstraint
 
 metadata = MetaData()
@@ -29,7 +30,7 @@ user_voices = Table(
 page_audios = Table(
     "page_audios",
     metadata,
-    Column("audio_id", BigInteger, primary_key=True),
+    Column("audio_id", BigInteger, primary_key=True, autoincrement=True),
     Column("page_number", Integer),
     Column("book_id", BigInteger),
     Column("voice_id", BigInteger, ForeignKey("fairytale.user_voices.voice_id")),

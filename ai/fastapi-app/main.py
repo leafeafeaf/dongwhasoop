@@ -1,3 +1,4 @@
+# main.py
 # 가상 환경 생성 python -m venv .venv
 # 가상 환경 활성화 .venv\Scripts\activate.bat
 # 서버 실행 uvicorn main:app --reload
@@ -83,7 +84,6 @@ async def upload(file: UploadFile = File(...)):
         content_type=file.content_type
     )
     return {"file_url": file_url}
-
 
 @app.get("/play-audio/{filename}")
 def play_audio(filename: str):
