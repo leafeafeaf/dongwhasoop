@@ -3,6 +3,7 @@ from aiokafka import AIOKafkaConsumer
 from config import KAFKA_BOOTSTRAP_SERVERS, KAFKA_TOPIC, KAFKA_GROUP_ID
 import json
 from services.tts_service import generate_tts_batch_and_upload
+from services.letters_service import generate_letter
 
 async def consume_messages():
     consumer = AIOKafkaConsumer(
@@ -36,6 +37,9 @@ async def consume_messages():
                     case "WRITE_LETTER":
                         # 다른 로직 처리
                         print("답장 생성 로직 실행")
+                        payload = data["payload"]
+                        letter_id = payload["letter_id"]
+                        await generate_letter(letter_id)
                     case _:
                         print(
                             f"⚠️ Unknown message type: {data.get('type')}")

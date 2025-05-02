@@ -2,7 +2,6 @@
 import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, S3_BUCKET_NAME
-from typing import BinaryIO
 from urllib.parse import urlparse
 
 

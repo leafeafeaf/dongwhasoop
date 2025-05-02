@@ -28,40 +28,6 @@ print(device + "로 실행 중")
 # XTTS 모델은 모듈 로딩 시 한 번만 초기화
 tts_model = TTS(model_name="tts_models/multilingual/multi-dataset/xtts_v2").to(device)
 
-def generate_tts_and_upload(text: str, speaker_wav_key: str, language: str = "ko") -> str:
-  # 📥 S3에서 wav 다운로드
-  with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_speaker:
-    temp_speaker.write(load_file_from_s3(speaker_wav_key))
-    speaker_path = temp_speaker.name
-
-    # 생성될 output 파일 경로
-    output_path = f"/tmp/{uuid.uuid4()}.wav"
-    os.makedirs("/tmp", exist_ok=True)
-
-    try:
-      # 음성 생성
-      tts_model.tts_to_file(
-          text=text,
-          speaker_wav=speaker_path,
-          language=language,
-          file_path=output_path
-      )
-
-      # S3 업로드
-      with open(output_path, "rb") as f:
-        s3_key = f"tts_outputs/{uuid.uuid4()}.wav"
-        s3_url = upload_file_to_s3(f, s3_key, "audio/wav")
-
-    finally:
-      print("주석 지우기")
-      # 파일 삭제
-      # if os.path.exists(speaker_path):
-      #   os.remove(speaker_path)
-      # if os.path.exists(output_path):
-      #   os.remove(output_path)
-
-    return s3_url
-
 async def generate_tts_batch_and_upload(book_id: int, voice_id: int, user_id: int):
     # tmp 디렉토리 1회만 생성
     os.makedirs("/tmp", exist_ok=True)
