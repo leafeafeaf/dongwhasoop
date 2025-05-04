@@ -11,7 +11,7 @@ const BookLoading = () => {
       if (bookRef.current) {
         bookRef.current.pageFlip().flipNext();
       }
-    },1900); // 1초마다 페이지 넘김
+    }, 1900); // 1초마다 페이지 넘김
 
     return () => clearInterval(flipInterval);
   }, []);
@@ -45,22 +45,25 @@ const BookLoading = () => {
           minHeight={600}
           maxHeight={900}
           className="z-10"
+          style={{}} // 필수
+          startPage={0} // 필수
+          drawShadow={true} // 필수
+          flippingTime={1000} // 필수
         >
-            {bookDummy.slice(1, 36).map((book) => (
-              <div
-                key={book.id}
-                className="relative bg-white rounded-lg shadow-lg"
-              >
-                <img
-                  src={book.cover}
-                  alt={book.title}
-                  className="w-full h-full object-cover rounded-lg"
-                />
-                
-              </div>
-            ))
-          }
+          {bookDummy.slice(1, 36).map((book) => (
+            <div
+              key={book.id}
+              className="relative bg-white rounded-lg shadow-lg"
+            >
+              <img
+                src={book.cover}
+                alt={book.title}
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </div>
+          ))}
         </HTMLFlipBook>
+
       </div>
 
       {/* <div className="flex justify-center items-center">
