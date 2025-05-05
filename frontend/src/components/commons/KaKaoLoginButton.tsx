@@ -13,7 +13,7 @@ function KakaoLoginButton() {
   return (
     <div className="absolute bottom-[20vh] w-full flex justify-center">
       <button onClick={handleKakaoLogin}>
-        <img src={KaKaoLogin} alt="카카오로그인" className="tablet2560:w-[40vw]" />
+        <img src={KaKaoLogin} alt="카카오로그인" className="w-[35vw] tablet2560:w-[40vw]" />
       </button>
     </div>
   );
