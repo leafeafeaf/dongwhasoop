@@ -31,7 +31,7 @@ pipeline {
           pwd
           mkdir -p /home/ubuntu/nginx
           rm -rf /home/ubuntu/nginx/*
-          cp -r ./frontend/dist/* /home/ubuntu/nginx/
+          cp ./frontend/dist/* /home/ubuntu/nginx/
         '''
       }
     }
