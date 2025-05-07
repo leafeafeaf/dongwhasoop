@@ -9,11 +9,13 @@ import Mother from "../assets/images/settingpage/mother.webp";
 import Father from "../assets/images/settingpage/father.webp";
 import YetMother from "../assets/images/settingpage/yetmother.webp";
 import YetFather from "../assets/images/settingpage/yetfather.webp";
+import Modal from "../components/commons/Modal";
 
 // 목소리 선택 안하고 넘어가면 목소리 선택하라고 뜨기
 
 function StartSettings() {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedParent, setSelectedParent] = useState<"mother" | "father" | null>(null);
 
   const handleMotherClick = () => {
@@ -23,10 +25,19 @@ function StartSettings() {
   const handleFatherClick = () => {
     setSelectedParent("father");
   };
+  
 
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
       <BackButton to="/recinfo" />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => setIsModalOpen(false)}
+        type="selectvoice"
+        showCancelButton={false}
+      />
 
       <div>
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center w-[95vw] max-w-[1800px] lg:w-[60vw] md:mt-[3vw]">
@@ -64,7 +75,7 @@ function StartSettings() {
             if (selectedParent) {
               navigate("/voicerec", { state: { gender: selectedParent === "mother" ? "FEMALE" : "MALE" } });
             } else {
-              alert("목소리를 선택해주세요!");
+              setIsModalOpen(true);
             }
           }}
         >

@@ -15,12 +15,14 @@ import cat from "../assets/images/settingpage/cat.webp";
 import dog from "../assets/images/settingpage/dog.webp";
 import panda from "../assets/images/settingpage/panda.webp";
 import bear from "../assets/images/settingpage/bear.webp";
+import Modal from "../components/commons/Modal";
 
 function KidSettings() {
   const navigate = useNavigate();
   const [showCharacters, setShowCharacters] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState("");
   const [childName, setChildName] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 현재 선택된 캐릭터의 이미지를 반환하는 함수
   const getCurrentCharacter = () => {
@@ -43,7 +45,7 @@ function KidSettings() {
   // 저장 버튼 누르면?
   const handleSave = () => {
     if (!childName || !selectedCharacter) {
-      alert("이름과 캐릭터를 골라주세요.");
+      setIsModalOpen(true)
       return;
     }
 
@@ -93,6 +95,14 @@ function KidSettings() {
       style={{ backgroundImage: `url(${mainpage})` }}
     >
       <BackButton />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => setIsModalOpen(false)}
+        showCancelButton={false}
+        type="setting"
+      />
 
       <div className="">
         {/* 나무 안내판 */}
