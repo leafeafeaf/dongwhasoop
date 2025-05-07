@@ -99,6 +99,8 @@ public class CredentialService {
         // 사용자 생성 및 저장
         User user =
                 User.builder()
+                        // 회원가입 시 유저의 이메일도 저장합니다.
+                        .email(oidcDecodePayload.getEmail())
                         .oauthProvider(oauthProvider.getValue())
                         .oauthId(oidcDecodePayload.getSub())
                         .isNew(true)
