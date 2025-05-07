@@ -60,6 +60,8 @@ pipeline {
                    --name ${FASTAPI_CONTAINER_NAME} \\
                    --env-file ../../.env \\
                    --network fariytale_jenkins-network \\
+                   -v "${PWD}/tmp:/app/tmp" \\
+                   -v "${PWD}/models:/root/.local/share/tts" \\
                    -p 8000:8000 \\
                    ${FASTAPI_DOCKER_IMAGE}
                '''
