@@ -49,10 +49,11 @@ pipeline {
 
                     # 새 컨테이너 실행
                     docker run -d \
-                        --name backend \
-                        --env-file .env \
-                        -p 8080:8080 \
-                        backend-image:latest
+                    --name backend \
+                    --env-file .env \
+                    --network fariytale_jenkins-network \
+                    -p 8080:8080 \
+                    backend-image:latest
                 '''
             }
         }
