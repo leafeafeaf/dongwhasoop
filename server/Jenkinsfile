@@ -2,6 +2,8 @@ pipeline {
     agent any
 
     environment {
+        FASTAPI_CONTAINER_NAME = 'fastapi-container'
+        FASTAPI_DOCKER_IMAGE = 'fastapi-app:latest'
         CONTAINER_NAME = 'backend'
         DOCKER_IMAGE = 'backend-image:latest'
     }
@@ -36,6 +38,39 @@ pipeline {
                 '''
             }
         }
+        stage('Build & Deploy FastAPI') {
+                    steps {
+                        sh '''
+                            cd ..
+                            if [ -d "ai" ]; then
+                                cd ai
+                            elif [ -d "fastapi-app" ]; then
+                                cd fastapi-app
+                            else
+                                echo "Error: ai 또는 fastapi-app 디렉토리를 찾을 수 없습니다."
+                                exit 1
+                            fi
+
+                            # Docker 이미지 빌드
+                            docker build -t ${FASTAPI_DOCKER_IMAGE} .
+
+                            # 기존 컨테이너 중지 및 삭제
+                            docker stop ${FASTAPI_CONTAINER_NAME} || true
+                            docker rm ${FASTAPI_CONTAINER_NAME} || true
+
+                            # 새 컨테이너 실행
+                            docker run -d \\
+                            --name ${FASTAPI_CONTAINER_NAME} \\
+                            --env-file ../.env \\
+                            --network fariytale_jenkins-network \\
+                            -p 8000:8000 \\
+                            ${FASTAPI_DOCKER_IMAGE}
+                        '''
+                    }
+                }
+
+
+
 
             stage('Docker Build & Deploy') {
                 steps {
