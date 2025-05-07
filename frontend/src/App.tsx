@@ -27,8 +27,10 @@ import SendLetter from "./pages/SendLetter";
 import RecSuccess from "./pages/RecSuccess";
 import KidSettings from "./pages/KidSettings";
 import EditProfile from "./pages/EditProfile";
+import EditingProfile from "./pages/EditingProfile";
 import KakaoCallback from "./pages/KakaoCallback";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import AddingProfile from "./pages/addingProfile";
 
 function App() {
   // const navigate = useNavigate();
@@ -73,6 +75,9 @@ function App() {
       <Route path="/recsuccess" element={<RecSuccess></RecSuccess>}></Route>
       <Route path="/kidsettings" element={<KidSettings></KidSettings>}></Route>
       <Route path="/editprofile" element={<EditProfile></EditProfile>}></Route>
+      <Route path="/editingprofile" element={<EditingProfile></EditingProfile>}></Route>
+      <Route path="/editingprofile/:id" element={<EditingProfile></EditingProfile>}></Route>
+      <Route path="/addingprofile" element={<AddingProfile></AddingProfile>}></Route>
       <Route path="/auth" element={<KakaoCallback></KakaoCallback>}></Route>
     </Routes>
   );
