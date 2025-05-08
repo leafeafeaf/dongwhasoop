@@ -4,6 +4,7 @@ import com.fairytale.FairyTale.global.error.exception.ExceptionFilter;
 import com.fairytale.FairyTale.global.security.JwtTokenFilter;
 import com.fairytale.FairyTale.global.security.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +20,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -33,23 +32,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 설정 추가
-                .csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new ExceptionFilter(objectMapper), JwtTokenFilter.class)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests((registry) ->
-                        registry
-                                .requestMatchers(HttpMethod.DELETE, "/api/v1/credentials").authenticated()
-                                .requestMatchers("/api/v1/credentials/test-login/**", "/api/v1/credentials/sign-up-test",
-                                        "/api/v1/credentials/oauth/link/kakao", "/api/v1/credentials/oauth/kakao",
-                                        "/api/v1/credentials/oauth/link/google", "/api/v1/credentials/oauth/google",
-                                        "/api/v1/credentials/oauth/valid/register", "/api/v1/credentials/login","/api/v1/user-preference/random","/api/v1/credentials","/actuator/**").permitAll()
-                                //.anyRequest().permitAll()
-                                .anyRequest().authenticated()
-                );
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 설정 추가
+            .csrf(AbstractHttpConfigurer::disable)
+            .addFilterBefore(new JwtTokenFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new ExceptionFilter(objectMapper), JwtTokenFilter.class)
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authorizeHttpRequests((registry) ->
+                registry
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/credentials").authenticated()
+                    .requestMatchers("/api/v1/credentials/test-login/**",
+                        "/api/v1/credentials/sign-up-test",
+                        "/api/v1/credentials/oauth/link/kakao", "/api/v1/credentials/oauth/kakao",
+                        "/api/v1/credentials/oauth/link/google", "/api/v1/credentials/oauth/google",
+                        "/api/v1/credentials/oauth/valid/register", "/api/v1/credentials/login",
+                        "/api/v1/user-preference/random", "/api/v1/credentials", "/actuator/**"
+                        , "/ws/**").permitAll()
+                    //.anyRequest().permitAll()
+                    .anyRequest().authenticated()
+            );
 
         return http.build();
     }
@@ -59,7 +62,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*")); // ✅ 모든 도메인 허용
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedMethods(
+            List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*")); // ✅ 모든 헤더 허용
         configuration.setAllowCredentials(true); // ✅ 인증 허용 (JWT 등)
 
