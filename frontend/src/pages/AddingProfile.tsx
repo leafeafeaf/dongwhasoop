@@ -1,9 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-// 백엔드 연결 코드
-// import { createChildProfile } from "../api/children";
-
+import { useCreateChildProfile } from "../hooks/useCreateChildProfile";
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import BackButton from "../components/commons/BackButton";
 import Child from "../assets/images/settingpage/child.webp";
@@ -23,6 +20,7 @@ function AddingProfile() {
   const [selectedCharacter, setSelectedCharacter] = useState("");
   const [childName, setChildName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { mutate: createChild } = useCreateChildProfile();
 
   // 현재 선택된 캐릭터의 이미지를 반환하는 함수
   const getCurrentCharacter = () => {
@@ -42,52 +40,38 @@ function AddingProfile() {
     }
   };
 
-  // 저장 버튼 누르면?
-  const handleSave = () => {
+  const mascotIdMap: Record<string, number> = {
+    cat: 1,
+    dog: 2,
+    bear: 3,
+    chik: 4,
+    panda: 5,
+  };
+
+  const handleSave = async () => {
     if (!childName || !selectedCharacter) {
-      setIsModalOpen(true)
+      setIsModalOpen(true);
       return;
     }
 
-    const childProfile = {
-      name: childName,
-      mascot: selectedCharacter,
-    };
+    const mascotId = mascotIdMap[selectedCharacter];
 
-    localStorage.setItem("childProfile", JSON.stringify(childProfile));
-    localStorage.setItem("childRegistered", "true");
-
-    navigate("/editprofile");
+    createChild(
+      {
+        name: childName,
+        mascotId: mascotId,
+      },
+      {
+        onSuccess: () => {
+          navigate("/profile");
+        },
+        onError: (error) => {
+          console.error("자녀 등록 실패", error);
+          setIsModalOpen(true);
+        },
+      }
+    );
   };
-
-  // 백엔드 연결용
-  // const mascotIdMap: Record<string, number> = {
-  //   cat: 1,
-  //   dog: 2,
-  //   bear: 3,
-  //   chik: 4,
-  //   panda: 5,
-  // };
-  // const handleSave = async () => {
-  //   if (!childName || !selectedCharacter) {
-  //     alert("이름과 캐릭터를 골라주세요.");
-  //     return;
-  //   }
-
-  //   try {
-  //     await createChildProfile({
-  //       name: childName,
-  //       mascotId: mascotIdMap[selectedCharacter],
-  //     });
-
-  //
-  //     localStorage.setItem("childRegistered", "true");
-  //     navigate("/startsettings");
-  //   } catch (error) {
-  //     console.error("자녀 등록 실패:", error);
-  //     alert("자녀 등록에 실패했습니다. 다시 시도해주세요.");
-  //   }
-  // };
 
   return (
     <div
