@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { useUpdateChildProfile } from "../hooks/useUpdateChildProfile";
+import { useDeleteChildProfile } from "../hooks/useDeleteChildProfile";
+import { useChildrenStore } from "../stores/useChildrenStore";
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import treeBox from "../assets/images/settingpage/treebox.webp";
 import DeleteBtn from "../assets/images/settingpage/deletebtn.webp";
@@ -39,28 +41,53 @@ function EditingProfile() {
   const { childId } = useParams();
   const [showCharacterSelect, setShowCharacterSelect] = useState(false);
   const [editingChild, setEditingChild] = useState<ChildProfile>({ childId: 0, childName: "", mascotId: 1 });
+  const updateChild = useUpdateChildProfile();
+  const deleteChild = useDeleteChildProfile();
+  const { children = [] } = useChildrenStore();
 
   useEffect(() => {
-    // Fetch child data using childId
-    // For now using dummy data
-    if (childId) {
-      setEditingChild({ childId: parseInt(childId), childName: "정해인", mascotId: 1 });
+    const id = Number(childId);
+    if (!isNaN(id) && children.length > 0) {
+      const targetChild = children.find((child) => child.childId === id);
+      if (targetChild) {
+        setEditingChild(targetChild);
+      } else {
+        console.warn("해당 자녀 id를 찾을 수 없습니다.", id);
+      }
     }
-  }, [childId]);
+  }, [childId, children]); // <-- children 추가
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!editingChild.childName) {
       alert("이름을 입력해주세요");
       return;
     }
-    // Save logic here
 
-    navigate("/editprofile");
+    updateChild.mutate(
+      {
+        childId: editingChild.childId,
+        updateData: {
+          name: editingChild.childName,
+          mascotId: editingChild.mascotId,
+        },
+      },
+      {
+        onSuccess: () => {
+          navigate("/editprofile");
+        },
+      }
+    );
   };
 
   const handleDelete = () => {
     // Delete logic here
-    navigate("/editprofile");
+    if (confirm("정말 삭제하시겠습니까?")) {
+      deleteChild.mutate(editingChild.childId, {
+        onSuccess: () => {
+          navigate("/editprofile");
+        },
+      });
+    }
   };
 
   const getCharacterImage = (mascotId: number) => mascotImageMap[mascotMap[mascotId]];
@@ -86,7 +113,7 @@ function EditingProfile() {
               <img
                 src={getCharacterImage(editingChild.mascotId)}
                 alt="캐릭터"
-                className="w-[17vw] max-w-[600px] h-auto tablet2560:w-[22vw] xl:max-w-[900px] tablet2560:w-[26vw] tablet2560:max-w-[900px] rounded-full"
+                className="w-[17vw] max-w-[600px] h-auto xl:max-w-[900px] tablet2560:w-[26vw] tablet2560:max-w-[900px] rounded-full"
               />
             </button>
           </div>

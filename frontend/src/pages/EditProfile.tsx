@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// 백엔드 API 함수
-// import { getChildProfiles, createChildProfile, updateChildProfile } from "../api/children";
-
+import { getChildProfiles } from "../api/children";
+import { useChildrenStore } from "../stores/useChildrenStore";
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import Pencil from "../assets/images/eidtprofile/pencil.webp";
 import PlusBtn from "../assets/images/eidtprofile/plus.webp";
@@ -13,6 +11,7 @@ import bear from "../assets/images/settingpage/bear.webp";
 import chik from "../assets/images/settingpage/chik.webp";
 import panda from "../assets/images/settingpage/panda.webp";
 import BackButton from "../components/commons/BackButton";
+import Modal from "../components/commons/Modal";
 
 interface ChildProfile {
   childId: number;
@@ -39,24 +38,33 @@ const mascotImageMap: Record<string, string> = {
 // 상단에 state 추가
 function EditProfile() {
   const navigate = useNavigate();
-  const [children, setChildren] = useState<ChildProfile[]>([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingChild, setEditingChild] = useState<ChildProfile | null>(null);
-  const [showCharacterSelect, setShowCharacterSelect] = useState(false);
+  const { children, setChildren } = useChildrenStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // fetchChildren();
-    // 더미 데이터
-    setChildren([
-      { childId: 1, childName: "정해인", mascotId: 1 },
-      { childId: 2, childName: "최우식", mascotId: 2 },
-      { childId: 3, childName: "편민준", mascotId: 4 },
-    ]);
-  }, []);
+    const fetchChildren = async () => {
+      try {
+        const data = await getChildProfiles();
+        setChildren(data);
+      } catch (error) {
+        console.log("자녀 목록 불러오기 실패", error);
+      }
+    };
+
+    fetchChildren();
+  }, [setChildren]);
 
   // handleEdit function modification
   const handleEdit = (child: ChildProfile) => {
     navigate(`/editingprofile/${child.childId}`);
+  };
+
+  const handleAdd = () => {
+    if (children.length >= 3) {
+      setIsModalOpen(true);
+      return;
+    }
+    navigate("/addingprofile");
   };
 
   const getCharacterImage = (mascotId: number) => mascotImageMap[mascotMap[mascotId]];
@@ -67,6 +75,14 @@ function EditProfile() {
       style={{ backgroundImage: `url(${mainpage})` }}
     >
       <BackButton to={`/settings`} />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => setIsModalOpen(false)}
+        type="childlimit"
+        showCancelButton={false}
+      />
 
       <div className="flex flex-col pt-[14vh] tablet2560:pt-[18vh] items-center">
         <h1 className="text-[9vh] text-outline-sm tablet2560:text-9xl text-center pt-[7vh] pb-[10vh]">
@@ -88,7 +104,7 @@ function EditProfile() {
               <img src={Pencil} alt="수정" className="absolute top-[15vh] left-[16vh] w-[9vh]" />
             </div>
           ))}
-          <button onClick={() => navigate("/addingprofile")} className="hover:scale-110 transition-transform">
+          <button onClick={handleAdd} className="hover:scale-110 transition-transform">
             <img src={PlusBtn} alt="자녀 추가" className="w-[24vh] h-[24vh]" />
             <p className="text-[5vh] pt-2">추가하기</p>
           </button>
