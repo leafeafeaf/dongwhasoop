@@ -13,9 +13,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
-      hibernate:
         format_sql: true
 
   data:

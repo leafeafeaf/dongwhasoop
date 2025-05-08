@@ -38,36 +38,35 @@ pipeline {
                 '''
             }
         }
-        stage('Build & Deploy FastAPI') {
-                    steps {
-                        sh '''
-                            cd ..
-                            if [ -d "ai" ]; then
-                                cd ai
-                            elif [ -d "fastapi-app" ]; then
-                                cd fastapi-app
-                            else
-                                echo "Error: ai 또는 fastapi-app 디렉토리를 찾을 수 없습니다."
-                                exit 1
-                            fi
+       stage('Build & Deploy FastAPI') {
+           steps {
+               sh '''
+                   # 현재 디렉토리에서 직접 ai/fastapi-app으로 이동
+                   cd ai/fastapi-app
 
-                            # Docker 이미지 빌드
-                            docker build -t ${FASTAPI_DOCKER_IMAGE} .
+                   # 디렉토리 확인 (디버깅용)
+                   pwd
+                   ls -la
 
-                            # 기존 컨테이너 중지 및 삭제
-                            docker stop ${FASTAPI_CONTAINER_NAME} || true
-                            docker rm ${FASTAPI_CONTAINER_NAME} || true
+                   # Docker 이미지 빌드
+                   docker build -t ${FASTAPI_DOCKER_IMAGE} .
 
-                            # 새 컨테이너 실행
-                            docker run -d \\
-                            --name ${FASTAPI_CONTAINER_NAME} \\
-                            --env-file ../.env \\
-                            --network fariytale_jenkins-network \\
-                            -p 8000:8000 \\
-                            ${FASTAPI_DOCKER_IMAGE}
-                        '''
-                    }
-                }
+                   # 기존 컨테이너 중지 및 삭제
+                   docker stop ${FASTAPI_CONTAINER_NAME} || true
+                   docker rm ${FASTAPI_CONTAINER_NAME} || true
+
+                   # 새 컨테이너 실행
+                   docker run -d \\
+                   --name ${FASTAPI_CONTAINER_NAME} \\
+                   --env-file ../../.env \\
+                   --network fariytale_jenkins-network \\
+                   -v "/home/ubuntu/fastapi/tmp:/app/tmp" \\
+                   -v "/home/ubuntu/.local/share/tts:/root/.local/share/tts" \\
+                   -p 8000:8000 \\
+                   ${FASTAPI_DOCKER_IMAGE}
+               '''
+           }
+       }
 
 
 
@@ -92,5 +91,30 @@ pipeline {
                 '''
             }
         }
+
+       stage('Docker Cleanup') {
+           steps {
+               sh '''
+                   echo "사용하지 않는 Docker 리소스 정리 중..."
+
+                   # dangling 이미지 삭제 (태그가 없는 이미지)
+                   docker image prune -f
+
+                   # fastapi 관련 오래된 이미지 정리 (최신 2개 제외)
+                   docker images --format "{{.ID}} {{.Repository}}" | grep fastapi | sort -k2 | awk 'NR>2 {print $1}' | xargs -r docker rmi -f
+
+                   # backend 관련 오래된 이미지 정리 (최신 2개 제외)
+                   docker images --format "{{.ID}} {{.Repository}}" | grep backend | sort -k2 | awk 'NR>2 {print $1}' | xargs -r docker rmi -f
+
+                   # 미사용 볼륨 정리
+                   docker volume prune -f
+
+                   # 미사용 네트워크 정리
+                   docker network prune -f
+
+                   echo "Docker 리소스 정리 완료"
+               '''
+           }
+       }
     }
 }
