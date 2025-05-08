@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(ttsWebSocketHandler(), "/ws/tts-progress")
+        registry.addHandler(ttsWebSocketHandler(), "/api/v1/ws/tts-progress")
             .setAllowedOrigins("*"); // TODO : 배포 환경에서 변경
     }
 
