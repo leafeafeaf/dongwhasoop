@@ -39,6 +39,10 @@ public class Letter extends BaseEntity {
     @JoinColumn(name = "character_id")
     private Character character;
 
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
     @Builder
     public Letter(LetterBox letterBox, String letterContent, Boolean isRead, Character character) {
         this.letterBox = letterBox;

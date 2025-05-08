@@ -29,6 +29,8 @@ public enum ErrorCode {
     BOOK_NOT_FOUND(404, "존재하지 않는 책입니다"),
     USER_VOICE_NOT_FOUND(404, "해당 목소리에 권한이 없거나 찾을 수 없습니다."),
 
+    /* letter exception */
+    LETTER_NOT_FOUND(404, "존재하지 않는 편지입니다."),
 
     /* 500 */
     INTERNAL_SERVER_ERROR(500, "서버 에러"),
