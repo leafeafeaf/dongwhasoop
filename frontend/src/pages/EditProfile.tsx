@@ -5,19 +5,14 @@ import { useNavigate } from "react-router-dom";
 // import { getChildProfiles, createChildProfile, updateChildProfile } from "../api/children";
 
 import mainpage from "../assets/images/mainpage/mainpage.webp";
-import CompleteBtn from "../assets/images/eidtprofile/complete.webp";
-import DeleteBtn from "../assets/images/settingpage/deletebtn.webp";
 import Pencil from "../assets/images/eidtprofile/pencil.webp";
 import PlusBtn from "../assets/images/eidtprofile/plus.webp";
-import treeBox from "../assets/images/settingpage/treebox.webp";
 import cat from "../assets/images/settingpage/cat.webp";
 import dog from "../assets/images/settingpage/dog.webp";
 import bear from "../assets/images/settingpage/bear.webp";
 import chik from "../assets/images/settingpage/chik.webp";
 import panda from "../assets/images/settingpage/panda.webp";
-import checkbox from "../assets/images/settingpage/editbtn.webp";
 import BackButton from "../components/commons/BackButton";
-import Modal from "../components/commons/Modal";
 
 interface ChildProfile {
   childId: number;
@@ -64,19 +59,23 @@ function EditProfile() {
     navigate(`/editingprofile/${child.childId}`);
   };
 
-
   const getCharacterImage = (mascotId: number) => mascotImageMap[mascotMap[mascotId]];
 
   return (
-    <div className="font-bazzi fixed inset-0 w-screen h-screen bg-cover bg-center"
-      style={{ backgroundImage: `url(${mainpage})` }}>
+    <div
+      className="font-bazzi fixed inset-0 w-screen h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${mainpage})` }}
+    >
       <BackButton to={`/settings`} />
 
       <div className="flex flex-col pt-[14vh] tablet2560:pt-[18vh] items-center">
-        <h1 className="text-[9vh] text-outline-sm tablet2560:text-9xl text-center pt-[7vh] pb-[10vh]">자녀 정보를 수정하거나 추가할 수 있어요</h1>
+        <h1 className="text-[9vh] text-outline-sm tablet2560:text-9xl text-center pt-[7vh] pb-[10vh]">
+          자녀 정보를 수정하거나 추가할 수 있어요
+        </h1>
         <div className="flex justify-center gap-[16vh] tablet2560:gap-[10vh]">
           {children.map((child) => (
-            <div key={child.childId}
+            <div
+              key={child.childId}
               onClick={() => handleEdit(child)}
               className="relative flex flex-col items-center cursor-pointer hover:scale-105 transition-transform"
             >
@@ -89,10 +88,7 @@ function EditProfile() {
               <img src={Pencil} alt="수정" className="absolute top-[15vh] left-[16vh] w-[9vh]" />
             </div>
           ))}
-          <button
-            onClick={() => navigate('/addingprofile')}
-            className="hover:scale-110 transition-transform"
-          >
+          <button onClick={() => navigate("/addingprofile")} className="hover:scale-110 transition-transform">
             <img src={PlusBtn} alt="자녀 추가" className="w-[24vh] h-[24vh]" />
             <p className="text-[5vh] pt-2">추가하기</p>
           </button>
