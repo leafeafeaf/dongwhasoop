@@ -61,7 +61,7 @@ pipeline {
                    --env-file ../../.env \\
                    --network fariytale_jenkins-network \\
                    -v "/home/ubuntu/fastapi/tmp:/app/tmp" \\
-                   -v "~/.local/share/tts:/root/.local/share/tts" \\
+                   -v "/home/ubuntu/.local/share/tts:/root/.local/share/tts" \\
                    -p 8000:8000 \\
                    ${FASTAPI_DOCKER_IMAGE}
                '''
