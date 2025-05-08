@@ -56,7 +56,9 @@ function EditProfile() {
 
   // handleEdit function modification
   const handleEdit = (child: ChildProfile) => {
-    navigate(`/editingprofile/${child.childId}`);
+    navigate(`/editingprofile/${child.childId}`, {
+      state: child,
+    });
   };
 
   const handleAdd = () => {
