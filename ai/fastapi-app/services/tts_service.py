@@ -83,7 +83,6 @@ async def generate_tts_batch_and_upload(book_id: int, voice_id: int, user_id: in
           "book_id": book_id,
           "voice_id": voice_id,
           "user_id": user_id,
-          "audio_urls": results  # S3 URL 리스트
         }
       })
     except Exception as e:

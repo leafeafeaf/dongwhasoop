@@ -1,12 +1,14 @@
 package com.fairytale.FairyTale.global.config.handler;
 
 import com.fairytale.FairyTale.global.security.JwtTokenProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,6 +16,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @RequiredArgsConstructor
 public class TtsWebSocketHandler extends TextWebSocketHandler {
+
+    private final ObjectMapper objectMapper;
 
     // 유저 ID WebSocket 세션에 저장하는 맵
     private final Map<Long, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
@@ -34,7 +38,18 @@ public class TtsWebSocketHandler extends TextWebSocketHandler {
         log.debug("WebSocket disconnected: {}", userId);
     }
 
-    //TODO 카프카로부터 메시지를 받으면 데이터 주는 함수
+    //카프카로부터 메시지를 받으면 데이터 주는 함수
+    public void sendJson(Long userId, Object data) throws IOException {
+        WebSocketSession session = sessionMap.get(userId);
+        if (session != null && session.isOpen()) {
+            String message = objectMapper.writeValueAsString(data);
+            session.sendMessage(new TextMessage(message));
+            log.info("📡 WebSocket 전송: {}", message);
+        } else {
+            log.warn("❌ WebSocket 세션 없음: userId = {}", userId);
+        }
+    }
+
 
     //쿼리 파라미터로부터 값을 빼내는 역할
     //TODO 예외 메시지 처리

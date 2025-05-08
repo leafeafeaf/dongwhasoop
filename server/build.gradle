@@ -57,6 +57,12 @@ dependencies {
 
     //websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    //kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    //JSON 직렬화
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 dependencyManagement {

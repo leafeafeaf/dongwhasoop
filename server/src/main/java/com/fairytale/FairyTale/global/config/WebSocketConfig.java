@@ -2,6 +2,7 @@ package com.fairytale.FairyTale.global.config;
 
 import com.fairytale.FairyTale.global.config.handler.TtsWebSocketHandler;
 import com.fairytale.FairyTale.global.security.JwtTokenProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
@@ -24,6 +26,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public TtsWebSocketHandler ttsWebSocketHandler() {
-        return new TtsWebSocketHandler(jwtTokenProvider);
+        return new TtsWebSocketHandler(objectMapper, jwtTokenProvider);
     }
 }

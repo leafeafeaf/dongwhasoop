@@ -12,6 +12,7 @@ import com.fairytale.FairyTale.domain.uservoice.domain.respository.UserVoiceRepo
 import com.fairytale.FairyTale.global.config.handler.TtsWebSocketHandler;
 import com.fairytale.FairyTale.global.error.exception.ErrorCode;
 import com.fairytale.FairyTale.global.error.exception.FairyTaleException;
+import com.fairytale.FairyTale.global.kafka.KafkaProducer;
 import com.fairytale.FairyTale.global.util.user.UserUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class BookServiceImpl implements BookService {
     private final TtsWebSocketHandler ttsWebSocketHandler;
     private final StoryPageRepository storyPageRepository;
     private final UserVoiceRepository userVoiceRepository;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public Slice<BookListResponse> getBookList(PageRequest pageRequest) {
@@ -71,7 +73,9 @@ public class BookServiceImpl implements BookService {
         boolean allPagesHaveAudio = pages.stream().allMatch(p -> p.getAudioUrl() != null);
 
         if (!allPagesHaveAudio) {
-            //TODO kafka로 명령 보내기
+            //kafka로 명령 보내기
+            kafkaProducer.sendCreateTts(bookId, voiceId, userId);
+
             return BookContentPostResponse.builder()
                 .message("TTS를 통해 음성을 생성 중 입니다.")
                 .completed(false)
