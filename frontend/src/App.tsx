@@ -30,7 +30,8 @@ import EditProfile from "./pages/EditProfile";
 import EditingProfile from "./pages/EditingProfile";
 import KakaoCallback from "./pages/KakaoCallback";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import AddingProfile from "./pages/addingProfile";
+import AddingProfile from "./pages/AddingProfile";
+import TestApiPage from "./pages/TestApiPage";
 
 function App() {
   // const navigate = useNavigate();
@@ -79,6 +80,7 @@ function App() {
       <Route path="/editingprofile/:id" element={<EditingProfile></EditingProfile>}></Route>
       <Route path="/addingprofile" element={<AddingProfile></AddingProfile>}></Route>
       <Route path="/auth" element={<KakaoCallback></KakaoCallback>}></Route>
+      <Route path="/testapipage" element={<TestApiPage></TestApiPage>}></Route>
     </Routes>
   );
 }

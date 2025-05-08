@@ -2,10 +2,14 @@ import { useNavigate } from "react-router-dom";
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import cat from "../assets/images/settingpage/cat.webp";
 import dog from "../assets/images/settingpage/dog.webp";
+import bear from "../assets/images/settingpage/bear.webp";
 import chik from "../assets/images/settingpage/chik.webp";
+import panda from "../assets/images/settingpage/panda.webp";
 import settingsbtn from "../assets/images/settingpage/settingsbtn.webp";
 import treebox from "../assets/images/settingpage/treebox.webp";
 import { useState } from "react";
+import { useChildProfile } from "../hooks/useChildProfile";
+import { useSelectedChild } from "../stores/useSelectedChild";
 
 function Profile() {
   const navigate = useNavigate();
@@ -13,6 +17,7 @@ function Profile() {
   const [answer, setAnswer] = useState("");
   const [num1] = useState(Math.floor(Math.random() * 9) + 1);
   const [num2] = useState(Math.floor(Math.random() * 9) + 1);
+  const { setSelectedChild } = useSelectedChild();
 
   const handleSubmit = () => {
     if (parseInt(answer) === num1 * num2) {
@@ -61,30 +66,31 @@ function Profile() {
           어떤 친구가 오늘의 주인공이 될까요?
         </h1>
         <div className="flex justify-center items-center gap-10 sm:gap-20 xl:gap-40 mt-6 sm:mt-12 xl:mt-20 tablet2560:mt-40">
-          <button onClick={() => navigate("/home")} className="hover:scale-110 transition-transform">
-            <img
-              src={cat}
-              alt="정해인"
-              className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#90EE90]"
-            />
-            <p className="mt-4 text-[5vh] sm:text-[7vh] xl:text-[8vh] text-outline-sm">정해인</p>
-          </button>
-          <button onClick={() => navigate("/home")} className="hover:scale-110 transition-transform">
-            <img
-              src={dog}
-              alt="최우식"
-              className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#87CEEB]"
-            />
-            <p className="mt-4 text-[5vh] sm:text-[7vh] xl:text-[8vh] text-outline-sm">최우식</p>
-          </button>
-          <button onClick={() => navigate("/home")} className="hover:scale-110 transition-transform">
-            <img
-              src={chik}
-              alt="편민준"
-              className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#FFB6C1]"
-            />
-            <p className="mt-4 text-[5vh] sm:text-[7vh] xl:text-[8vh] text-outline-sm">편민준</p>
-          </button>
+          {useChildProfile().data?.map((child) => {
+            let mascotImg = cat;
+            if (child.mascotId === 2) mascotImg = dog;
+            if (child.mascotId === 3) mascotImg = bear;
+            if (child.mascotId === 4) mascotImg = chik;
+            if (child.mascotId === 5) mascotImg = panda;
+
+            return (
+              <button
+                key={child.childId}
+                onClick={() => {
+                  setSelectedChild(child);
+                  navigate("/home");
+                }}
+                className="hover:scale-110 transition-transform"
+              >
+                <img
+                  src={mascotImg}
+                  alt={child.childName}
+                  className="w-[20vh] h-[20vh] sm:w-[25vh] sm:h-[25vh] xl:w-[30vh] xl:h-[30vh] rounded-full bg-[#90EE90]"
+                />
+                <p className="mt-4 text-[5vh] sm:text-[7vh] xl:text-[8vh] text-outline-sm">{child.childName}</p>
+              </button>
+            );
+          })}
         </div>
       </div>
 

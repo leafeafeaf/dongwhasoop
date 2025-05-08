@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";  // useState import 추가
+import { useState, useEffect } from "react"; // useState import 추가
 
 import HomeBackground from "../assets/images/mainpage/homebackground.webp";
 import Book from "../assets/images/mainpage/book.webp";
@@ -7,36 +7,45 @@ import MailBox from "../assets/images/mainpage/mailbox.webp";
 import Selectprofile from "../assets/images/mainpage/selectprofile.webp";
 import MusicOff from "../assets/images/mainpage/musicoff.webp";
 import MusicOn from "../assets/images/mainpage/musicon.webp";
-import Bear from "../assets/images/settingpage/bear.webp";
+import bear from "../assets/images/settingpage/bear.webp";
+import cat from "../assets/images/settingpage/cat.webp";
+import dog from "../assets/images/settingpage/dog.webp";
+import chik from "../assets/images/settingpage/chik.webp";
+import panda from "../assets/images/settingpage/panda.webp";
+import { useSelectedChild } from "../stores/useSelectedChild";
 
 function Home() {
   const navigate = useNavigate();
-  const [isMusicOn, setIsMusicOn] = useState(false);  // 음악 상태 관리
+  const [isMusicOn, setIsMusicOn] = useState(false); // 음악 상태 관리
+  const { selectedChild } = useSelectedChild();
 
   return (
     <div
       className="fixed inset-0 w-screen h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${HomeBackground})` }}
     >
-
-      {/* 프로필 */}
-      {/* 프로필 선택 */}
-      {/* <button
-        onClick={() => navigate("/profile")}
-        className="absolute top-7 left-7"
-      >
-        <img src={Selectprofile} alt="프로필 선택" className="w-[15vw] max-w-[2000px] min-w-[80px]" />
-      </button> */}
-
-
-      <div className="absolute top-[5vh] left-[5vh] flex flex-col items-center">
-        <button onClick={() => navigate("/profile")}>
-          <img src={Bear} alt="프로필" className="w-[12vw] max-w-[2000px] min-w-[60px]" />
-        </button>
-        <p className="text-[7vh] font-bazzi text-outline-sm">정효원</p>
-      </div>
-
-
+      {selectedChild && (
+        <div className="absolute top-[5vh] left-[5vh] flex flex-col items-center">
+          <button onClick={() => navigate("/profile")}>
+            <img
+              src={
+                selectedChild.mascotId === 2
+                  ? dog
+                  : selectedChild.mascotId === 3
+                  ? bear
+                  : selectedChild.mascotId === 4
+                  ? chik
+                  : selectedChild.mascotId === 5
+                  ? panda
+                  : cat
+              }
+              alt="프로필"
+              className="w-[12vw] max-w-[2000px] min-w-[60px]"
+            />
+          </button>
+          <p className="text-[7vh] font-bazzi text-outline-sm">{selectedChild.childName}</p>
+        </div>
+      )}
 
       {/* 중앙 이미지 버튼들 */}
       <div className="flex justify-center items-center h-full gap-[7vw] mt-[15vh]">
@@ -63,17 +72,9 @@ function Home() {
         </div>
 
         {/* 음악 토글 버튼 */}
-        <button
-          onClick={() => setIsMusicOn(!isMusicOn)}
-          className="fixed bottom-[5vh] right-[5vh]"
-        >
-          <img
-            src={isMusicOn ? MusicOn : MusicOff}
-            alt="음악 설정"
-            className="w-[16vw] max-w-[1000px] min-w-[70px]"
-          />
+        <button onClick={() => setIsMusicOn(!isMusicOn)} className="fixed bottom-[5vh] right-[5vh]">
+          <img src={isMusicOn ? MusicOn : MusicOff} alt="음악 설정" className="w-[16vw] max-w-[1000px] min-w-[70px]" />
         </button>
-
       </div>
     </div>
   );
