@@ -31,8 +31,6 @@ export const updateChildProfile = async (childId: number, updateData: UpdateChil
 
 // 자녀 삭제
 export const deleteChildProfile = async (childId: number) => {
-  console.log("Delete 요청 URL:", `/children/${childId}`);
-
   const response = await api.delete<DeleteChildProfileApiResponse>(`/children/${childId}`);
   return response.data.success;
 };
