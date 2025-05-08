@@ -8,6 +8,7 @@ import com.fairytale.FairyTale.domain.credential.presentation.dto.response.Check
 import com.fairytale.FairyTale.domain.credential.presentation.dto.response.OauthLoginLinkResponse;
 import com.fairytale.FairyTale.domain.credential.service.CredentialService;
 import com.fairytale.FairyTale.domain.credential.service.OauthProvider;
+import org.springframework.web.servlet.view.RedirectView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +37,16 @@ public class CredentialController {
     }
 
     @GetMapping("/oauth/kakao")
-    public void kakaoAuth(OauthCodeRequest oauthCodeRequest) {
-        log.info("code ======================= 코드값 실행");
-        log.info("code = {}",oauthCodeRequest.getCode());
-        // credentialService.getTokenToCode(OauthProvider.KAKAO, oauthCodeRequest.getCode());
+    public RedirectView kakaoAuth(@RequestParam("code") String code) {
+        log.info("카카오 OAuth 인증 코드 수신: {}", code);
+
+        CheckRegisteredResponse response = credentialService.getUserAvailableRegister(code, OauthProvider.KAKAO);
+
+        String redirectUrl = "http://localhost:5173/auth?"
+                + "idToken=" + response.getIdToken()
+                + "&isRegistered=" + response.getIsRegistered();
+
+        return new RedirectView(redirectUrl);
     }
 
     @GetMapping("/oauth/valid/register")
