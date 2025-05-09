@@ -15,17 +15,15 @@ import { useGetLetterBookList } from "../hooks/useGetLetterBookList"
 
 function LetterList() {
   const navigate = useNavigate();
-  const { selectedBookId, setSelectedBook } = useLetterStore();
+  const { selectedBookId, setSelectedBook } = useLetterStore();  // totalLetterBooks 관련 제거
 
   // React Query로 데이터 fetching
   const { data: letterBooks, isLoading, error } = useGetLetterBookList();
 
-  // 편지 나눈 책 제목 목록 확인
-  // 편지 나눈 책 제목 목록 확인
+  // 데이터 확인용 로그
   useEffect(() => {
-    if (letterBooks) {
-      console.log("전체 응답 데이터:", letterBooks);
-      console.log("현재 보유한 동화책 제목:", letterBooks?.book?.map(book => book.title) || []);
+    if (letterBooks?.data?.book) {
+      console.log("현재 보유한 동화책:", letterBooks.data.book);
     }
   }, [letterBooks]);
 
@@ -44,7 +42,7 @@ function LetterList() {
       return <div>편지함을 불러오는데 실패했습니다.</div>;
     }
 
-    if (!letterBooks?.book || letterBooks.book.length === 0) {
+    if (!letterBooks?.data?.book || letterBooks.data.book.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center h-full">
           <h2 className="font-bazzi text-outline-sm text-[7vh] mt-40 mb-4 text-center">
@@ -72,7 +70,7 @@ function LetterList() {
       );
     }
 
-    const selectedBook = letterBooks?.book.find(book => book.book_id === selectedBookId);
+    const selectedBook = letterBooks?.data?.book.find(book => book.book_id === selectedBookId);
     if (!selectedBook) return null;
 
     return (
@@ -126,8 +124,7 @@ function LetterList() {
             pt-[10vh] tablet2560:pt-48 px-[7.5vh]
             w-full flex flex-col justify-center">
               <ul className="space-y-3 mt-2 tablet2560:space-y-7 xl:space-y-4 font-maplestory text-lg tablet2560:text-4xl xl:text-xl">
-                {/* 로딩 중이거나 데이터가 없을 때 빈 배열로 처리 */}
-                {(letterBooks?.book || []).map((book) => (
+                {(letterBooks?.data?.book || []).map((book) => (  // totalLetterBooks 대신 letterBooks.book 사용
                   <li
                     key={book.book_id}
                     className={`flex items-center gap-2 tablet2560:gap-8 xl:gap-3 
@@ -140,7 +137,7 @@ function LetterList() {
                       alt="Letter"
                       className="w-[3vw] tablet2560:w-13"
                     />
-                    <span>{book.title}</span>
+                    <span className="font-bold">{book.title}</span>
                   </li>
                 ))}
               </ul>
