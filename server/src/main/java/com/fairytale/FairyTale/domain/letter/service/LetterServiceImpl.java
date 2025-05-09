@@ -1,6 +1,5 @@
 package com.fairytale.FairyTale.domain.letter.service;
 
-import com.fairytale.FairyTale.domain.book.domain.repository.BookRepository;
 import com.fairytale.FairyTale.domain.character.domain.Character;
 import com.fairytale.FairyTale.domain.character.domain.repository.CharacterRepository;
 import com.fairytale.FairyTale.domain.child.domain.Child;
@@ -33,7 +32,6 @@ public class LetterServiceImpl implements LetterService {
     private final CharacterRepository characterRepository;
     private final ChildRepository childRepository;
     private final LetterBoxRepository letterBoxRepository;
-    private final BookRepository bookRepository;
     private final UserUtils userUtils;
 
     @Override
