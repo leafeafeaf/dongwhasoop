@@ -35,7 +35,7 @@ function LetterDetail() {
       <BackButton onClick={handleBackButton} />
 
       {/* 상단 탭 버튼 */}
-      <div className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 flex gap-[10vh]">
+      {/* <div className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 flex gap-[10vh]">
         <div
           className={`cursor-pointer transition-transform ${activeTab === 'sent' ? 'scale-110 drop-shadow-lg' : 'opacity-80 hover:opacity-100'}`}
           onClick={() => handleTabChange('sent')}
@@ -48,7 +48,7 @@ function LetterDetail() {
         >
           <img src={send} alt="Received" className="w-[40vh]" />
         </div>
-      </div>
+      </div> */}
 
       <div className="flex justify-between items-center h-full px-10 pt-10
       xl:mt-20 
