@@ -10,7 +10,7 @@ import com.fairytale.FairyTale.domain.letter.domain.repository.LetterRepository;
 import com.fairytale.FairyTale.domain.letter.exception.LetterNotFoundException;
 import com.fairytale.FairyTale.domain.letter.presentation.dto.request.CreateLetterRequest;
 import com.fairytale.FairyTale.domain.letter.presentation.dto.response.LetterDetailResponse;
-import com.fairytale.FairyTale.domain.letter.presentation.dto.response.LetterListResponse;
+import com.fairytale.FairyTale.domain.letter.presentation.dto.response.LetterItemResponse;
 import com.fairytale.FairyTale.domain.letterbox.domain.LetterBox;
 import com.fairytale.FairyTale.domain.letterbox.domain.LetterBoxId;
 import com.fairytale.FairyTale.domain.letterbox.domain.repository.LetterBoxRepository;
@@ -18,9 +18,11 @@ import com.fairytale.FairyTale.domain.user.domain.User;
 import com.fairytale.FairyTale.global.error.exception.ErrorCode;
 import com.fairytale.FairyTale.global.error.exception.FairyTaleException;
 import com.fairytale.FairyTale.global.exception.UnauthorizedException;
+import com.fairytale.FairyTale.global.kafka.KafkaProducer;
 import com.fairytale.FairyTale.global.util.user.UserUtils;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ public class LetterServiceImpl implements LetterService {
     private final ChildRepository childRepository;
     private final LetterBoxRepository letterBoxRepository;
     private final UserUtils userUtils;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     @Transactional
@@ -75,34 +78,33 @@ public class LetterServiceImpl implements LetterService {
             .build();
 
         letterRepository.save(letter);
+
+        //답장 생성
+        kafkaProducer.sendWriteLetterCommand(letter.getId());
     }
 
 
     @Override
     @Transactional(readOnly = true)
-    public LetterListResponse getLettersByBookId(Long bookId) {
-        // 현재 로그인한 사용자 정보 가져오기
-        User currentUser = userUtils.getUserFromSecurityContext();
+    public Slice<LetterItemResponse> getLettersByBookId(Long bookId, Long childId,
+        Boolean messageType, Pageable pageable) {
 
         // 해당 책에 대한 현재 사용자의 모든 자녀들의 편지 목록 조회
-        List<Letter> letters = letterRepository.findLettersByBookIdAndUserId(bookId,
-            currentUser.getId());
-
-        return LetterListResponse.from(letters);
+        return letterRepository
+            .findByLetterBox_Book_IdAndLetterBox_Child_IdAndMessageType(bookId, childId,
+                messageType, pageable)
+            .map(LetterItemResponse::from);
     }
 
     @Override
     @Transactional
-    public LetterDetailResponse getLetterDetail(Long letterId) {
+    public LetterDetailResponse getLetterDetail(Long letterId, Long childId) {
         // 편지 정보 조회
         Letter letter = letterRepository.findById(letterId)
             .orElseThrow(() -> new LetterNotFoundException("존재하지 않는 편지입니다."));
 
-        // 현재 로그인한 사용자 정보 가져오기
-        User currentUser = userUtils.getUserFromSecurityContext();
-
         // 편지가 현재 사용자의 자녀에게 속한 것인지 확인
-        if (!letter.getLetterBox().getChild().getUser().getId().equals(currentUser.getId())) {
+        if (!letter.getLetterBox().getChild().getId().equals(childId)) {
             throw UnauthorizedException.EXCEPTION;
         }
 
