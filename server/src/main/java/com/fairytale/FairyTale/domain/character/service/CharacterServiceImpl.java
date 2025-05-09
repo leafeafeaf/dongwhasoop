@@ -4,7 +4,6 @@ import com.fairytale.FairyTale.domain.book.domain.Book;
 import com.fairytale.FairyTale.domain.book.domain.repository.BookRepository;
 import com.fairytale.FairyTale.domain.book.exception.NotFoundBookException;
 import com.fairytale.FairyTale.domain.character.domain.Character;
-import com.fairytale.FairyTale.domain.character.domain.repository.CharacterRepository;
 import com.fairytale.FairyTale.domain.character.presentation.dto.response.CharacterListResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CharacterServiceImpl implements CharacterService {
 
-    private final CharacterRepository characterRepository;
     private final BookRepository bookRepository;
 
     @Override
     public CharacterListResponse getCharactersByBookId(Long bookId) {
+
         // 책이 존재하는지 확인
         Book book = bookRepository.findById(bookId)
             .orElseThrow(() -> NotFoundBookException.EXCEPTION);

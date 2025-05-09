@@ -1,8 +1,6 @@
 package com.fairytale.FairyTale.domain.letter.service;
 
-import com.fairytale.FairyTale.domain.book.domain.Book;
 import com.fairytale.FairyTale.domain.book.domain.repository.BookRepository;
-import com.fairytale.FairyTale.domain.book.exception.NotFoundBookException;
 import com.fairytale.FairyTale.domain.character.domain.Character;
 import com.fairytale.FairyTale.domain.character.domain.repository.CharacterRepository;
 import com.fairytale.FairyTale.domain.child.domain.Child;
@@ -18,6 +16,8 @@ import com.fairytale.FairyTale.domain.letterbox.domain.LetterBox;
 import com.fairytale.FairyTale.domain.letterbox.domain.LetterBoxId;
 import com.fairytale.FairyTale.domain.letterbox.domain.repository.LetterBoxRepository;
 import com.fairytale.FairyTale.domain.user.domain.User;
+import com.fairytale.FairyTale.global.error.exception.ErrorCode;
+import com.fairytale.FairyTale.global.error.exception.FairyTaleException;
 import com.fairytale.FairyTale.global.exception.UnauthorizedException;
 import com.fairytale.FairyTale.global.util.user.UserUtils;
 import java.util.List;
@@ -44,7 +44,7 @@ public class LetterServiceImpl implements LetterService {
 
         // 캐릭터 정보 조회
         Character character = characterRepository.findById(characterId)
-            .orElseThrow(() -> new RuntimeException("존재하지 않는 캐릭터입니다."));
+            .orElseThrow(() -> new FairyTaleException(ErrorCode.CHARACTER_NOT_FOUND));
 
         // 자녀 정보 조회
         Child child = childRepository.findById(request.getChildId())
@@ -83,15 +83,12 @@ public class LetterServiceImpl implements LetterService {
     @Override
     @Transactional(readOnly = true)
     public LetterListResponse getLettersByBookId(Long bookId) {
-        // 책이 존재하는지 확인
-        Book book = bookRepository.findById(bookId)
-            .orElseThrow(() -> NotFoundBookException.EXCEPTION);
-
         // 현재 로그인한 사용자 정보 가져오기
         User currentUser = userUtils.getUserFromSecurityContext();
 
         // 해당 책에 대한 현재 사용자의 모든 자녀들의 편지 목록 조회
-        List<Letter> letters = letterRepository.findLettersByBookIdAndUserId(bookId, currentUser.getId());
+        List<Letter> letters = letterRepository.findLettersByBookIdAndUserId(bookId,
+            currentUser.getId());
 
         return LetterListResponse.from(letters);
     }
