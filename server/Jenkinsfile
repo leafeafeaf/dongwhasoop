@@ -86,6 +86,7 @@ pipeline {
                     --name backend \
                     --env-file .env \
                     --network fariytale_jenkins-network \
+                    --network-alias backend \
                     -p 8080:8080 \
                     backend-image:latest
                 '''
