@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLetterStore } from "../stores/letterStore";
+import { getLetterBookList } from "../api/letter";
 import mainpage from "../assets/images/mainpage/mainpage.webp";
 import letterlist from "../assets/images/letterbox/letterlist.webp";
-// import receive from "../assets/images/letterbox/receive.webp";
-// import send from "../assets/images/letterbox/send.webp";
 import readletter from "../assets/images/letterbox/readletter.webp";
 import unreadletter from "../assets/images/letterbox/unreadletter.webp";
 import picture from "../assets/images/letterbox/picture.webp";
@@ -11,46 +11,57 @@ import letterpicture from "../assets/images/letterbox/letterpicture.webp";
 import BackButton from "../components/commons/BackButton";
 import cat from "../assets/images/loading/cat2.webp"
 import monkey from "../assets/images/loading/monkey.webp"
-
+import { useGetLetterBookList } from "../hooks/useGetLetterBookList"
 
 function LetterList() {
   const navigate = useNavigate();
-  const [selectedBook, setSelectedBook] = useState<string | null>(null);
+  const { selectedBookId, setSelectedBook } = useLetterStore();
 
-  // 동화책별 편지 데이터 (예시)
-  const bookLetters = {
-    "금도끼 은도끼": [
-      { date: "2025.04.22", title: "산신령과 나눈 편지", id: "1" },
-      { date: "2025.04.15", title: "산신령과 나눈 편지", id: "2" },
-    ],
-    "아기 돼지 삼형제": [
-      { date: "2025.04.20", title: "엄마 돼지와 나눈 편지", id: "3" },
-      { date: "2025.04.10", title: "늑대와 나눈 편지", id: "4" },
-    ],
-    "백설공주": [
-      { date: "2025.04.20", title: "백설공주와 나눈 편지", id: "6" },
-      { date: "2025.04.17", title: "백설공주와 나눈 편지", id: "6" },
-      { date: "2025.04.12", title: "난쟁이와 나눈 편지", id: "7" },
-    ],
-    "토끼와 베짱이": [
-      { date: "2025.04.17", title: "토끼와 나눈 편지", id: "8" },
-      { date: "2025.04.08", title: "베짱이와 나눈 편지", id: "9" },
-    ],
-  };
+  // React Query로 데이터 fetching
+  const { data: letterBooks, isLoading, error } = useGetLetterBookList();
 
+  // 편지 나눈 책 제목 목록 확인
+  // 편지 나눈 책 제목 목록 확인
+  useEffect(() => {
+    if (letterBooks) {
+      console.log("전체 응답 데이터:", letterBooks);
+      console.log("현재 보유한 동화책 제목:", letterBooks?.book?.map(book => book.title) || []);
+    }
+  }, [letterBooks]);
+
+  // 편지 상세 페이지로 이동
   const handleLetterClick = (letterId: string) => {
-    // 편지 상세 페이지로 이동
     navigate(`/letterdetail/${letterId}`);
   };
 
+  // 선택되지 않은 경우 안내 메시지 표시
   const renderRightContent = () => {
-    // 동화책이 선택되지 않았을 때 안내 메시지와 동물 캐릭터 표시
-    if (!selectedBook) {
+    if (isLoading) {
+      return <div>로딩 중...</div>;
+    }
+
+    if (error) {
+      return <div>편지함을 불러오는데 실패했습니다.</div>;
+    }
+
+    if (!letterBooks?.book || letterBooks.book.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center h-full">
-          <h2
-            className="font-bazzi text-outline-sm text-[10vh] mt-40 mb-4 text-center"
-          >
+          <h2 className="font-bazzi text-outline-sm text-[7vh] mt-40 mb-4 text-center">
+            편지를 작성한 동화책이 없어요~
+          </h2>
+          <div className="flex items-end xl:pt-10 gap-40 mt-[5vh] mb-[7vh]">
+            <img src={cat} alt="Cat" className="w-[15vw] animate-shake1" />
+            <img src={monkey} alt="Monkey" className="w-[15vw] animate-shake2" />
+          </div>
+        </div>
+      );
+    }
+
+    if (!selectedBookId) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full">
+          <h2 className="font-bazzi text-outline-sm text-[10vh] mt-40 mb-4 text-center">
             동화책을 선택해주세요~
           </h2>
           <div className="flex items-end xl:pt-10 gap-40 mt-[5vh] mb-[7vh]">
@@ -61,42 +72,43 @@ function LetterList() {
       );
     }
 
-    // 선택된 동화책의 편지 목록 표시
-    const letters = bookLetters[selectedBook as keyof typeof bookLetters] || [];
+    const selectedBook = letterBooks?.book.find(book => book.book_id === selectedBookId);
+    if (!selectedBook) return null;
 
     return (
-      <div className="grid grid-cols-2 gap-24 xl:gap-8 tablet2560:gap-36 p-8">
-        {letters.map((letter, index) => (
-          <div
-            key={index}
-            className="relative cursor-pointer hover:scale-105 transition-transform"
-            onClick={() => handleLetterClick(letter.id)}
-          >
-            <img src={letterpicture} alt="Polaroid" className="w-[20vw] tablet2560:w-[30rem]" />
-            <div className="
-            text-maplestory font-bold absolute
-            top-10 text-sm
-            xl:top-16 xl:text-base xl:left-5 
-            tablet2560:top-8 tablet2560:left-11 tablet2560:text-3xl tablet2560:mt-20 
-            ms-6 text-gray-600">{letter.date}</div>
-            <div className="absolute 
-            text-base bottom-3 w-full text-center font-maplestory 
-            xl:bottom-6 xl:text-2xl
-            tablet2560:bottom-12 tablet2560:text-4xl">
-              {letter.title}
-            </div>
-          </div>
-        ))}
-      </div>
+      // <div className="grid grid-cols-2 gap-24 xl:gap-8 tablet2560:gap-36 p-8">
+      //   {letters.map((letter, index) => (
+      //     <div
+      //       key={index}
+      //       className="relative cursor-pointer hover:scale-105 transition-transform"
+      //       onClick={() => handleLetterClick(letter.id)}
+      //     >
+      //       <img src={letterpicture} alt="Polaroid" className="w-[20vw] tablet2560:w-[30rem]" />
+      //       <div className="
+      //       text-maplestory font-bold absolute
+      //       top-10 text-sm
+      //       xl:top-16 xl:text-base xl:left-5 
+      //       tablet2560:top-8 tablet2560:left-11 tablet2560:text-3xl tablet2560:mt-20 
+      //       ms-6 text-gray-600">{letter.date}</div>
+      //       <div className="absolute 
+      //       text-base bottom-3 w-full text-center font-maplestory 
+      //       xl:bottom-6 xl:text-2xl
+      //       tablet2560:bottom-12 tablet2560:text-4xl">
+      //         {letter.title}
+      //       </div>
+      //     </div>
+      //   ))}
+      // </div>
+      <div>선택한 동화의 편지 조회 api 연결 예정</div>
     );
   };
 
-  // 뒤로가기 핸들러
+  // 뒤로가기 처리
   const handleBackButton = () => {
-    if (selectedBook) {
-      setSelectedBook(null); // 동화책 선택 취소
+    if (selectedBookId) {
+      setSelectedBook(null);
     } else {
-      navigate(-1); // 이전 페이지로
+      navigate(-1);
     }
   };
 
@@ -114,38 +126,28 @@ function LetterList() {
             pt-[10vh] tablet2560:pt-48 px-[7.5vh]
             w-full flex flex-col justify-center">
               <ul className="space-y-3 mt-2 tablet2560:space-y-7 xl:space-y-4 font-maplestory text-lg tablet2560:text-4xl xl:text-xl">
-                <li
-                  className={`flex items-center gap-2 tablet2560:gap-8 xl:gap-3 ${selectedBook === "금도끼 은도끼" ? "bg-[#ECD5AB] bg-opacity-90" : "bg-[#e9ddc3] bg-opacity-40"} rounded-lg p-2 tablet2560:p-5 cursor-pointer hover:bg-opacity-100 transition-all`}
-                  onClick={() => setSelectedBook("금도끼 은도끼")}  >
-                  <img src={selectedBook === "금도끼 은도끼" ? readletter : unreadletter} alt="Letter" className="w-[3vw] tablet2560:w-13" />
-                  <span>금도끼 은도끼</span>
-                </li>
-                <li
-                  className={`flex items-center gap-4 tablet2560:gap-8 ${selectedBook === "아기 돼지 삼형제" ? "bg-[#ECD5AB] bg-opacity-90" : "bg-[#e9ddc3] bg-opacity-40"} rounded-lg p-2 tablet2560:p-5 cursor-pointer hover:bg-opacity-100 transition-all`}
-                  onClick={() => setSelectedBook("아기 돼지 삼형제")}
-                >
-                  <img src={selectedBook === "아기 돼지 삼형제" ? readletter : unreadletter} alt="Letter" className="w-[3vw] tablet2560:w-13" />
-                  <span>아기 돼지 삼형제</span>
-                </li>
-                <li
-                  className={`flex items-center gap-4 tablet2560:gap-8 ${selectedBook === "백설공주" ? "bg-[#ECD5AB] bg-opacity-90" : "bg-[#e9ddc3] bg-opacity-40"} rounded-lg p-2 tablet2560:p-5 cursor-pointer hover:bg-opacity-70 transition-all`}
-                  onClick={() => setSelectedBook("백설공주")}
-                >
-                  <img src={selectedBook === "백설공주" ? readletter : unreadletter} alt="Letter" className="w-[3vw] tablet2560:w-13" />
-                  <span>백설공주</span>
-                </li>
-                <li
-                  className={`flex items-center gap-4 tablet2560:gap-8 ${selectedBook === "토끼와 베짱이" ? "bg-[#ECD5AB] bg-opacity-90" : "bg-[#e9ddc3] bg-opacity-40"}  rounded-lg p-2 tablet2560:p-5 cursor-pointer hover:bg-opacity-70 transition-all`}
-                  onClick={() => setSelectedBook("토끼와 베짱이")}
-                >
-                  <img src={selectedBook === "토끼와 베짱이" ? readletter : unreadletter} alt="Letter" className="w-[3vw] tablet2560:w-13" />
-                  <span>토끼와 베짱이</span>
-                </li>
+                {/* 로딩 중이거나 데이터가 없을 때 빈 배열로 처리 */}
+                {(letterBooks?.book || []).map((book) => (
+                  <li
+                    key={book.book_id}
+                    className={`flex items-center gap-2 tablet2560:gap-8 xl:gap-3 
+                      ${selectedBookId === book.book_id ? "bg-[#ECD5AB] bg-opacity-90" : "bg-[#e9ddc3] bg-opacity-40"} 
+                      rounded-lg p-2 tablet2560:p-5 cursor-pointer hover:bg-opacity-100 transition-all`}
+                    onClick={() => setSelectedBook(book.book_id)}
+                  >
+                    <img
+                      src={selectedBookId === book.book_id ? readletter : unreadletter}
+                      alt="Letter"
+                      className="w-[3vw] tablet2560:w-13"
+                    />
+                    <span>{book.title}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
-          {/* Right Side - Dynamic Content */}
+          {/* 오른쪽 영역 - 선택 안내 문구 or 편지 목록록 */}
           <div className="ml-[45vw] tablet2560:ml-[1000px] xl:ml-[35vw] mt-0 h-screen flex items-center">
             {renderRightContent()}
           </div>
