@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Book, Letter, LetterSliceData } from '../types/letter';
+import { Book, Letter, LetterSliceData, LetterDetail } from '../types/letter';
 
 interface LetterState {
   // 동화책 조회
@@ -21,6 +21,10 @@ interface LetterState {
   
   messageType: 'sent' | 'received';
   setMessageType: (type: 'sent' | 'received') => void;
+
+  // 편지 상세 조회
+  selectedLetter: LetterDetail | null;
+  setSelectedLetter: (letter: LetterDetail | null) => void;
 }
 
 export const useLetterStore = create<LetterState>((set) => ({
@@ -43,5 +47,9 @@ export const useLetterStore = create<LetterState>((set) => ({
   
   messageType: 'sent',
   setMessageType: (type) => set({ messageType: type }),
+
+  // 편지 상세 조회
+  selectedLetter: null,
+  setSelectedLetter: (letter) => set({ selectedLetter: letter }),
 }));
 

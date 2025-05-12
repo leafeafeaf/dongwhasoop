@@ -60,3 +60,23 @@ export interface GetLetterListResponse {
   data: LetterSliceData;
   timeStamp: string;
 }
+
+// 편지 상세 
+export interface LetterDetail {
+  letter_id: number;
+  character_id: number;
+  character_name: string;
+  character_image_url: string | null;
+  letter_content: string;
+  audio_url: string | null;
+  is_read: boolean;
+  created_at: string;
+  messageType: boolean;
+}
+
+export interface GetLetterDetailResponse {
+  status: number;
+  success: boolean;
+  data: LetterDetail;
+  timeStamp: string;
+}
