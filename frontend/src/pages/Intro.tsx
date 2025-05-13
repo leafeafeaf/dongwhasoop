@@ -8,7 +8,7 @@ import { useBookStore } from "../stores/bookStore";
 function Intro() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { selectedBook } = useBookStore();  // 저장된 책 정보 사용
+  const { selectedBook } = useBookStore(); // 저장된 책 정보 사용
 
   if (!selectedBook || selectedBook.bookId !== Number(id)) {
     return <div className="text-white">책 정보를 찾을 수 없습니다.</div>;
@@ -25,13 +25,13 @@ function Intro() {
         어떻게 읽을까요?
       </h1>
 
-      <div className="absolute left-1/2 -translate-x-1/2 flex flex-col lg:flex-row justify-center items-center h-full gap-[10vh] lg:mt-[10vh]">
+      <div className="absolute left-1/2 -translate-x-1/2 flex lg:flex-row justify-center items-center h-full gap-[10vh] lg:mt-[10vh]">
         {/* 책 표지 + 제목 */}
         <div className="flex flex-col items-center">
           <img
-            src={selectedBook.imageUrl || '/default-book-cover.png'}
+            src={selectedBook.imageUrl || "/default-book-cover.png"}
             alt="책 표지"
-            className="w-[40vw] sm:w-[30vw] lg:w-[20vw] max-w-[700px] rounded-xl border-4 border-white shadow-lg"
+            className="w-[40vw] sm:w-[20vw] lg:w-[20vw] max-w-[700px] rounded-xl border-4 border-white shadow-lg"
           />
           <h2 className="mt-4 text-[4vh] sm:text-[5vh] font-bazzi text-center text-[#4e4e4e] text-outline-sm">
             {selectedBook.title}
