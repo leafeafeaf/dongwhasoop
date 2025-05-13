@@ -1,43 +1,35 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckIsRegistered, login } from "../api/authApi";
-import { LoginApiResponse } from "../types/auth";
 
 function KakaoCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const code = new URL(window.location.href).searchParams.get("code");
-    if (code) {
-      handleKakaoLogin(code);
-    }
-  }, []);
+    const searchParams = new URL(window.location.href).searchParams;
+    const accessToken = searchParams.get("access_token");
+    const refreshToken = searchParams.get("refresh_token"); // optional
+    const isNewUser = searchParams.get("isNewUser");
 
-  const handleKakaoLogin = async (code: string) => {
-    try {
-      // 회원인지 아닌지 확인
-      const { isRegistered, idToken } = await CheckIsRegistered(code);
-
-      if (isRegistered) {
-        // 기존 회원이면 프로필 페이지로
-        const loginData: LoginApiResponse["data"] = await login(idToken);
-        localStorage.setItem("accessToken", loginData.accessToken);
-        localStorage.setItem("refreshToken", loginData.refreshToken);
-        navigate("/profile");
-      } else {
-        // 신규회원이면 초기 세팅으로
-        navigate("/startsettings", {
-          state: {
-            idToken,
-          },
-        });
-      }
-    } catch (error) {
-      console.error("소셜 로그인 실패:", error);
+    if (!accessToken) {
+      alert("로그인에 실패했습니다. access_token이 없습니다.");
       navigate("/");
+      return;
     }
-  };
-  return <div>로그인 중입니다...</div>;
+
+    // 저장
+    localStorage.setItem("accessToken", accessToken);
+    if (refreshToken) {
+      localStorage.setItem("refreshToken", refreshToken);
+    }
+
+    if (isNewUser === "true") {
+      navigate("/startsettings");
+    } else {
+      navigate("/profile");
+    }
+  }, [navigate]);
+
+  return <div>로그인 처리 중입니다...</div>;
 }
 
 export default KakaoCallback;
