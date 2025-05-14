@@ -1,16 +1,15 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
-import writeletterbackground from "../assets/images/writeletter/writeletterback.webp";
-import endvoicerec from "../assets/images/settingpage/endvoicerec.webp";
-import recstory from "../assets/images/settingpage/recstory.webp";
-import send from "../assets/images/writeletter/send.webp";
-import BackButton from "../components/commons/BackButton";
-import Modal from "../components/commons/Modal";
-import { useLetterStore } from "../stores/letterStore";
-import { useWriteLetter } from "../hooks/useBook/useWriteLetter";
-import { useSelectedChild } from "../stores/useSelectedChild";
-import backSound from "../assets/music/back_sound.mp3";
+import writeletterbackground from "../../assets/images/writeletter/writeletterback.webp";
+import endvoicerec from "../../assets/images/settingpage/endvoicerec.webp";
+import recstory from "../../assets/images/settingpage/recstory.webp";
+import send from "../../assets/images/writeletter/send.webp";
+import BackButton from "../../components/commons/BackButton";
+import Modal from "../../components/commons/Modal";
+import { useLetterStore } from "../../stores/letterStore";
+import { useWriteLetter } from "../../hooks/useBook/useWriteLetter";
+import { useSelectedChild } from "../../stores/useSelectedChild";
 
 function WriteLetter() {
   const navigate = useNavigate();
@@ -76,7 +75,6 @@ function WriteLetter() {
   };
 
   const handleBack = () => {
-    new Audio(backSound).play();
     navigate("/sendwho", { state: { bookId } });
   };
 

@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import BackButton from "../components/commons/BackButton";
-import NextPage from "../assets/images/detailpage/nextpage.webp";
-import PrevPage from "../assets/images/detailpage/prevpage.webp";
-import RestartBook from "../assets/images/detailpage/restart.webp";
-import Modal from "../components/commons/Modal";
-import { useBookStore } from "../stores/bookStore";
+import BackButton from "../../components/commons/BackButton";
+import NextPage from "../../assets/images/detailpage/nextpage.webp";
+import PrevPage from "../../assets/images/detailpage/prevpage.webp";
+import RestartBook from "../../assets/images/detailpage/restart.webp";
+import Modal from "../../components/commons/Modal";
+import { useBookStore } from "../../stores/bookStore";
 
 function BookDetail() {
   const navigate = useNavigate();
@@ -101,9 +101,7 @@ function BookDetail() {
       <div className="absolute bottom-[35vh] w-full flex justify-center gap-[70vw] z-[10]">
         {/* 이전 버튼 */}
         {currentPage > 0 ? (
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-          >
+          <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}>
             <img src={PrevPage} alt="이전" className="w-[10vw] max-w-[200px]" />
           </button>
         ) : (

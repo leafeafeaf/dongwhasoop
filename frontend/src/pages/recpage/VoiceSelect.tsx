@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import mainpage from "../assets/images/mainpage/mainpage.webp";
-import BackButton from "../components/commons/BackButton";
-import RightButton from "../assets/buttons/rightbutton.webp";
-import RecAlert from "../assets/images/settingpage/recalert.webp";
-import Mother from "../assets/images/settingpage/mother.webp";
-import Father from "../assets/images/settingpage/father.webp";
-import YetMother from "../assets/images/settingpage/yetmother.webp";
-import YetFather from "../assets/images/settingpage/yetfather.webp";
-import Modal from "../components/commons/Modal";
+import mainpage from "../../assets/images/mainpage/mainpage.webp";
+import BackButton from "../../components/commons/BackButton";
+import RightButton from "../../assets/buttons/rightbutton.webp";
+import RecAlert from "../../assets/images/settingpage/recalert.webp";
+import Mother from "../../assets/images/settingpage/mother.webp";
+import Father from "../../assets/images/settingpage/father.webp";
+import YetMother from "../../assets/images/settingpage/yetmother.webp";
+import YetFather from "../../assets/images/settingpage/yetfather.webp";
+import Modal from "../../components/commons/Modal";
+import btnSound from "../../assets/music/btn_sound.mp3";
 
 function StartSettings() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedParent, setSelectedParent] = useState<
-    "mother" | "father" | null
-  >(null);
+  const [selectedParent, setSelectedParent] = useState<"mother" | "father" | null>(null);
 
   const handleMotherClick = () => {
     setSelectedParent("mother");
@@ -27,10 +26,7 @@ function StartSettings() {
   };
 
   return (
-    <div
-      className="fixed inset-0 w-screen h-screen bg-cover bg-center"
-      style={{ backgroundImage: `url(${mainpage})` }}
-    >
+    <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
       <BackButton to="/recinfo" />
 
       <Modal
@@ -47,14 +43,17 @@ function StartSettings() {
             <img src={RecAlert} alt="경고안내문" className="w-full h-auto" />
 
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <h1 className="text-[8vh] font-bazzi text-center text-outline-ss mt-4">
+              <h1 className="text-[7vh] font-bazzi text-center text-outline-ss mt-[11vh]">
                 녹음하는 사람은 누구인가요?
               </h1>
 
-              <div className="flex justify-center items-center gap-5">
+              <div className="flex justify-center items-center gap-5 mt-[2vh]">
                 <button
                   className="hover:scale-105 transition-transform"
-                  onClick={handleMotherClick}
+                  onClick={() => {
+                    new Audio(btnSound).play();
+                    handleMotherClick();
+                  }}
                 >
                   <img
                     src={selectedParent === "mother" ? Mother : YetMother}
@@ -64,7 +63,10 @@ function StartSettings() {
                 </button>
                 <button
                   className="hover:scale-105 transition-transform"
-                  onClick={handleFatherClick}
+                  onClick={() => {
+                    new Audio(btnSound).play();
+                    handleFatherClick();
+                  }}
                 >
                   <img
                     src={selectedParent === "father" ? Father : YetFather}
@@ -82,6 +84,7 @@ function StartSettings() {
       <div className="absolute w-[15vw] max-w-[300px] right-0 mr-[10vh] top-[40vh]">
         <button
           onClick={() => {
+            new Audio(btnSound).play();
             if (selectedParent) {
               navigate("/voicerec", {
                 state: {

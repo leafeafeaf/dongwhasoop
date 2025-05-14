@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { useChildrenStore } from "../stores/useChildrenStore";
-import { useDeleteChildProfile } from "../hooks/useDeleteChildProfile";
-import { useUpdateChildProfile } from "../hooks/useUpdateChildProfile";
-import mainpage from "../assets/images/mainpage/mainpage.webp";
-import treeBox from "../assets/images/settingpage/treebox.webp";
-import DeleteBtn from "../assets/images/settingpage/deletebtn.webp";
-import EditBtn from "../assets/images/settingpage/editbtn.webp";
-import BackButton from "../components/commons/BackButton";
-import cat from "../assets/images/settingpage/cat.webp";
-import dog from "../assets/images/settingpage/dog.webp";
-import bear from "../assets/images/settingpage/bear.webp";
-import chik from "../assets/images/settingpage/chik.webp";
-import panda from "../assets/images/settingpage/panda.webp";
+import { useChildrenStore } from "../../stores/useChildrenStore";
+import { useDeleteChildProfile } from "../../hooks/useDeleteChildProfile";
+import { useUpdateChildProfile } from "../../hooks/useUpdateChildProfile";
+import mainpage from "../../assets/images/mainpage/mainpage.webp";
+import treeBox from "../../assets/images/settingpage/treebox.webp";
+import DeleteBtn from "../../assets/images/settingpage/deletebtn.webp";
+import EditBtn from "../../assets/images/settingpage/editbtn.webp";
+import BackButton from "../../components/commons/BackButton";
+import cat from "../../assets/images/settingpage/cat.webp";
+import dog from "../../assets/images/settingpage/dog.webp";
+import bear from "../../assets/images/settingpage/bear.webp";
+import chik from "../../assets/images/settingpage/chik.webp";
+import panda from "../../assets/images/settingpage/panda.webp";
+import btnSound from "../../assets/music/btn_sound.mp3";
 
 interface ChildProfile {
   childId: number;
@@ -56,6 +57,7 @@ function EditingProfile() {
   }, [childId, children, editingChild]);
 
   const handleSave = async () => {
+    new Audio(btnSound).play();
     if (!editingChild?.childName) {
       alert("이름을 입력해주세요");
       return;
@@ -78,6 +80,7 @@ function EditingProfile() {
   };
 
   const handleDelete = () => {
+    new Audio(btnSound).play();
     if (!editingChild?.childId) {
       console.warn("childId 에러:", editingChild);
       return;

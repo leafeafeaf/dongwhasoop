@@ -2,38 +2,38 @@ import { useEffect, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 // import { useAuth } from "./hooks/useAuth";
 import Login from "./pages/Login";
-import BookEnd from "./pages/BookEnd";
+import BookEnd from "./pages/bookpage/BookEnd";
 import Intro from "./pages/Intro";
-import IntroBook from "./pages/IntroBook";
-import BookList from "./pages/BookList";
-import BookLoading from "./pages/BookLoading";
+import IntroBook from "./pages/bookpage/IntroBook";
+import BookList from "./pages/bookpage/BookList";
+import BookLoading from "./pages/bookpage/BookLoading";
 import Home from "./pages/Home";
 import Loading from "./pages/Loading";
-import LetterDetail from "./pages/LetterDetail";
-import LetterList from "./pages/LetterList";
-import Profile from "./pages/Profile";
-import RecInfo from "./pages/RecInfo";
-import Settings from "./pages/Settings";
-import SongDetail from "./pages/SongDetail";
-import SongEnd from "./pages/SongEnd";
-import StartSettings from "./pages/StartSettings";
-import VoiceSelect from "./pages/VoiceSelect";
-import VoiceRec from "./pages/VoiceRec";
-import WriteLetter from "./pages/WriteLetter";
-import BookDetail from "./pages/BookDetail";
-import SendWho from "./pages/SendWho";
-import SendLetter from "./pages/SendLetter";
-import RecSuccess from "./pages/RecSuccess";
-import KidSettings from "./pages/KidSettings";
-import EditProfile from "./pages/EditProfile";
-import EditingProfile from "./pages/EditingProfile";
+import LetterDetail from "./pages/letterpage/LetterDetail";
+import LetterList from "./pages/letterpage/LetterList";
+import Profile from "./pages/profilepage/Profile";
+import RecInfo from "./pages/recpage/RecInfo";
+import Settings from "./pages/profilepage/Settings";
+import SongDetail from "./pages/songpage/SongDetail";
+import SongEnd from "./pages/songpage/SongEnd";
+import StartSettings from "./pages/profilepage/StartSettings";
+import VoiceSelect from "./pages/recpage/VoiceSelect";
+import VoiceRec from "./pages/recpage/VoiceRec";
+import WriteLetter from "./pages/letterpage/WriteLetter";
+import BookDetail from "./pages/bookpage/BookDetail";
+import SendWho from "./pages/letterpage/SendWho";
+import SendLetter from "./pages/letterpage/SendLetter";
+import RecSuccess from "./pages/recpage/RecSuccess";
+import KidSettings from "./pages/profilepage/KidSettings";
+import EditProfile from "./pages/profilepage/EditProfile";
+import EditingProfile from "./pages/profilepage/EditingProfile";
 import KakaoCallback from "./pages/KakaoCallback";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import AddingProfile from "./pages/AddingProfile";
+import AddingProfile from "./pages/profilepage/AddingProfile";
 import TestApiPage from "./pages/TestApiPage";
+import Auth from "./pages/Auth";
 import bgm from "./assets/music/fairytale_bgm.mp3";
 import { useMusicStore } from "./stores/musicStore";
-
 
 function App() {
   // const navigate = useNavigate();
@@ -56,8 +56,8 @@ function App() {
     audioRef.current = new Audio(bgm);
     audioRef.current.loop = true;
     audioRef.current.volume = 0.5;
-    audioRef.current.muted = true;  // 초기에 음소거 상태로 설정
-    
+    audioRef.current.muted = true; // 초기에 음소거 상태로 설정
+
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -68,7 +68,7 @@ function App() {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.muted = !isPlaying;  // isPlaying 상태에 따라 음소거 토글
+      audioRef.current.muted = !isPlaying; // isPlaying 상태에 따라 음소거 토글
       if (isPlaying) {
         audioRef.current.play();
         console.log("배경음악이 재생됩니다.");
@@ -112,6 +112,7 @@ function App() {
         <Route path="/addingprofile" element={<AddingProfile></AddingProfile>}></Route>
         <Route path="/auth" element={<KakaoCallback></KakaoCallback>}></Route>
         <Route path="/testapipage" element={<TestApiPage></TestApiPage>}></Route>
+        <Route path="/auth" element={<Auth></Auth>}></Route>
       </Routes>
     </>
   );
