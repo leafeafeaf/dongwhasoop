@@ -28,6 +28,13 @@ function WriteLetter() {
 
   useEffect(() => {
     setLetterContent(transcript);
+    // Use setTimeout to ensure scroll happens after DOM update
+    setTimeout(() => {
+      const textContainer = document.querySelector('.letter-content-container');
+      if (textContainer) {
+        textContainer.scrollTop = textContainer.scrollHeight;
+      }
+    }, 0);
   }, [transcript, setLetterContent]);
 
   useEffect(() => {
@@ -88,8 +95,10 @@ function WriteLetter() {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirmSend} type="send" />
 
       {/* 녹음 보이스 텍스트 변환 */}
-      <div className="absolute left-[20vw] top-[30vh] bg-white/80 rounded-xl p-4 w-[40vw] tablet2560:w-[40vw] text-[4vh] font-maplestory">
-        <p>{letterContent || "보내고 싶은 편지 내용을 녹음해주세요."}</p>
+      <div className="absolute bg-white/80 rounded-xl p-4 w-[45vw] text-[3.7vh] font-maplestory overflow-y-auto
+      left-[18vw] top-[23vh] max-h-[55vh]  
+      tablet2560:left-[30vh] tablet2560:top-[30vh] tablet2560:w-[44vw] tablet2560:max-h-[48vh]    ">
+        <p>{letterContent || "녹음하기 버튼을 눌러 편지 내용을 녹음해주세요."}</p>
       </div>
 
       <div className="fixed right-12 top-1/2 -translate-y-1/2 flex flex-col gap-4 px-[2vh] md:px-[4vh] xl:px-[8vh]">
