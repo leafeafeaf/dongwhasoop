@@ -10,6 +10,7 @@ import Modal from "../../components/commons/Modal";
 import { useLetterStore } from "../../stores/letterStore";
 import { useWriteLetter } from "../../hooks/useBook/useWriteLetter";
 import { useSelectedChild } from "../../stores/useSelectedChild";
+import btnSound from "../../assets/music/btn_sound.mp3";
 
 function WriteLetter() {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ function WriteLetter() {
   }, []);
 
   const handleRecord = () => {
+    new Audio(btnSound).play();
     if (!isListening) {
       SpeechRecognition.startListening({ continuous: true, language: "ko-KR" });
     } else {
@@ -55,7 +57,11 @@ function WriteLetter() {
   };
 
   const handleSendClick = () => {
-    if (!hasRecorded) return alert("녹음을 먼저 완료해주세요.");
+    new Audio(btnSound).play();
+    if (!hasRecorded || !letterContent.trim()) {
+      setIsModalOpen(true);
+      return;
+    }
     console.log("편지 대상:", { characterId, bookId });
     console.log("녹음한 텍스트:", transcript);
     console.log("편지 내용", letterContent);
@@ -92,7 +98,13 @@ function WriteLetter() {
     >
       <BackButton onClick={handleBack} />
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirmSend} type="send" />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={letterContent.trim() ? handleConfirmSend : () => setIsModalOpen(false)}
+        type={letterContent.trim() ? "send" : "cannotsend"}
+        showCancelButton={!!letterContent.trim()}
+      />
 
       {/* 녹음 보이스 텍스트 변환 */}
       <div className="absolute bg-white/80 rounded-xl p-4 w-[45vw] text-[3.7vh] font-maplestory overflow-y-auto
@@ -112,7 +124,7 @@ function WriteLetter() {
         </button>
 
         {/* 편지 보내기 */}
-        <button onClick={handleSendClick} disabled={!hasRecorded}>
+        <button onClick={handleSendClick}>
           <img src={send} alt="send" className="w-[20vw] max-w-[1200px] min-w-[100px] opacity-100" />
         </button>
       </div>
