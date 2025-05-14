@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { UseMutationResult, useMutation } from "@tanstack/react-query";
 import { login } from "../api/authApi";
 import { LoginApiResponse } from "../types/auth";
 import { useAppStore } from "../stores/useAppStore";
@@ -7,15 +7,15 @@ import { useAppStore } from "../stores/useAppStore";
 export const useLogin = () => {
   const setUserProfile = useAppStore((state) => state.setUserProfile);
 
-  return useMutation({
+  return useMutation<LoginApiResponse, Error, string>({
     mutationFn: (idToken: string) => login(idToken),
 
-    onSuccess: (data: LoginApiResponse["data"]) => {
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
+    onSuccess: (data) => {
+      localStorage.setItem("accessToken", data.data.accessToken);
+      localStorage.setItem("refreshToken", data.data.refreshToken);
 
       setUserProfile({
-        isNew: data.isNew,
+        isNew: data.data.isNew,
       });
     },
 
