@@ -39,7 +39,7 @@ function Intro() {
         </div>
 
         {/* 동요, 동화 버튼 */}
-        <div className="flex flex-col gap-[4vh] mt-[4vh] lg:mb-[15vh]">
+        <div className="flex flex-col gap-[2vh] mt-[4vh] lg:mb-[15vh]">
           <button onClick={() => navigate(`/introbook/${id}`)}>
             <img src={Fairytale} alt="동화" className="w-[25vw]" />
           </button>

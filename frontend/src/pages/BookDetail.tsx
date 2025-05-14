@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import BackButton from "../components/commons/BackButton";
@@ -11,8 +11,8 @@ import { useBookStore } from "../stores/bookStore";
 function BookDetail() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { id } = useParams();
   const bookPages = useBookStore((state) => state.bookPages);
+  const bookID = useBookStore((state) => state.selectedBook?.bookId);
   const [audio] = useState(new Audio());  // 오디오 객체 생성
 
   const handleBackClick = () => {
@@ -24,9 +24,9 @@ function BookDetail() {
   // 데이터가 없으면 인트로 페이지로 리다이렉트
   useEffect(() => {
     if (!bookPages) {
-      navigate(`/intro/${id}`);
+      navigate(`/intro/${bookID}`);
     }
-  }, [bookPages, id, navigate]);
+  }, [bookPages, bookID, navigate]);
 
   // 현재 페이지의 컨텐츠
   const currentContent = bookPages?.[currentPage];
@@ -72,7 +72,7 @@ function BookDetail() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={() => navigate(`/intro/${id}`)}
+        onConfirm={() => navigate(`/intro/${bookID}`)}
         type="back"
       />
 
@@ -116,7 +116,7 @@ function BookDetail() {
             <img src={NextPage} alt="다음" className="w-[10vw] max-w-[200px]" />
           </button>
         ) : (
-          <button onClick={() => navigate("/bookend", { state: { id } })}>
+          <button onClick={() => navigate("/bookend", { state: { bookID } })}>
             <img
               src={NextPage}
               alt="넘어가기"
@@ -132,7 +132,7 @@ function BookDetail() {
           <img
             src={RestartBook}
             alt="다시 듣기"
-            className="w-[13vw] h-[18vh]"
+            className="w-[10vw]"
           />
         </button>
       </div>
