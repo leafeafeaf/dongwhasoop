@@ -48,7 +48,7 @@ function SongDetail() {
 
   return (
     <div className="fixed inset-0 w-screen h-screen flex flex-col items-center justify-center">
-      <BackButton to={`/intro/${id}`} />
+      <BackButton onClick={() => navigate(-1)} />
 
       {songUrl ? (
         <div className="w-full h-full">
