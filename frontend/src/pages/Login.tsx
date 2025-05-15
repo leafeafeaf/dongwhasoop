@@ -4,7 +4,6 @@ import KaKaoLogin from "../components/commons/KaKaoLoginButton.tsx";
 
 function Login() {
   return (
-    /* 페이지마다 이미지 지정하는 법! */
     <div
       className="fixed inset-0 w-screen h-screen bg-cover bg-center text-white"
       style={{ backgroundImage: `url(${LoginBackground})` }}
