@@ -29,6 +29,12 @@ function StartSettings() {
     if (childStatus === "true") setIsChildAdded(true);
   }, []);
 
+  useEffect(() => {
+    if (idToken) {
+      localStorage.setItem("idToken", idToken);
+    }
+  }, [idToken]);
+
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
       <h1 className="text-[8vh] font-bazzi text-black-600 text-center text-outline-sm mt-[6vw] tablet2560:mt-[11vw]">
