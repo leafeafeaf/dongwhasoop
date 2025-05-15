@@ -3,11 +3,9 @@
 # 가상 환경 활성화 .venv\Scripts\activate.bat
 # 서버 실행 uvicorn main:app --reload
 from fastapi import FastAPI, UploadFile, File
-
 from contextlib import asynccontextmanager
 import asyncio
 
-from db.db import database
 from kafka.producer import start_producer, stop_producer, send_message
 from kafka.consumer import consume_messages
 from config import KAFKA_TOPIC
@@ -21,13 +19,11 @@ consumer_task: asyncio.Task # 백그라운드 태스크 (지속적으로 카프�
 async def lifespan(app: FastAPI):
     global consumer_task
 
-    await database.connect()
     await start_producer()
     consumer_task = asyncio.create_task(consume_messages())
     try:
         yield
     finally:
-        await database.disconnect()
         await stop_producer()
         if consumer_task:
             consumer_task.cancel()
