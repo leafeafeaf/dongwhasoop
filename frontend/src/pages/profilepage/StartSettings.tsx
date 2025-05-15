@@ -16,8 +16,9 @@ import axios from "axios";  // Add this import at the top
 function StartSettings() {
   const navigate = useNavigate();
   const location = useLocation();
-  const idToken = location.state?.idToken;
-  const { mutate: registerUser } = useRegisterUser(idToken);
+  const idTokenFromLocation = location.state?.idToken;
+  const [idToken, setIdToken] = useState(localStorage.getItem("idToken") || idTokenFromLocation);
+  const { mutate: registerUser } = useRegisterUser(idToken || "");
 
   const [isVoiceRecorded, setIsVoiceRecorded] = useState(false);
   const [isChildAdded, setIsChildAdded] = useState(false);
@@ -31,10 +32,11 @@ function StartSettings() {
   }, []);
 
   useEffect(() => {
-    if (idToken) {
-      localStorage.setItem("idToken", idToken);
+    if (idTokenFromLocation) {
+      localStorage.setItem("idToken", idTokenFromLocation);
+      setIdToken(idTokenFromLocation);
     }
-  }, [idToken]);
+  }, [idTokenFromLocation]);
 
   return (
     <div className="fixed inset-0 w-screen h-screen bg-cover bg-center" style={{ backgroundImage: `url(${mainpage})` }}>
@@ -96,6 +98,7 @@ function StartSettings() {
             };
 
             console.log("Payload structure:", payload);  // 자세한 로깅
+            console.log("ID Token:", idToken);
 
             registerUser(payload, {
               onSuccess: () => {
