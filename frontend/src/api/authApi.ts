@@ -21,7 +21,8 @@ export const CheckIsRegistered = async (code: string) => {
 };
 
 // 회원가입
-export const registerUser = async (idToken: string, requestData: RegisterUserRequest) => {
+export const registerUser = async (requestData: RegisterUserRequest) => {
+  const idToken = localStorage.getItem("idToken");
   const response = await api.post<RegisterUserResponse>("/credentials", requestData, {
     headers: {
       Authorization: `Bearer ${idToken}`, // 로그인 전이라 accessToken은 없음
