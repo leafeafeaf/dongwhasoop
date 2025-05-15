@@ -1,31 +1,52 @@
-// src/pages/Auth.tsx
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { CheckIsRegistered } from "../api/authApi";
+import { useLogin } from "../hooks/useLogin";
 
 function Auth() {
   const navigate = useNavigate();
+  const loginMutation = useLogin();
 
   useEffect(() => {
     const searchParams = new URL(window.location.href).searchParams;
-    const idToken = searchParams.get("idToken");
-    const isRegistered = searchParams.get("isRegistered");
+    const code = searchParams.get("code");
 
-    if (!idToken) {
-      alert("로그인에 실패했습니다. idToken이 없습니다.");
+    if (!code) {
+      alert("로그인 실패: 인가 코드 없음");
       navigate("/");
       return;
     }
 
-    // ✅ 1. idToken을 저장 (access_token 대신)
-    localStorage.setItem("access_token", idToken); // 네 앱에서 access_token처럼 쓰는 용도라면 이름은 그대로 둬도 됨
+    // ✅ code → idToken + isRegistered 받아오기
+    CheckIsRegistered(code)
+      .then(({ idToken, isRegistered }) => {
+        if (!idToken) {
+          alert("로그인 실패: idToken 없음");
+          navigate("/");
+          return;
+        }
 
-    // ✅ 2. 등록 여부에 따라 분기
-    if (isRegistered === "false") {
-      navigate("/startsettings"); // 신규 회원
-    } else {
-      navigate("/home"); // 기존 회원
-    }
-  }, [navigate]);
+        // ✅ 로그인 진행 (토큰 저장 및 상태 관리)
+        loginMutation.mutate(idToken, {
+          onSuccess: () => {
+            if (isRegistered === false) {
+              navigate("/startsettings");
+            } else {
+              navigate("/home");
+            }
+          },
+          onError: () => {
+            alert("로그인 처리 중 오류 발생");
+            navigate("/");
+          },
+        });
+      })
+      .catch((err) => {
+        console.error("code → idToken 요청 실패", err);
+        alert("로그인에 실패했습니다.");
+        navigate("/");
+      });
+  }, [navigate, loginMutation]);
 
   return <div className="text-white text-center mt-[30vh] text-3xl">로그인 처리 중입니다...</div>;
 }
