@@ -95,7 +95,7 @@ function StartSettings() {
             registerUser(payload, {
               onSuccess: () => {
                 alert("회원가입 완료!");
-                navigate("/home");
+                navigate("/profile");
               },
               onError: (error) => {
                 if (axios.isAxiosError(error)) {
