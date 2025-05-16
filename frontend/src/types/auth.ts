@@ -17,8 +17,8 @@ export interface RegisterUserRequest {
   };
   voice: {
     data: string;
-    format: string;
-    gender: "MALE" | "FEMALE";
+    format: "mp3" | "wav";
+    isMale: boolean;
   };
 }
 
