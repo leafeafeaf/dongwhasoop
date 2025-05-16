@@ -4,10 +4,20 @@ import DeleteUserModal from "./DeleteUserModal";
 function DeleteAccountButton() {
   const [showModal, setShowModal] = useState(false);
 
+  const openKakaoAuthPopup = () => {
+    const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
+    const REDIRECT_URI = import.meta.env.VITE_KAKAO_POPUP_REDIRECT_URI;
+    const authUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+    const popup = window.open(authUrl, "kakaoPopup", "width=500,height=600");
+    return popup;
+  };
+
   const handleConfirmDelete = () => {
-    const code = localStorage.getItem("authCode");
-    if (!code) {
-      alert("탈퇴를 위한 인증 코드가 없습니다.");
+    const popup = openKakaoAuthPopup();
+
+    if (!popup) {
+      alert("팝업을 허용해주세요.");
       return;
     }
 
