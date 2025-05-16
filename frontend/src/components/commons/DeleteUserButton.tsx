@@ -9,6 +9,7 @@ function DeleteAccountButton() {
     const confirmed = window.confirm("정말 탈퇴하시겠습니까?");
     if (!confirmed) return;
 
+    console.log("회원탈퇴 요청 시작 - code: DUMMY");
     deleteUserMutation.mutate("DUMMY", {
       onSuccess: () => {
         alert("회원탈퇴가 완료되었습니다.");
