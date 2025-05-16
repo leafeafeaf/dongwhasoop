@@ -80,25 +80,6 @@ function StartSettings() {
             const voice = JSON.parse(localStorage.getItem("voice") || "{}");
             const currentIdToken = localStorage.getItem("idToken");
 
-            if (!currentIdToken) {
-              console.error("No idToken found");
-              alert("인증 정보가 없습니다. 다시 로그인해주세요.");
-              return;
-            }
-
-            // 데이터 구조 검증
-            if (!children.name || !children.mascotId) {
-              console.error("Invalid child data:", children);
-              alert("자녀 정보가 올바르지 않습니다.");
-              return;
-            }
-
-            if (!voice.data || !voice.format || !voice.gender) {
-              console.error("Invalid voice data:", voice);
-              alert("음성 정보가 올바르지 않습니다.");
-              return;
-            }
-
             const payload = {
               children: children,
               voice: {
@@ -108,9 +89,8 @@ function StartSettings() {
               },
             };
 
-            console.log("Payload structure:", payload); // 자세한 로깅
+            console.log("Payload structure:", payload); 
             console.log("ID Token:", idToken);
-            console.log("📦 JSON.stringify payload:", JSON.stringify(payload, null, 2));
 
             registerUser(payload, {
               onSuccess: () => {
