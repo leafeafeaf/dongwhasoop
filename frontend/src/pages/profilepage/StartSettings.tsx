@@ -138,7 +138,7 @@ function StartSettings() {
               });
             }}
           >
-            <img src={Next} alt="등록하기" className="w-[23vh] tablet2560:w-[13vw]" />
+            <img src={Next} alt="등록 하기" className="w-[23vh] tablet2560:w-[13vw]" />
           </button>
         )}
       </div>
