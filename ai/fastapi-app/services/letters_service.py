@@ -6,7 +6,6 @@ from sqlalchemy import select, insert
 from db.models import characters, letters, children
 from services.openai_client import ask_chatgpt
 from config import VOICE_TYPE_URLS
-from services.tts_service import generate_tts
 import asyncio
 
 async def generate_letter(session: AsyncSession, letter_id: int):
@@ -65,8 +64,8 @@ async def generate_letter(session: AsyncSession, letter_id: int):
   if not voice_url:
     voice_url = VOICE_TYPE_URLS.get(1)
 
-  tts_url = await generate_tts(ai_letter, speaker_url=voice_url)
-
+  # tts_url = await generate_tts(ai_letter, speaker_url=voice_url)
+  tts_url = ""
   # 6. DB 저장
   # 7. DB 저장
   query = insert(letters).values(

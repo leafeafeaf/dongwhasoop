@@ -1,5 +1,4 @@
 # # services/tts_service.py
-import torch
 import torchaudio
 from zonos.model import Zonos
 from zonos.conditioning import make_cond_dict
@@ -16,25 +15,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from db.models import story_pages, user_voices, page_audios
 from sqlalchemy import select, and_, outerjoin, null, insert
 from kafka.producer import send_result_message
+from services.global_task_queue import get_task_queue
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(device + "로 실행 중")
-
-# 모델은 모듈 로딩 시 한 번만 초기화
-model = Zonos.from_pretrained("Zyphra/Zonos-v0.1-transformer", device=device)
-torch.manual_seed(421)
-
-# Index: [행복, 슬픔, 역겨움, 공포, 놀람, 분노, 기타1, 기타2]
-emotion = {
-    1: [0.6, 0.05, 0.05, 0.05, 0.1, 0.05, 0.05, 0.05],  # 행복
-    2: [0.05, 0.6, 0.1, 0.1, 0.05, 0.05, 0.025, 0.025],  # 슬픔
-    3: [0.05, 0.1, 0.6, 0.05, 0.05, 0.05, 0.05, 0.05],  # 역겨움
-    4: [0.05, 0.1, 0.05, 0.6, 0.1, 0.05, 0.025, 0.025],  # 공포
-    5: [0.1, 0.05, 0.05, 0.1, 0.6, 0.05, 0.025, 0.025],  # 놀람
-    6: [0.05, 0.05, 0.05, 0.05, 0.05, 0.7, 0.025, 0.025],  # 분노
-    7: [0.05, 0.05, 0.05, 0.05, 0.1, 0.05, 0.6, 0.05],    # 기타1 (몽환, 평온 등)
-    8: [0.1, 0.1, 0.05, 0.1, 0.1, 0.1, 0.15, 0.3],        # 기본(중립)
-}
+# # Index: [행복, 슬픔, 역겨움, 공포, 놀람, 분노, 기타1, 기타2]
+# emotion = {
+#     1: [0.6, 0.05, 0.05, 0.05, 0.1, 0.05, 0.05, 0.05],  # 행복
+#     2: [0.05, 0.6, 0.1, 0.1, 0.05, 0.05, 0.025, 0.025],  # 슬픔
+#     3: [0.05, 0.1, 0.6, 0.05, 0.05, 0.05, 0.05, 0.05],  # 역겨움
+#     4: [0.05, 0.1, 0.05, 0.6, 0.1, 0.05, 0.025, 0.025],  # 공포
+#     5: [0.1, 0.05, 0.05, 0.1, 0.6, 0.05, 0.025, 0.025],  # 놀람
+#     6: [0.05, 0.05, 0.05, 0.05, 0.05, 0.7, 0.025, 0.025],  # 분노
+#     7: [0.05, 0.05, 0.05, 0.05, 0.1, 0.05, 0.6, 0.05],    # 기타1 (몽환, 평온 등)
+#     8: [0.1, 0.1, 0.05, 0.1, 0.1, 0.1, 0.15, 0.3],        # 기본(중립)
+# }
 
 
 async def generate_tts_batch_and_upload(session: AsyncSession, book_id: int, voice_id: int, user_id: int):
@@ -128,27 +121,37 @@ async def _generate_and_save_audio(
   if not (1 <= emotion_type <= 8):
     emotion_type = 8
   
-  # 반환 위치
-  output_path = f"/tmp/{uuid.uuid4()}.wav"
+
+  # 1. 워커에 전달할 작업 생성
+  task = {
+      "text": text,
+      "emotion_type": emotion_type,
+      "speaker_path": speaker_path,
+      "output_path": f"/tmp/{uuid.uuid4()}.wav"
+  }
+  queue = get_task_queue()
+
+  print("태스크 작업 큐에 삽입")
+  queue.put(task)
+
+  # 2. 워커가 output_path에 파일 생성 완료할 때까지 대기 (예: 파일 존재 여부 확인 or result_queue)
+  MAX_WAIT_SECONDS = 1800  # 최대 30분 대기
+
+  start_time = time.time()
+  while not os.path.exists(task["output_path"]):
+      await asyncio.sleep(0.1)  # 간단한 polling 방식
+      if time.time() - start_time > MAX_WAIT_SECONDS:
+        raise TimeoutError(f"TTS 결과 파일이 {MAX_WAIT_SECONDS}초 안에 생성되지 않았습니다.")
+
+  print("tts-service한테 주도권 넘어옴")
 
   try:
-    # TTS 기반 음성 생성
-    wav, sampling_rate = torchaudio.load(speaker_path)
-    speaker = model.make_speaker_embedding(wav, sampling_rate)
-
-    print(f"{emotion_type} = {emotion[emotion_type]}으로 생성 :\n({text})")
-
-    cond_dict = make_cond_dict(text=text, speaker=speaker, language="ko", emotion = emotion[emotion_type])
-    conditioning = model.prepare_conditioning(cond_dict)
-
-    codes = model.generate(conditioning)
-    wavs = model.autoencoder.decode(codes).cpu()
-    torchaudio.save(output_path, wavs[0], model.autoencoder.sampling_rate)
-
     # S3에 음성 저장
-    with open(output_path, "rb") as f:
+    with open(task["output_path"], "rb") as f:
       s3_key = f"tts_outputs/{uuid.uuid4()}.wav"
       s3_url = upload_file_to_s3(f, s3_key, "audio/wav")
+
+    print(f"s3 업로드 : {s3_url}")
 
     query = insert(page_audios).values(
         book_id=book_id,
@@ -168,51 +171,5 @@ async def _generate_and_save_audio(
     raise
 
   finally:
-    if os.path.exists(output_path):
-      os.remove(output_path)
-
-async def generate_tts(text: str, speaker_url: str) -> str:
-  os.makedirs("/tmp", exist_ok=True)
-
-  # 1. S3에서 speaker 파일 다운로드
-  with tempfile.NamedTemporaryFile(delete=False, suffix=".wav",
-                                     dir="/tmp") as temp_speaker:
-    temp_speaker.write(load_file_from_s3(speaker_url))
-    speaker_path = temp_speaker.name
-
-  # 2. 출력 파일 임시경로 생성
-  output_path = f"/tmp/{uuid.uuid4()}.wav"
-
-  try:
-    # 3. 음성 생성
-     # TTS 기반 음성 생성
-    wav, sampling_rate = torchaudio.load(speaker_path)
-    speaker = model.make_speaker_embedding(wav, sampling_rate)
-
-    print(f"8 = {emotion[8]}으로 생성 :\n({text})")
-
-    cond_dict = make_cond_dict(text=text, speaker=speaker, language="ko", emotion = emotion[8])
-    conditioning = model.prepare_conditioning(cond_dict)
-
-    codes = model.generate(conditioning)
-    wavs = model.autoencoder.decode(codes).cpu()
-
-    torchaudio.save(output_path, wavs[0], model.autoencoder.sampling_rate)
-
-    # 4. S3 업로드
-    with open(output_path, "rb") as f:
-      s3_key = f"tts_outputs/{uuid.uuid4()}.wav"
-      s3_url = upload_file_to_s3(f, s3_key, "audio/wav")
-
-    return s3_url
-
-  except Exception as e:
-    print(f"❌ generate_tts 실패: {e}")
-    raise
-
-  finally:
-    # 5. 임시파일 정리
-    if os.path.exists(speaker_path):
-      os.remove(speaker_path)
-    if os.path.exists(output_path):
-      os.remove(output_path)
+    if os.path.exists(task["output_path"]):
+      os.remove(task["output_path"])
