@@ -5,6 +5,8 @@ import { CheckIsRegistered } from "../api/authApi";
 import { useLogin } from "../hooks/useLogin";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 
+import MainBG from "../assets/images/mainpage/mainpage.webp";
+
 function KakaoCallback() {
   const navigate = useNavigate();
   const { mutate: loginUser } = useLogin();
@@ -89,9 +91,10 @@ function KakaoCallback() {
   };
 
   return (
-    <div className="text-center mt-[30vh] text-2xl text-black">
-      로그인 처리 중입니다...
-    </div>
+    <div
+      className="fixed inset-0 w-screen h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${MainBG})` }}
+    ></div>
   );
 }
 
