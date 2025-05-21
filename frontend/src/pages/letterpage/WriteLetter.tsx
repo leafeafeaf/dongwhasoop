@@ -14,15 +14,13 @@ import btnSound from "../../assets/music/btn_sound.mp3";
 import { useRef } from "react";
 import { useMusicStore } from "../../stores/musicStore";
 
-
-
 function WriteLetter() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { characterId, bookId } = location.state || {};
   const { togglePlay } = useMusicStore(); // Add this line
-  
+
   // 음성 녹음 상태 관리
   const [isRecording, setIsRecording] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -31,10 +29,10 @@ function WriteLetter() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null); // 추가: 스트림 참조
-  
+
   const { letterContent, setLetterContent, clearLetterContent } = useLetterStore();
   const { selectedChild } = useSelectedChild();
-  
+
   // 마운트시 배경음악 끄기
   useEffect(() => {
     togglePlay(); // 배경음악 끄기
@@ -44,11 +42,11 @@ function WriteLetter() {
   }, [togglePlay]);
   const writeLetter = useWriteLetter();
 
-  // 음성 텍스트 변환 결과가 변경될 때마다 편지 내용 업데이트 
+  // 음성 텍스트 변환 결과가 변경될 때마다 편지 내용 업데이트
   useEffect(() => {
     setLetterContent(transcript);
     setTimeout(() => {
-      const textContainer = document.querySelector('.letter-content-container');
+      const textContainer = document.querySelector(".letter-content-container");
       if (textContainer) {
         textContainer.scrollTop = textContainer.scrollHeight;
       }
@@ -68,36 +66,39 @@ function WriteLetter() {
   const handleRecord = async () => {
     new Audio(btnSound).play();
     if (isRecording) {
-      // 녹음 중지
-      mediaRecorderRef.current?.stop(); // MediaRecorder 중지
-      SpeechRecognition.stopListening(); // 음성 인식 중지
-      SpeechRecognition.abortListening(); // 음성 인식 강제 종료
+      SpeechRecognition.stopListening();
+      setTimeout(() => {
+        SpeechRecognition.abortListening();
+      }, 300);
+
+      mediaRecorderRef.current?.stop();
+
+      // 트랙 정리 확실히 하기
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => {
+          track.stop();
+          track.enabled = false;
+        });
+        streamRef.current = null;
+      }
+
       setIsRecording(false);
       setIsListening(false);
       setHasRecorded(true);
-  
-      // 스트림 정리
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => {
-          track.stop(); // 트랙 중지
-          track.enabled = false; // 트랙 비활성화
-        });
-        streamRef.current = null; // 스트림 참조 초기화
-      }
     } else {
       // 녹음 시작
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         streamRef.current = stream; // 스트림 저장
-  
+
         const mediaRecorder = new MediaRecorder(stream);
         mediaRecorderRef.current = mediaRecorder;
         chunksRef.current = [];
-  
+
         mediaRecorder.ondataavailable = (e) => {
           chunksRef.current.push(e.data);
         };
-  
+
         mediaRecorder.onstop = () => {
           if (streamRef.current) {
             streamRef.current.getTracks().forEach((track) => {
@@ -107,7 +108,7 @@ function WriteLetter() {
             streamRef.current = null; // 스트림 참조 초기화
           }
         };
-  
+
         mediaRecorder.start();
         setIsRecording(true);
         SpeechRecognition.startListening({ continuous: true, language: "ko-KR" });
@@ -168,9 +169,11 @@ function WriteLetter() {
       />
 
       {/* 녹음 보이스 텍스트 변환 */}
-      <div className="absolute bg-white/80 rounded-xl p-4 w-[45vw] text-[3.7vh] font-maplestory overflow-y-auto
+      <div
+        className="absolute bg-white/80 rounded-xl p-4 w-[45vw] text-[3.7vh] font-maplestory overflow-y-auto
       left-[18vw] top-[23vh] max-h-[55vh]  
-      tablet2560:left-[30vh] tablet2560:top-[30vh] tablet2560:w-[44vw] tablet2560:max-h-[48vh]">
+      tablet2560:left-[30vh] tablet2560:top-[30vh] tablet2560:w-[44vw] tablet2560:max-h-[48vh]"
+      >
         <p>{letterContent || "녹음하기 버튼을 눌러 편지 내용을 녹음해주세요."}</p>
       </div>
 
