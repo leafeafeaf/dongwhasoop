@@ -23,12 +23,12 @@ const DeleteUserModal = ({ onCancel }: DeleteUserModalProps) => {
         className="w-[60vw] h-[90vh] tablet2560:w-[90vw] tablet2560:h-[90vh] p-6 bg-cover bg-center flex flex-col justify-end"
         style={{ backgroundImage: `url(${deleteBg})` }}
       >
-        <div className="flex justify-center gap-10 mb-[20vh] tablet2560:mb-[15vh]">
+        <div className="flex justify-center gap-10 mb-[15vh] tablet2560:mb-[15vh]">
           <button onClick={onCancel} className="hover:scale-105 transition-transform">
-            <img src={deleteNo} alt="아니오" className="w-[20vw] tablet2560:w-[20vw]" />
+            <img src={deleteNo} alt="아니오" className="w-[18vw] tablet2560:w-[20vw]" />
           </button>
           <button onClick={handleWithdraw} className="hover:scale-105 transition-transform">
-            <img src={deleteYes} alt="예" className="w-[20vw] tablet2560:w-[20vw]" />
+            <img src={deleteYes} alt="예" className="w-[18vw] tablet2560:w-[20vw]" />
           </button>
         </div>
       </div>
