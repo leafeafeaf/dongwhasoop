@@ -49,7 +49,7 @@ async def consume_messages():
 
     # 세마포어 생성: 동시에 처리할 수 있는 메시지 수를 10개로 제한
     # 이것은 시스템 리소스(메모리, CPU, DB 연결 등)를 보호하기 위한 장치
-    semaphore = asyncio.Semaphore(10)  # 최대 10개 동시 처리
+    semaphore = asyncio.Semaphore(4)  # 최대 4개 동시 처리
 
     # 생성된 모든 태스크를 추적하기 위한 집합(set) 생성
     # 이를 통해 프로그램 종료 시 모든 태스크가 완료될 때까지 기다릴 수 있음

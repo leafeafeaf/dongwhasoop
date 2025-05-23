@@ -16,6 +16,7 @@ from config import KAFKA_TOPIC
 
 from services.s3_utils import upload_file_to_s3
 
+
 consumer_task: asyncio.Task # 백그라운드 태스크 (지속적으로 카프카로부터 메시지를 읽어옴)
 # 기본 로거 설정
 logger = logging.getLogger("fastapi-app")
@@ -35,10 +36,26 @@ formatter = LogstashFormatter()
 logstash_handler.setFormatter(formatter)
 logger.addHandler(logstash_handler)
 
+# 멀티 프로세스
+import multiprocessing
+from multiprocessing import Process,Queue
+from services.tts_worker import run_worker_loop
+from services.global_task_queue import init_task_queue, worker_processes, task_queue
+
+multiprocessing.set_start_method("spawn", force=True)
+
 #FastAPI 앱의 생명 주기(Lifecycle)를 관리
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global consumer_task
+ 
+    queue = init_task_queue()  # 큐 주입
+
+    # ✅ 워커 프로세스 시작
+    for i in range(2):
+        p = Process(target=run_worker_loop, args=(queue, i), daemon=True)
+        p.start()
+        worker_processes.append(p)
 
     await start_producer()
     consumer_task = asyncio.create_task(consume_messages())
@@ -52,6 +69,18 @@ async def lifespan(app: FastAPI):
                 await consumer_task
             except asyncio.CancelledError:
                 print("🛑 Kafka consumer task cancelled")
+                pass
+        # ✅ 워커 프로세스 종료
+        for _ in worker_processes:
+            task_queue.put("STOP")  # 종료 신호 보내기
+
+        for p in worker_processes:
+            p.join(timeout=5)
+            if p.is_alive():
+                print("⚠️ 강제 종료된 워커 있음")
+                p.terminate()
+
+        print("🛑 모든 TTS 워커 종료 완료")
 
 app = FastAPI(lifespan=lifespan)
 
