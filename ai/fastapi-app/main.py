@@ -10,8 +10,8 @@ from fastapi import FastAPI, UploadFile, File
 from contextlib import asynccontextmanager
 import asyncio
 
-from kafka.producer import start_producer, stop_producer, send_message
-from kafka.consumer import consume_messages
+from kafka_utils.producer import start_producer, stop_producer, send_message
+from kafka_utils.consumer import consume_messages
 from config import KAFKA_TOPIC
 
 from services.s3_utils import upload_file_to_s3
@@ -39,7 +39,7 @@ logger.addHandler(logstash_handler)
 # 멀티 프로세스
 import multiprocessing
 from multiprocessing import Process,Queue
-from services.tts_worker import run_worker_loop
+from services.tts_service_worker import run_worker_process
 from services.global_task_queue import init_task_queue, worker_processes, task_queue
 
 multiprocessing.set_start_method("spawn", force=True)
@@ -48,17 +48,18 @@ multiprocessing.set_start_method("spawn", force=True)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global consumer_task
- 
+    await start_producer()
+    consumer_task = asyncio.create_task(consume_messages())
+
     queue = init_task_queue()  # 큐 주입
 
     # ✅ 워커 프로세스 시작
     for i in range(2):
-        p = Process(target=run_worker_loop, args=(queue, i), daemon=True)
+        p = Process(target=run_worker_process, args=(queue, i), daemon=True)
         p.start()
         worker_processes.append(p)
 
-    await start_producer()
-    consumer_task = asyncio.create_task(consume_messages())
+    
     try:
         yield
     finally:
@@ -72,7 +73,7 @@ async def lifespan(app: FastAPI):
                 pass
         # ✅ 워커 프로세스 종료
         for _ in worker_processes:
-            task_queue.put("STOP")  # 종료 신호 보내기
+            queue.put("STOP")  # 종료 신호 보내기
 
         for p in worker_processes:
             p.join(timeout=5)

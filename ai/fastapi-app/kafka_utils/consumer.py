@@ -5,7 +5,7 @@ import asyncio  # 비동기 작업을 위한 asyncio 라이브러리 추가
 from services.tts_service import generate_tts_batch_and_upload
 from services.letters_service import generate_letter
 from db.utils import with_session
-
+from services.global_task_queue import get_task_queue
 
 # 메시지 처리 로직을 별도의 비동기 함수로 분리
 # 이렇게 하면 각 메시지를 독립적인 태스크로 처리할 수 있음
@@ -20,10 +20,19 @@ async def process_message(data):
                 user_id = payload["user_id"]
 
                 # # 동화 페이지 조회 → 음성 생성 → S3 저장
-                await with_session(
-                    lambda session: generate_tts_batch_and_upload(
-                        session, book_id, voice_id, user_id)
-                )
+                # await with_session(
+                #     lambda session: generate_tts_batch_and_upload(
+                #         session, book_id, voice_id, user_id)
+                # )
+                print(f"📤 작업 큐에 등록: book_id={book_id}")
+                task = {
+                    "book_id": book_id,
+                    "voice_id": voice_id,
+                    "user_id": user_id
+                }
+                queue = get_task_queue()
+                queue.put(task)
+                
             case "WRITE_LETTER":
                 print("답장 생성 로직 실행")
                 payload = data["payload"]

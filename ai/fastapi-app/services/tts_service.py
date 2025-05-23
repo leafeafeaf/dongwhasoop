@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.models import story_pages, user_voices, page_audios
 from sqlalchemy import select, and_, outerjoin, null, insert
-from kafka.producer import send_result_message
+from kafka_utils.producer import send_result_message
 from services.global_task_queue import get_task_queue
 
 # # Index: [행복, 슬픔, 역겨움, 공포, 놀람, 분노, 기타1, 기타2]
