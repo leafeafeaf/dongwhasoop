@@ -75,15 +75,15 @@ async def consume_messages():
 
                 # 세마포어를 적용한 내부 함수 정의
                 # 이 함수는 세마포어를 획득하고, 메시지를 처리한 후, 세마포어를 해제
-                async def process_with_semaphore():
+                async def process_with_semaphore(data_copy):
                     # 세마포어를 사용하여 동시에 실행되는 태스크 수 제한
                     # 이 블록에 들어갈 때 세마포어 카운트가 0이면 다른 태스크가 완료될 때까지 대기
                     async with semaphore:
-                        await process_message(data)
+                        await process_message(data_copy)
 
                 # 새로운 비동기 태스크 생성 (메시지 처리를 백그라운드에서 실행)
                 # 이렇게 하면 메시지 처리가 완료되기를 기다리지 않고 즉시 다음 메시지를 받을 수 있음
-                task = asyncio.create_task(process_with_semaphore())
+                task = asyncio.create_task(process_with_semaphore(data))
 
                 # 생성된 태스크를 tasks 집합에 추가
                 tasks.add(task)
