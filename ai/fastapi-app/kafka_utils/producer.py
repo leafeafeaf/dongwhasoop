@@ -1,11 +1,14 @@
 #kafka/producer.py
 from aiokafka import AIOKafkaProducer
+import asyncio
 import json
 from config import KAFKA_BOOTSTRAP_SERVERS,KAFKA_RESULT_TOPIC
 
-producer: AIOKafkaProducer = AIOKafkaProducer(bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS)
+producer: AIOKafkaProducer | None = None
 
 async def start_producer():
+    global producer
+    producer = AIOKafkaProducer(bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS)
     await producer.start()
     print("✅ Kafka producer started")
 
