@@ -18,7 +18,7 @@ import asyncio
 from db.db import AsyncSessionLocal
 from db.models import story_pages, user_voices, page_audios
 from sqlalchemy import select, and_, outerjoin, null, insert
-from kafka_utils.producer import send_result_message
+from kafka_utils.producer import send_result_message, start_producer,stop_producer
 
 
 # Index: [행복, 슬픔, 역겨움, 공포, 놀람, 분노, 기타1, 기타2]
@@ -42,94 +42,97 @@ async def run_worker_loop(queue, worker_id):
   print(f"🎤 TTS 워커 {worker_id} 시작")
   os.makedirs("/tmp", exist_ok=True)
   model = Zonos.from_pretrained("Zyphra/Zonos-v0.1-transformer", device=device)
+  await start_producer()
 
   print("모델 로딩 성공")
-
-  while True:
-    task = queue.get()
-    if task == "STOP":
+  try:
+    while True:
+      task = queue.get()
+      if task == "STOP":
             print(f"👋 워커{worker_id} 종료됨")
             break
-    try:
-      book_id = task["book_id"]
-      voice_id = task["voice_id"]
-      user_id = task["user_id"]
+      try:
+        book_id = task["book_id"]
+        voice_id = task["voice_id"]
+        user_id = task["user_id"]
 
-      print(f"📦 워커{worker_id} 처리 시작: book_id={book_id}, user_id={user_id}")
+        print(f"📦 워커{worker_id} 처리 시작: book_id={book_id}, user_id={user_id}")
 
-      async with AsyncSessionLocal() as session:
-        print(f"세션 타입: {type(session)}")
+        async with AsyncSessionLocal() as session:
+          print(f"세션 타입: {type(session)}")
 
-        # 유저 보이스 URL 불러오기
-        result = await session.execute(
-          select(user_voices).where(user_voices.c.voice_id == voice_id)
-        )
-        voice = result.mappings().one_or_none() or {}
+          # 유저 보이스 URL 불러오기
+          result = await session.execute(
+            select(user_voices).where(user_voices.c.voice_id == voice_id)
+          )
+          voice = result.mappings().one_or_none() or {}
           
-        print("목소리 url db에서 불러오기 성공")
+          print("목소리 url db에서 불러오기 성공")
       
-        if not voice:
-          raise Exception(f"❌ voice_id={voice_id} not found")
+          if not voice:
+            raise Exception(f"❌ voice_id={voice_id} not found")
 
-        # s3음성 다운로드
-        speaker_wav_key = voice["voice_url"]
-        speaker_path = _download_speaker(speaker_wav_key)
+          # s3음성 다운로드
+          speaker_wav_key = voice["voice_url"]
+          speaker_path = _download_speaker(speaker_wav_key)
       
-        # 음성이 없는 페이지 가져오기
-        result = await session.execute(
-                  select(story_pages)
-                  .select_from(
-                      outerjoin(
-                          story_pages,
-                          page_audios,
-                          and_(
-                              story_pages.c.book_id == page_audios.c.book_id,
-                              story_pages.c.page_number == page_audios.c.page_number,
-                              page_audios.c.voice_id == voice_id,
-                        )
-                    )
-                )
-                .where(
-                    and_(
-                        story_pages.c.book_id == book_id,
-                        page_audios.c.audio_id.is_(None)
-                    )
-                )
-            )
-        rows = result.fetchall()
-        pages = [dict(row._mapping) for row in rows]
+          # 음성이 없는 페이지 가져오기
+          result = await session.execute(
+                    select(story_pages)
+                    .select_from(
+                        outerjoin(
+                            story_pages,
+                            page_audios,
+                            and_(
+                                story_pages.c.book_id == page_audios.c.book_id,
+                                story_pages.c.page_number == page_audios.c.page_number,
+                                page_audios.c.voice_id == voice_id,
+                         )
+                      )
+                  )
+                  .where(
+                      and_(
+                          story_pages.c.book_id == book_id,
+                          page_audios.c.audio_id.is_(None)
+                     )
+                  )
+              )
+          rows = result.fetchall()
+          pages = [dict(row._mapping) for row in rows]
 
-        # TTS 모델 사용해서 음성 생성
-        # 생성된 음성 S3 및 MySQL보내기
-        print(f"음성 생성 시작: {len(pages)}개")
-        
-        for page in pages:
-            await _process_one_page(session, model, book_id, voice_id, page, speaker_path)
+          # TTS 모델 사용해서 음성 생성
+          # 생성된 음성 S3 및 MySQL보내기
+          print(f"음성 생성 시작: {len(pages)}개")
 
-        await session.commit()
-        print(f"✅ 워커{worker_id} 처리 완료: book_id={book_id}")
+          for page in pages:
+              await _process_one_page(session, model, book_id, voice_id, page, speaker_path)
 
-        # producer로 결과 메시지를 보낸다.
+          await session.commit()
+          print(f"✅ 워커{worker_id} 처리 완료: book_id={book_id}")
+
+          # producer로 결과 메시지를 보낸다.
+          await send_result_message({
+              "type": "TTS_COMPLETE",
+              "payload": {
+              "book_id": book_id,
+              "voice_id": voice_id,
+              "user_id": user_id,
+              }
+            })
+      except Exception as e:
+        print(f"❌ 워커{worker_id} 에러: {e}")
         await send_result_message({
-            "type": "TTS_COMPLETE",
-            "payload": {
-            "book_id": book_id,
-            "voice_id": voice_id,
-            "user_id": user_id,
+          "type": "TTS_FAILED",
+          "payload": {
+            "book_id": task.get("book_id"),
+            "voice_id": task.get("voice_id"),
+            "user_id": task.get("user_id"),
+            "error": str(e),
             }
           })
-
-    except Exception as e:
-      print(f"❌ 워커{worker_id} 에러: {e}")
-      await send_result_message({
-        "type": "TTS_FAILED",
-        "payload": {
-          "book_id": task.get("book_id"),
-          "voice_id": task.get("voice_id"),
-          "user_id": task.get("user_id"),
-          "error": str(e),
-          }
-        })
+  finally:
+     await stop_producer()
+     print(f"🛑 워커{worker_id} 프로듀서 종료됨")
       
         
 
