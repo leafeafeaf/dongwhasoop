@@ -5,7 +5,7 @@ import asyncio  # 비동기 작업을 위한 asyncio 라이브러리 추가
 from services.tts_service import generate_tts_batch_and_upload
 from services.letters_service import generate_letter
 from db.utils import with_session
-
+from services.global_task_queue import get_task_queue
 
 # 메시지 처리 로직을 별도의 비동기 함수로 분리
 # 이렇게 하면 각 메시지를 독립적인 태스크로 처리할 수 있음
@@ -20,10 +20,19 @@ async def process_message(data):
                 user_id = payload["user_id"]
 
                 # # 동화 페이지 조회 → 음성 생성 → S3 저장
-                await with_session(
-                    lambda session: generate_tts_batch_and_upload(
-                        session, book_id, voice_id, user_id)
-                )
+                # await with_session(
+                #     lambda session: generate_tts_batch_and_upload(
+                #         session, book_id, voice_id, user_id)
+                # )
+                print(f"📤 작업 큐에 등록: book_id={book_id}")
+                task = {
+                    "book_id": book_id,
+                    "voice_id": voice_id,
+                    "user_id": user_id
+                }
+                queue = get_task_queue()
+                queue.put(task)
+                
             case "WRITE_LETTER":
                 print("답장 생성 로직 실행")
                 payload = data["payload"]
@@ -66,15 +75,15 @@ async def consume_messages():
 
                 # 세마포어를 적용한 내부 함수 정의
                 # 이 함수는 세마포어를 획득하고, 메시지를 처리한 후, 세마포어를 해제
-                async def process_with_semaphore():
+                async def process_with_semaphore(data_copy):
                     # 세마포어를 사용하여 동시에 실행되는 태스크 수 제한
                     # 이 블록에 들어갈 때 세마포어 카운트가 0이면 다른 태스크가 완료될 때까지 대기
                     async with semaphore:
-                        await process_message(data)
+                        await process_message(data_copy)
 
                 # 새로운 비동기 태스크 생성 (메시지 처리를 백그라운드에서 실행)
                 # 이렇게 하면 메시지 처리가 완료되기를 기다리지 않고 즉시 다음 메시지를 받을 수 있음
-                task = asyncio.create_task(process_with_semaphore())
+                task = asyncio.create_task(process_with_semaphore(data))
 
                 # 생성된 태스크를 tasks 집합에 추가
                 tasks.add(task)
